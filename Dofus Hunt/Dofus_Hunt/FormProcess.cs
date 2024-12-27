@@ -30,7 +30,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x060000AD RID: 173 RVA: 0x0000CCD8 File Offset: 0x0000AED8
+		// Token: 0x060000AD RID: 173 RVA: 0x0000CCEC File Offset: 0x0000AEEC
 		private void ActuProcess()
 		{
 			string selectedItem = this.listBoxControl_process.SelectedItem as string;
@@ -42,7 +42,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x060000AE RID: 174 RVA: 0x0000CD3C File Offset: 0x0000AF3C
+		// Token: 0x060000AE RID: 174 RVA: 0x0000CD50 File Offset: 0x0000AF50
 		private void LicenceIsOk()
 		{
 			this.panelControl_Licence.Visible = false;
@@ -63,7 +63,7 @@ namespace Dofus_Hunt
 			this.LicenceIsOk();
 		}
 
-		// Token: 0x060000B0 RID: 176 RVA: 0x0000CD90 File Offset: 0x0000AF90
+		// Token: 0x060000B0 RID: 176 RVA: 0x0000CDA4 File Offset: 0x0000AFA4
 		private void FormProcess_Load(object sender, EventArgs e)
 		{
 			if (this._dofusHunt.SkinIsDark() == "False")

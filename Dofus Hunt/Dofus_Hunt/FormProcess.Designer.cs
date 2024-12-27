@@ -13,11 +13,11 @@
 			base.Dispose(disposing);
 		}
 
-		// Token: 0x060000B8 RID: 184 RVA: 0x0000CE00 File Offset: 0x0000B000
+		// Token: 0x060000B8 RID: 184 RVA: 0x0000CE14 File Offset: 0x0000B014
 		private void InitializeComponent()
 		{
 			this.components = new global::System.ComponentModel.Container();
-			global::System.ComponentModel.ComponentResourceManager resources = new global::System.ComponentModel.ComponentResourceManager(typeof(global::Dofus_Hunt.FormProcess));
+			global::System.ComponentModel.ComponentResourceManager componentResourceManager = new global::System.ComponentModel.ComponentResourceManager(typeof(global::Dofus_Hunt.FormProcess));
 			this.panelControl_Licence = new global::DevExpress.XtraEditors.PanelControl();
 			this.simpleButton_setLicence = new global::DevExpress.XtraEditors.SimpleButton();
 			this.simpleButton_getCode = new global::DevExpress.XtraEditors.SimpleButton();
@@ -49,13 +49,14 @@
 			this.simpleButton_setLicence.Name = "simpleButton_setLicence";
 			this.simpleButton_setLicence.Size = new global::System.Drawing.Size(183, 26);
 			this.simpleButton_setLicence.TabIndex = 3;
-			this.simpleButton_setLicence.Text = "Clique clique!";
+			this.simpleButton_setLicence.Text = "Clique clique";
 			this.simpleButton_setLicence.Click += new global::System.EventHandler(this.simpleButton_setLicence_Click);
 			this.simpleButton_getCode.Cursor = global::System.Windows.Forms.Cursors.Hand;
 			this.simpleButton_getCode.Location = new global::System.Drawing.Point(40, 152);
 			this.simpleButton_getCode.Name = "simpleButton_getCode";
 			this.simpleButton_getCode.Size = new global::System.Drawing.Size(183, 26);
 			this.simpleButton_getCode.TabIndex = 2;
+			this.simpleButton_getCode.Text = "Obtenir le code de licence";
 			this.simpleButton_getCode.Click += new global::System.EventHandler(this.simpleButton_getCode_Click);
 			this.labelControl1.Appearance.Font = new global::System.Drawing.Font("Tahoma", 9.75f, global::System.Drawing.FontStyle.Bold);
 			this.labelControl1.Appearance.Options.UseFont = true;
@@ -107,7 +108,7 @@
 			base.Controls.Add(this.panelControl_Process);
 			base.Controls.Add(this.panelControl_Licence);
 			base.FormBorderStyle = global::System.Windows.Forms.FormBorderStyle.FixedSingle;
-			base.IconOptions.Icon = (global::System.Drawing.Icon)resources.GetObject("FormProcess.IconOptions.Icon");
+			base.IconOptions.Icon = (global::System.Drawing.Icon)componentResourceManager.GetObject("FormProcess.IconOptions.Icon");
 			base.MaximizeBox = false;
 			base.Name = "FormProcess";
 			this.Text = "Dofus Hunt - Processus";

@@ -623,75 +623,75 @@ namespace Dofus_Hunt
 		// Token: 0x0600001A RID: 26 RVA: 0x0000398C File Offset: 0x00001B8C
 		public void DetectCurrentMap()
 		{
-			Mat mat = CvInvoke.Imread("ressources/img/niveau.png", ImreadModes.Color);
-			if (mat.IsEmpty)
+			Mat niveauTemplate = CvInvoke.Imread("ressources/img/niveau.png", ImreadModes.Color);
+			if (niveauTemplate.IsEmpty)
 			{
 				this.AddLog("Erreur : image de 'Niveau' introuvable (niveau.png)");
 				return;
 			}
-			Mat mat2 = new Mat(this._logPathImg + "/screenshot.png", ImreadModes.Color);
-			if (mat2.IsEmpty)
+			Mat screenMat = new Mat(this._logPathImg + "/screenshot.png", ImreadModes.Color);
+			if (screenMat.IsEmpty)
 			{
 				this.AddLog("Erreur : image source introuvable (screenshot.png)");
 				return;
 			}
-			Rectangle rectangle = new Rectangle(0, 0, 300, 300);
-			Mat mat3 = new Mat(mat2, rectangle);
+			Rectangle cropRect = new Rectangle(0, 0, 300, 300);
+			Mat croppedMap = new Mat(screenMat, cropRect);
 			if (this._advencedLog == 1)
 			{
 				this.AddLog("Image recadrée pour traitement.");
 			}
-			Mat mat4 = new Mat();
-			CvInvoke.MatchTemplate(mat3, mat, mat4, TemplateMatchingType.CcoeffNormed, null);
-			double num = 0.0;
-			double num2 = 0.0;
-			Point point = default(Point);
-			Point point2 = default(Point);
-			CvInvoke.MinMaxLoc(mat4, ref num, ref num2, ref point, ref point2, null);
+			Mat result = new Mat();
+			CvInvoke.MatchTemplate(croppedMap, niveauTemplate, result, TemplateMatchingType.CcoeffNormed, null);
+			double minVal = 0.0;
+			double maxVal = 0.0;
+			Point minLoc = default(Point);
+			Point maxLoc = default(Point);
+			CvInvoke.MinMaxLoc(result, ref minVal, ref maxVal, ref minLoc, ref maxLoc, null);
 			if (this._advencedLog == 1)
 			{
 				DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(50, 1);
 				defaultInterpolatedStringHandler.AppendLiteral("Valeur de correspondance maximale pour 'Niveau' : ");
-				defaultInterpolatedStringHandler.AppendFormatted<double>(num2);
+				defaultInterpolatedStringHandler.AppendFormatted<double>(maxVal);
 				this.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
 			}
-			double num3 = 0.4;
-			if (num2 >= num3)
+			double threshold = 0.4;
+			if (maxVal >= threshold)
 			{
 				if (this._advencedLog == 1)
 				{
-					DefaultInterpolatedStringHandler defaultInterpolatedStringHandler2 = new DefaultInterpolatedStringHandler(40, 1);
-					defaultInterpolatedStringHandler2.AppendLiteral("Section 'Niveau' détectée à la position ");
-					defaultInterpolatedStringHandler2.AppendFormatted<Point>(point2);
-					this.AddLog(defaultInterpolatedStringHandler2.ToStringAndClear());
+					DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(40, 1);
+					defaultInterpolatedStringHandler.AppendLiteral("Section 'Niveau' détectée à la position ");
+					defaultInterpolatedStringHandler.AppendFormatted<Point>(maxLoc);
+					this.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
 				}
-				int num4 = point2.X - 100;
-				int num5 = point2.Y;
-				int num6 = 85;
-				int num7 = 25;
-				num4 = Math.Max(num4, 0);
-				num5 = Math.Max(num5, 0);
-				Rectangle rectangle2 = new Rectangle(num4, num5, num6, num7);
+				int offsetX = maxLoc.X - 100;
+				int offsetY = maxLoc.Y;
+				int largeurTexte = 85;
+				int hauteurTexte = 25;
+				offsetX = Math.Max(offsetX, 0);
+				offsetY = Math.Max(offsetY, 0);
+				Rectangle huntArea = new Rectangle(offsetX, offsetY, largeurTexte, hauteurTexte);
 				if (this._advencedLog == 1)
 				{
-					DefaultInterpolatedStringHandler defaultInterpolatedStringHandler3 = new DefaultInterpolatedStringHandler(96, 4);
-					defaultInterpolatedStringHandler3.AppendLiteral("Dimensions de la zone de texte 'Niveau' capturée : Position (X = ");
-					defaultInterpolatedStringHandler3.AppendFormatted<int>(rectangle2.X);
-					defaultInterpolatedStringHandler3.AppendLiteral(", Y = ");
-					defaultInterpolatedStringHandler3.AppendFormatted<int>(rectangle2.Y);
-					defaultInterpolatedStringHandler3.AppendLiteral("), Largeur = ");
-					defaultInterpolatedStringHandler3.AppendFormatted<int>(rectangle2.Width);
-					defaultInterpolatedStringHandler3.AppendLiteral(", Hauteur = ");
-					defaultInterpolatedStringHandler3.AppendFormatted<int>(rectangle2.Height);
-					this.AddLog(defaultInterpolatedStringHandler3.ToStringAndClear());
+					DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(96, 4);
+					defaultInterpolatedStringHandler.AppendLiteral("Dimensions de la zone de texte 'Niveau' capturée : Position (X = ");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(huntArea.X);
+					defaultInterpolatedStringHandler.AppendLiteral(", Y = ");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(huntArea.Y);
+					defaultInterpolatedStringHandler.AppendLiteral("), Largeur = ");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(huntArea.Width);
+					defaultInterpolatedStringHandler.AppendLiteral(", Hauteur = ");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(huntArea.Height);
+					this.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
 				}
-				if (rectangle2.Right > mat3.Width || rectangle2.Bottom > mat3.Height)
+				if (huntArea.Right > croppedMap.Width || huntArea.Bottom > croppedMap.Height)
 				{
 					this.AddLog("Erreur : la zone de texte 'Niveau' à capturer est en dehors des limites de l'image.");
 					return;
 				}
-				Mat mat5 = new Mat(mat3, rectangle2);
-				CvInvoke.Imwrite(this._logPathImg + "/cropped_map.png", mat5, Array.Empty<KeyValuePair<ImwriteFlags, int>>());
+				Mat croppedDepartMat = new Mat(croppedMap, huntArea);
+				CvInvoke.Imwrite(this._logPathImg + "/cropped_map.png", croppedDepartMat, Array.Empty<KeyValuePair<ImwriteFlags, int>>());
 				if (this._advencedLog == 1)
 				{
 					this.AddLog("Zone de texte 'Niveau' recadrée et sauvegardée : cropped_map.png");
@@ -743,6 +743,8 @@ namespace Dofus_Hunt
 					}
 					if (parts.Length == 2)
 					{
+						parts[0] = parts[0].TrimStart();
+						parts[1] = parts[1].TrimStart();
 						parts[0] = (parts[0].StartsWith("-") ? ((parts[0].Length > 3) ? parts[0].Substring(0, 3).Trim() : parts[0].Trim()) : ((parts[0].Length > 2) ? parts[0].Substring(0, 2).Trim() : parts[0].Trim()));
 						parts[1] = (parts[1].StartsWith("-") ? ((parts[1].Length > 3) ? parts[1].Substring(0, 3).Trim() : parts[1].Trim()) : ((parts[1].Length > 2) ? parts[1].Substring(0, 2).Trim() : parts[1].Trim()));
 						int parsedX;
@@ -783,7 +785,7 @@ namespace Dofus_Hunt
 			return flag;
 		}
 
-		// Token: 0x0600001C RID: 28 RVA: 0x00003EC0 File Offset: 0x000020C0
+		// Token: 0x0600001C RID: 28 RVA: 0x00003ED4 File Offset: 0x000020D4
 		public string PerformOCRTesseractMap(string imagePath)
 		{
 			string text2;
@@ -835,7 +837,7 @@ namespace Dofus_Hunt
 			return text2;
 		}
 
-		// Token: 0x0600001D RID: 29 RVA: 0x000040E4 File Offset: 0x000022E4
+		// Token: 0x0600001D RID: 29 RVA: 0x000040F8 File Offset: 0x000022F8
 		private Bitmap PreprocessImageTesseract(string imagePath)
 		{
 			Bitmap bitmap2;
@@ -898,7 +900,7 @@ namespace Dofus_Hunt
 			return bitmap2;
 		}
 
-		// Token: 0x0600001E RID: 30 RVA: 0x00004360 File Offset: 0x00002560
+		// Token: 0x0600001E RID: 30 RVA: 0x00004374 File Offset: 0x00002574
 		private Pix BitmapToPixTesseract(Bitmap bitmap)
 		{
 			Pix pix;
@@ -911,7 +913,7 @@ namespace Dofus_Hunt
 			return pix;
 		}
 
-		// Token: 0x0600001F RID: 31 RVA: 0x000043B0 File Offset: 0x000025B0
+		// Token: 0x0600001F RID: 31 RVA: 0x000043C4 File Offset: 0x000025C4
 		public void DetectAndExtractHuntInfo()
 		{
 			Mat departTemplate = CvInvoke.Imread("ressources/img/depart_template.png", ImreadModes.Color);
@@ -989,7 +991,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x06000020 RID: 32 RVA: 0x000045F4 File Offset: 0x000027F4
+		// Token: 0x06000020 RID: 32 RVA: 0x00004608 File Offset: 0x00002808
 		public string PerformOCRTesseract(string imagePath)
 		{
 			string text2;
@@ -1039,7 +1041,7 @@ namespace Dofus_Hunt
 			return text2;
 		}
 
-		// Token: 0x06000021 RID: 33 RVA: 0x000047C0 File Offset: 0x000029C0
+		// Token: 0x06000021 RID: 33 RVA: 0x000047D4 File Offset: 0x000029D4
 		private string RemoveTextBeforeFirstUppercase(string text)
 		{
 			int index = text.IndexOfAny("ABCDEFGHIJKLMNOPQRSTUVWXYZÉ".ToCharArray());
@@ -1054,7 +1056,7 @@ namespace Dofus_Hunt
 			return text;
 		}
 
-		// Token: 0x06000022 RID: 34 RVA: 0x0000480C File Offset: 0x00002A0C
+		// Token: 0x06000022 RID: 34 RVA: 0x00004820 File Offset: 0x00002A20
 		public string DetectArrowDirectionAfterOCR(Mat croppedMat)
 		{
 			this._logPathImg + "/cropped_hunt.png";
@@ -1116,7 +1118,7 @@ namespace Dofus_Hunt
 			return returnArrow;
 		}
 
-		// Token: 0x06000023 RID: 35 RVA: 0x000049FC File Offset: 0x00002BFC
+		// Token: 0x06000023 RID: 35 RVA: 0x00004A10 File Offset: 0x00002C10
 		public string GetArrowIcon(string arrow)
 		{
 			string text;
@@ -1162,7 +1164,7 @@ namespace Dofus_Hunt
 			return 1;
 		}
 
-		// Token: 0x06000025 RID: 37 RVA: 0x00004A68 File Offset: 0x00002C68
+		// Token: 0x06000025 RID: 37 RVA: 0x00004A7C File Offset: 0x00002C7C
 		public string GetCorrectedText(string input)
 		{
 			string text;
@@ -1191,7 +1193,7 @@ namespace Dofus_Hunt
 			return text;
 		}
 
-		// Token: 0x06000026 RID: 38 RVA: 0x00004B30 File Offset: 0x00002D30
+		// Token: 0x06000026 RID: 38 RVA: 0x00004B44 File Offset: 0x00002D44
 		public string GetGoogleAPIKey(string filePath)
 		{
 			string text;
@@ -1222,7 +1224,7 @@ namespace Dofus_Hunt
 			return text;
 		}
 
-		// Token: 0x06000027 RID: 39 RVA: 0x00004C3C File Offset: 0x00002E3C
+		// Token: 0x06000027 RID: 39 RVA: 0x00004C50 File Offset: 0x00002E50
 		public async Task<string> PerformOCRMapWithGoogleVision(string imagePath, string GoogleAPI)
 		{
 			string text2;
@@ -1351,7 +1353,7 @@ namespace Dofus_Hunt
 			return Regex.Replace(text, "(?<=\\d)-", "");
 		}
 
-		// Token: 0x06000029 RID: 41 RVA: 0x00004C90 File Offset: 0x00002E90
+		// Token: 0x06000029 RID: 41 RVA: 0x00004CA4 File Offset: 0x00002EA4
 		private Bitmap PreprocessImageGoogleMap(string imagePath)
 		{
 			Bitmap bitmap2;
@@ -1419,7 +1421,7 @@ namespace Dofus_Hunt
 			return bitmap2;
 		}
 
-		// Token: 0x0600002A RID: 42 RVA: 0x00004EF8 File Offset: 0x000030F8
+		// Token: 0x0600002A RID: 42 RVA: 0x00004F0C File Offset: 0x0000310C
 		private void DeleteFile(string filePath)
 		{
 			try

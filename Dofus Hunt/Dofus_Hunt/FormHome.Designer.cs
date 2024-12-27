@@ -13,7 +13,7 @@
 			base.Dispose(disposing);
 		}
 
-		// Token: 0x0600006C RID: 108 RVA: 0x000072E4 File Offset: 0x000054E4
+		// Token: 0x0600006C RID: 108 RVA: 0x000072F8 File Offset: 0x000054F8
 		private void InitializeComponent()
 		{
 			this.components = new global::System.ComponentModel.Container();

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E52A8BA0-C113-42FA-9C4D-DAEBC0D899F1}</ProjectGuid>
+    <ProjectGuid>{193774CC-984B-4AB9-8B23-FB45EC489147}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Dofus Hunt</RootNamespace>
     <AssemblyName>Dofus Hunt</AssemblyName>
@@ -38,28 +38,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoIt">
-      <HintPath>..\..\v1.1.5B\AutoIt.dll</HintPath>
+      <HintPath>..\..\v1.1.5C\AutoIt.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v24.1">
-      <HintPath>..\..\v1.1.5B\DevExpress.Data.v24.1.dll</HintPath>
+      <HintPath>..\..\v1.1.5C\DevExpress.Data.v24.1.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Utils.v24.1">
-      <HintPath>..\..\v1.1.5B\DevExpress.Utils.v24.1.dll</HintPath>
+      <HintPath>..\..\v1.1.5C\DevExpress.Utils.v24.1.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraBars.v24.1">
-      <HintPath>..\..\v1.1.5B\DevExpress.XtraBars.v24.1.dll</HintPath>
+      <HintPath>..\..\v1.1.5C\DevExpress.XtraBars.v24.1.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v24.1">
-      <HintPath>..\..\v1.1.5B\DevExpress.XtraEditors.v24.1.dll</HintPath>
+      <HintPath>..\..\v1.1.5C\DevExpress.XtraEditors.v24.1.dll</HintPath>
     </Reference>
     <Reference Include="Emgu.CV">
-      <HintPath>..\..\v1.1.5B\Emgu.CV.dll</HintPath>
+      <HintPath>..\..\v1.1.5C\Emgu.CV.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\v1.1.5B\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\v1.1.5C\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp">
-      <HintPath>..\..\v1.1.5B\RestSharp.dll</HintPath>
+      <HintPath>..\..\v1.1.5C\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections">
       <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Collections.dll</HintPath>
@@ -89,7 +89,7 @@
       <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Management">
-      <HintPath>..\..\v1.1.5B\System.Management.dll</HintPath>
+      <HintPath>..\..\v1.1.5C\System.Management.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
       <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Net.Http.dll</HintPath>
@@ -128,13 +128,13 @@
       <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Xml.XDocument.dll</HintPath>
     </Reference>
     <Reference Include="Tesseract">
-      <HintPath>..\..\v1.1.5B\Tesseract.dll</HintPath>
+      <HintPath>..\..\v1.1.5C\Tesseract.dll</HintPath>
     </Reference>
     <Reference Include="Titanium.Web.Proxy">
-      <HintPath>..\..\v1.1.5B\Titanium.Web.Proxy.dll</HintPath>
+      <HintPath>..\..\v1.1.5C\Titanium.Web.Proxy.dll</HintPath>
     </Reference>
     <Reference Include="WebDriver">
-      <HintPath>..\..\v1.1.5B\WebDriver.dll</HintPath>
+      <HintPath>..\..\v1.1.5C\WebDriver.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -157,11 +157,7 @@
       <DependentUpon>FormProcess.cs</DependentUpon>
     </Compile>
     <Compile Include="Dofus_Hunt\Program.cs" />
-    <Compile Include="Dofus_Hunt\Properties\Resources.Designer.cs">
-      <DependentUpon>Resources.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="Dofus_Hunt\Properties\Resources.cs" />
     <Compile Include="Dofus_Hunt\Properties\Settings.Designer.cs">
       <DependentUpon>Settings.settings</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -170,16 +166,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Dofus_Hunt\FormHome.resx">
-      <DependentUpon>FormHome.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dofus_Hunt\FormProcess.resx">
-      <DependentUpon>FormProcess.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Dofus_Hunt\Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Include="Dofus_Hunt\FormHome.resources" />
+    <EmbeddedResource Include="Dofus_Hunt\FormProcess.resources" />
+    <EmbeddedResource Include="Dofus_Hunt\Properties\Resources.resources" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
