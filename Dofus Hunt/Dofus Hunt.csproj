@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E52A8BA0-C113-42FA-9C4D-DAEBC0D899F1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Dofus Hunt</RootNamespace>
+    <AssemblyName>Dofus Hunt</AssemblyName>
+    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <TargetFrameworkIdentifier>.NETCoreApp</TargetFrameworkIdentifier>
+    <FileAlignment>512</FileAlignment>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Dofus Hunt.ico</ApplicationIcon>
+    <StartupObject>Dofus_Hunt.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoIt">
+      <HintPath>..\..\v1.1.5B\AutoIt.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v24.1">
+      <HintPath>..\..\v1.1.5B\DevExpress.Data.v24.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v24.1">
+      <HintPath>..\..\v1.1.5B\DevExpress.Utils.v24.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v24.1">
+      <HintPath>..\..\v1.1.5B\DevExpress.XtraBars.v24.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v24.1">
+      <HintPath>..\..\v1.1.5B\DevExpress.XtraEditors.v24.1.dll</HintPath>
+    </Reference>
+    <Reference Include="Emgu.CV">
+      <HintPath>..\..\v1.1.5B\Emgu.CV.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\v1.1.5B\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\..\v1.1.5B\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.NonGeneric">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Collections.NonGeneric.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Primitives">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.ComponentModel.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.TypeConverter">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.ComponentModel.TypeConverter.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration.ConfigurationManager">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.11\System.Configuration.ConfigurationManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Diagnostics.Process">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Diagnostics.Process.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing.Common">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.11\System.Drawing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing.Primitives">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Drawing.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management">
+      <HintPath>..\..\v1.1.5B\System.Management.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.NetworkInformation">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Net.NetworkInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Primitives">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Net.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Requests">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Net.Requests.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Security.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.RegularExpressions">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Text.RegularExpressions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Thread">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Threading.Thread.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.11\System.Windows.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms.Primitives">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\8.0.11\System.Windows.Forms.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.ReaderWriter">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Xml.ReaderWriter.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.XDocument">
+      <HintPath>..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Xml.XDocument.dll</HintPath>
+    </Reference>
+    <Reference Include="Tesseract">
+      <HintPath>..\..\v1.1.5B\Tesseract.dll</HintPath>
+    </Reference>
+    <Reference Include="Titanium.Web.Proxy">
+      <HintPath>..\..\v1.1.5B\Titanium.Web.Proxy.dll</HintPath>
+    </Reference>
+    <Reference Include="WebDriver">
+      <HintPath>..\..\v1.1.5B\WebDriver.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="-Module-.cs" />
+    <Compile Include="DevExpress\Generated.cs" />
+    <Compile Include="Dofus_Hunt\DofusHunt.cs" />
+    <Compile Include="Dofus_Hunt\FormHome.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dofus_Hunt\FormHome.Designer.cs">
+      <DependentUpon>FormHome.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dofus_Hunt\FormProcess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dofus_Hunt\FormProcess.Designer.cs">
+      <DependentUpon>FormProcess.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dofus_Hunt\Program.cs" />
+    <Compile Include="Dofus_Hunt\Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Dofus_Hunt\Properties\Settings.Designer.cs">
+      <DependentUpon>Settings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dofus_Hunt\FormHome.resx">
+      <DependentUpon>FormHome.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dofus_Hunt\FormProcess.resx">
+      <DependentUpon>FormProcess.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dofus_Hunt\Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="app.manifest" />
+    <None Include="Dofus_Hunt\Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
