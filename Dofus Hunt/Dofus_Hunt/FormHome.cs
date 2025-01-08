@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -12,225 +11,58 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using AutoIt;
 using DevExpress.LookAndFeel;
 using DevExpress.Utils;
 using DevExpress.Utils.Animation;
+using DevExpress.XtraBars.Navigation;
 using DevExpress.XtraBars.ToastNotifications;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraTab;
 using DevExpress.XtraWaitForm;
 using Dofus_Hunt.Properties;
-using Emgu.CV;
-using Emgu.CV.CvEnum;
+using Dof_Hunt;
 using Newtonsoft.Json.Linq;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using Titanium.Web.Proxy;
-using Titanium.Web.Proxy.EventArguments;
-using Titanium.Web.Proxy.Models;
 
 namespace Dofus_Hunt
 {
-	// Token: 0x0200000C RID: 12
+	// Token: 0x02000003 RID: 3
 	public partial class FormHome : XtraForm
 	{
-		// Token: 0x06000040 RID: 64 RVA: 0x000055B8 File Offset: 0x000037B8
+		// Token: 0x06000003 RID: 3 RVA: 0x00002568 File Offset: 0x00000768
 		public FormHome(string Dofus)
 		{
 			this.InitializeComponent();
 			this._dofus = Dofus;
-			this._dofusHunt = new DofusHunt(0, 70);
+			this._Dofus_Hunt = new Dofus_Hunt();
+			this._Hunt = new Hunt(this._dofus, "False", 0);
 			this.tokenTimer = new Timer();
 			this.tokenTimer.Interval = 3600000;
 			this.tokenTimer.Tick += this.Timer_Tick;
 			this.tokenTimer.Start();
 		}
 
-		// Token: 0x06000041 RID: 65 RVA: 0x00005690 File Offset: 0x00003890
+		// Token: 0x06000004 RID: 4 RVA: 0x00002600 File Offset: 0x00000800
 		private async void FormHome_Load(object sender, EventArgs e)
 		{
-			if (this._dofusHunt.CreateDefaultConfigFileIfNotExists(this._configPath + "/appSettings.xml"))
+			if (this._Dofus_Hunt.CreateDefaultConfigFileIfNotExists(FormHome._configPath + "/appSettings.xml"))
 			{
-				this._dofusHunt.AddLog("Création de la configuration par défaut.");
+				this._Dofus_Hunt.AddLog("Création de la configuration par défaut.");
 			}
 			else
 			{
-				this._dofusHunt.AddLog("Chargement de la configuration.");
+				this._Dofus_Hunt.AddLog("Chargement de la configuration.");
 			}
+			this.getConfig();
 			this.initConfig();
-			if (this._advancedLog == "True")
+			if (this._HuntAutoIndice_similarityThreshold == 0)
 			{
-				this._dofusHunt = new DofusHunt(1, this._seuil);
+				this._HuntAutoIndice_similarityThreshold = 70;
 			}
-			else
+			this._Hunt = new Hunt(this._dofus, this._advancedLog, this._HuntAutoIndice_similarityThreshold);
+			if (this._notify == "True")
 			{
-				this._dofusHunt = new DofusHunt(0, this._seuil);
-			}
-			this.version = this._dofusHunt.ReadVersionFromFile("revision.txt");
-			this.labelControl_version.Text = "Version : " + this.version;
-			if (this._dofusHunt.GetVersion() != this.version)
-			{
-				this.pictureBox_update.Visible = true;
-			}
-			this.setConfig();
-			this.ConfigToastNotifications();
-			string url = "https://dofusdb.fr/fr/tools/treasure-hunt";
-			TaskAwaiter<bool> taskAwaiter = this._dofusHunt.PingUrlAsync(url).GetAwaiter();
-			if (!taskAwaiter.IsCompleted)
-			{
-				await taskAwaiter;
-				TaskAwaiter<bool> taskAwaiter2;
-				taskAwaiter = taskAwaiter2;
-				taskAwaiter2 = default(TaskAwaiter<bool>);
-			}
-			if (!taskAwaiter.GetResult())
-			{
-				this.toastNotificationsManager.ShowNotification("NoDDB");
-				this.pictureBox_config.Visible = true;
-			}
-			else
-			{
-				await Task.Run(delegate
-				{
-					this.tokenTimer.Start();
-					this.googleAPI = this._dofusHunt.GetGoogleAPIKey("google.xml");
-				});
-				await this.GetToken();
-				this.panelControl_init.Visible = false;
-				this.pictureBox_autoHunt.Visible = true;
-				this.pictureBox_hunt.Visible = true;
-				this.pictureBox_config.Visible = true;
-				this.pictureBox_skin.Visible = true;
-				this.panelControl_huntauto.Visible = true;
-			}
-		}
-
-		// Token: 0x06000042 RID: 66 RVA: 0x000056C8 File Offset: 0x000038C8
-		private void ConfigToastNotifications()
-		{
-			this.toastNotificationsManager.ApplicationId = "Dofus Hunt";
-			this.toastNotificationsManager.Notifications.Add(new ToastNotification("RestartAppConfig", Resources.logo_64x64, "Dofus Hunt", "Pour prendre effet, l'application doit être redémarrée.", "", ToastNotificationTemplate.ImageAndText02));
-			this.toastNotificationsManager.Notifications.Add(new ToastNotification("SaveCorrections", Resources.logo_64x64, "Dofus Hunt", "Correction d'indice ajoutée avec succès.", "", ToastNotificationTemplate.ImageAndText02));
-			this.toastNotificationsManager.Notifications.Add(new ToastNotification("NoDataJSON", Resources.logo_64x64, "Dofus Hunt", "Aucune données trouvée à la position.", "", ToastNotificationTemplate.ImageAndText02));
-			this.toastNotificationsManager.Notifications.Add(new ToastNotification("ErreurComboBox", Resources.logo_64x64, "Dofus Hunt", "Erreur lors de la récupération des données.", "", ToastNotificationTemplate.ImageAndText02));
-			this.toastNotificationsManager.Notifications.Add(new ToastNotification("NoIndice", Resources.logo_64x64, "Dofus Hunt", "Indice non trouvé ou invalide.", "", ToastNotificationTemplate.ImageAndText02));
-			this.toastNotificationsManager.Notifications.Add(new ToastNotification("NoDDB", Resources.logo_64x64, "Dofus Hunt", "Problème lors de la récupération du token, merci de vérifier votre connexion ou réessayer plus tard.", "", ToastNotificationTemplate.ImageAndText02));
-			this.toastNotificationsManager.Notifications.Add(new ToastNotification("Phorreur", Resources.logo_64x64, "Dofus Hunt", "L'indice en cours semble être un Phorreur, pourquoi ne pas le faire manuellement ?", "", ToastNotificationTemplate.ImageAndText02));
-			this.toastNotificationsManager.Notifications.Add(new ToastNotification("IndiceOk", Resources.logo_64x64, "Dofus Hunt", "Merci de vous rendre à la position pour continuer.", "", ToastNotificationTemplate.ImageAndText02));
-			this.toastNotificationsManager.Notifications.Add(new ToastNotification("IndiceKO", Resources.logo_64x64, "Dofus Hunt", "Erreur lors de la récupération de la position de l'indice ...\nPeut être vérifier l'indice détecté et faire une correction manuelle.", "", ToastNotificationTemplate.ImageAndText02));
-		}
-
-		// Token: 0x06000043 RID: 67 RVA: 0x00005898 File Offset: 0x00003A98
-		private void setIconSkin()
-		{
-			string suffix = ((UserLookAndFeel.Default.ActiveSkinName == "Metropolis") ? "" : "_dark");
-			foreach (KeyValuePair<PictureBox, string> kvp in new Dictionary<PictureBox, string>
-			{
-				{ this.pictureBox_autoHunt, "ico_huntauto" },
-				{ this.pictureBox_hunt, "ico_hunt" },
-				{ this.pictureBox_update, "ico_maj" },
-				{ this.pictureBox_config, "ico_config" },
-				{ this.pictureBox_skin, "ico_skin" }
-			})
-			{
-				kvp.Key.Image = (Image)Resources.ResourceManager.GetObject(kvp.Value + suffix);
-			}
-		}
-
-		// Token: 0x06000044 RID: 68 RVA: 0x00005984 File Offset: 0x00003B84
-		private async Task GetToken()
-		{
-			this._dofusHunt.AddLog("Mise à jour du token en cours...");
-			try
-			{
-				this.proxyServer = new ProxyServer(true, false, false);
-				this.proxyEndPoint = new ExplicitProxyEndPoint(IPAddress.Loopback, 8000, true);
-				this.proxyServer.AddEndPoint(this.proxyEndPoint);
-				this.proxyServer.Start(true);
-				this.proxyServer.BeforeRequest += this.OnRequestCapture;
-				ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService();
-				chromeDriverService.HideCommandPromptWindow = true;
-				chromeDriverService.SuppressInitialDiagnosticInformation = true;
-				ChromeOptions options = new ChromeOptions();
-				options.AddArgument("--disable-gpu");
-				options.AddArgument("--window-size=1920,1080");
-				options.AddArgument("--ignore-certificate-errors");
-				options.AddArgument("--proxy-server=127.0.0.1:8000");
-				options.AddArgument("--headless");
-				using (ChromeDriver driver = new ChromeDriver(chromeDriverService, options))
-				{
-					driver.Navigate().GoToUrl("https://dofusdb.fr/fr/tools/treasure-hunt");
-					await Task.Delay(2000);
-					driver.FindElement(By.CssSelector("input[placeholder='X']")).SendKeys("1");
-					driver.FindElement(By.CssSelector("input[placeholder='Y']")).SendKeys("1");
-					driver.FindElement(By.CssSelector(".treasure-hunt-direction .fa-arrow-left")).Click();
-					await Task.Delay(1000);
-				}
-				ChromeDriver driver = null;
-				this.proxyServer.Stop();
-				string currentTime = DateTime.Now.ToString("HH:mm:ss");
-				base.Invoke(delegate
-				{
-					this.labelControl_HToken.Text = "Heure du token : " + currentTime;
-				});
-				this._dofusHunt.AddLog("Token mis à jour avec succès");
-			}
-			catch (Exception ex)
-			{
-				this._dofusHunt.AddLog("Erreur lors de la mise à jour du token : " + ex.Message);
-			}
-		}
-
-		// Token: 0x06000045 RID: 69 RVA: 0x000059C8 File Offset: 0x00003BC8
-		private Task OnRequestCapture(object sender, SessionEventArgs e)
-		{
-			foreach (HttpHeader header in e.HttpClient.Request.Headers)
-			{
-				if (header.Name.Equals("Token", StringComparison.OrdinalIgnoreCase))
-				{
-					string token = header.Value;
-					base.Invoke(delegate
-					{
-						this.textEdit_token.Text = token;
-					});
-					this._token = token;
-					break;
-				}
-			}
-			return Task.CompletedTask;
-		}
-
-		// Token: 0x06000046 RID: 70 RVA: 0x00005A6C File Offset: 0x00003C6C
-		private void setConfig()
-		{
-			if (base.InvokeRequired)
-			{
-				base.Invoke(new Action(this.setConfig));
-				return;
-			}
-			double opacityDouble;
-			double.TryParse(this._opacity, out opacityDouble);
-			int opacityInt;
-			int.TryParse(this._opacity, out opacityInt);
-			if (opacityDouble >= 0.0 && opacityDouble <= 100.0)
-			{
-				base.Opacity = opacityDouble / 100.0;
-				this.trackBarControl_opacity.Value = opacityInt;
-			}
-			else
-			{
-				base.Opacity = 100.0;
-				this.trackBarControl_opacity.Value = 100;
-			}
-			if (this._alwaysonscreen == "True")
-			{
-				base.TopMost = true;
-				this.checkEdit_alwaysonscreen.Checked = true;
-			}
-			if (this._advancedLog == "True")
-			{
-				this.checkEdit_AdvancedLogs.Checked = true;
+				this.ConfigToastNotifications();
 			}
 			if (this._dark == "False")
 			{
@@ -240,64 +72,1032 @@ namespace Dofus_Hunt
 			{
 				UserLookAndFeel.Default.SkinName = "Metropolis Dark";
 			}
-			this.textEdit_ConfigSeuil.Text = this._seuil.ToString();
-			this.setIconSkin();
+			this._version = this._Dofus_Hunt.ReadVersionFromFile(FormHome.RevisionFilePath);
+			this.labelControl_Hunt_Version.Text = "Version : " + this._version;
+			if (this._Dofus_Hunt.GetVersion() != this._version)
+			{
+				this.accordionControlElement_SubMenu_Config_Update.Visible = true;
+				if (this._notify == "True")
+				{
+					this.toastNotificationsManager.ShowNotification("App_Update");
+				}
+			}
+			string _versionDHU = this._Dofus_Hunt.ReadVersionFromFile(FormHome.RevisionDHUFilePath);
+			string versionUpdate = this._Dofus_Hunt.GetVersionUpdate();
+			Application.DoEvents();
+			if (versionUpdate != _versionDHU && this._updateDHU == "True")
+			{
+				try
+				{
+					Dofus_Hunt.UpdateInfo updateInfo = Dofus_Hunt.GetUpdateInfo();
+					if (updateInfo != null)
+					{
+						string zipPath = await this._Dofus_Hunt.DownloadUpdateAsync(updateInfo.updateUrlUpdate);
+						this._Dofus_Hunt.ApplyUpdate(zipPath);
+						this._Dofus_Hunt.AddLog("Mise à jour de l'updateur effectuée.");
+					}
+				}
+				catch (Exception ex)
+				{
+					this._Dofus_Hunt.AddLog("Erreur lors de la mise à jour de l'updateur : " + ex.Message);
+				}
+			}
+			this.pictureBox_Hunt_Config_Hunt_Template_Arrow_6.Image = Image.FromFile("ressources/img/fleche_haut.png");
+			this.pictureBox_Hunt_Config_Hunt_Template_Arrow_0.Image = Image.FromFile("ressources/img/fleche_droite.png");
+			this.pictureBox_Hunt_Config_Hunt_Template_Arrow_2.Image = Image.FromFile("ressources/img/fleche_bas.png");
+			this.pictureBox_Hunt_Config_Hunt_Template_Arrow_4.Image = Image.FromFile("ressources/img/fleche_gauche.png");
+			this.pictureBox_Hunt_Config_Hunt_Template_Coche.Image = Image.FromFile("ressources/img/coche_blanche.png");
+			this.pictureBox_Hunt_Config_Hunt_Template_Start.Image = Image.FromFile("ressources/img/depart_template.png");
+			this.pictureBox_Hunt_Config_Hunt_Template_Level.Image = Image.FromFile("ressources/img/niveau.png");
+			await Task.Run(delegate
+			{
+				this._Hunt.GetToken();
+				this._token = this._Hunt.Token;
+				this.tokenTimer.Start();
+				if (this._googleVision == "True")
+				{
+					this._googleAPI = this._Hunt.GetGoogleAPIKey("google.xml");
+				}
+			});
+			this.panelControl_Hunt_Init.Visible = false;
+			this.accordionControl1.Enabled = true;
 		}
 
-		// Token: 0x06000047 RID: 71 RVA: 0x00005B94 File Offset: 0x00003D94
-		private void initConfig()
+		// Token: 0x06000005 RID: 5 RVA: 0x00002638 File Offset: 0x00000838
+		public async Task<string> DownloadUpdateAsync(string updateUrl)
 		{
-			string configFilePath = this._configPath + "/appSettings.xml";
-			this._dofusHunt.EnsureConfigParameters(configFilePath);
-			this._opacity = this._dofusHunt.GetConfigValue(configFilePath, "Opacity");
+			string tempPath = Path.Combine(Path.GetTempPath(), "update.zip");
+			using (WebClient client = new WebClient())
+			{
+				TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+				client.DownloadFileCompleted += delegate([Nullable(2)] object s, AsyncCompletedEventArgs e)
+				{
+					if (e.Error != null)
+					{
+						tcs.SetException(new Exception("Erreur lors du téléchargement : " + e.Error.Message));
+						return;
+					}
+					tcs.SetResult(true);
+				};
+				client.DownloadFileAsync(new Uri(updateUrl), tempPath);
+				await tcs.Task;
+			}
+			WebClient client = null;
+			return tempPath;
+		}
+
+		// Token: 0x06000006 RID: 6 RVA: 0x0000267C File Offset: 0x0000087C
+		private void ConfigToastNotifications()
+		{
+			this.toastNotificationsManager.ApplicationId = "Dofus Hunt";
+			this.toastNotificationsManager.Notifications.Add(new ToastNotification("App_Update", Resources.logo_64x64, "Dofus Hunt", this._notify_App_Update, "", ToastNotificationTemplate.ImageAndText02));
+			this.toastNotificationsManager.Notifications.Add(new ToastNotification("App_Connect", Resources.logo_64x64, "Dofus Hunt", this._notify_App_Connect, "", ToastNotificationTemplate.ImageAndText02));
+			this.toastNotificationsManager.Notifications.Add(new ToastNotification("App_GetData", Resources.logo_64x64, "Dofus Hunt", this._notify_App_GetData, "", ToastNotificationTemplate.ImageAndText02));
+			this.toastNotificationsManager.Notifications.Add(new ToastNotification("App_Restart", Resources.logo_64x64, "Dofus Hunt", this._notify_App_Restart, "", ToastNotificationTemplate.ImageAndText02));
+			this.toastNotificationsManager.Notifications.Add(new ToastNotification("Hunt_NoData", Resources.logo_64x64, "Dofus Hunt", this._notify_Hunt_NoData, "", ToastNotificationTemplate.ImageAndText02));
+			this.toastNotificationsManager.Notifications.Add(new ToastNotification("Indice_OK", Resources.logo_64x64, "Dofus Hunt", this._notify_Indice_OK, "", ToastNotificationTemplate.ImageAndText02));
+			this.toastNotificationsManager.Notifications.Add(new ToastNotification("Indice_KO", Resources.logo_64x64, "Dofus Hunt", this._notify_Indice_KO, "", ToastNotificationTemplate.ImageAndText02));
+			this.toastNotificationsManager.Notifications.Add(new ToastNotification("Indice_Phorreur", Resources.logo_64x64, "Dofus Hunt", this._notify_Indice_Phorreur, "", ToastNotificationTemplate.ImageAndText02));
+			this.toastNotificationsManager.Notifications.Add(new ToastNotification("Indice_Correct", Resources.logo_64x64, "Dofus Hunt", this._notify_Indice_Correct, "", ToastNotificationTemplate.ImageAndText02));
+		}
+
+		// Token: 0x06000007 RID: 7 RVA: 0x00002089 File Offset: 0x00000289
+		private void Timer_Tick(object sender, EventArgs e)
+		{
+			this._Hunt.GetToken();
+			this._token = this._Hunt.Token;
+		}
+
+		// Token: 0x06000008 RID: 8 RVA: 0x000020A8 File Offset: 0x000002A8
+		private void FormHome_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			this.saveConfig();
+			if (this._deleteLog == "True")
+			{
+				this._Dofus_Hunt.DeleteOldLogFiles(3);
+			}
+			Application.Exit();
+		}
+
+		// Token: 0x06000009 RID: 9 RVA: 0x00002854 File Offset: 0x00000A54
+		private void getConfig()
+		{
+			string configFilePath = FormHome._configPath + "/appSettings.xml";
+			this._Dofus_Hunt.EnsureConfigParameters(configFilePath);
+			this._opacity = this._Dofus_Hunt.GetConfigValue(configFilePath, "Opacity");
 			if (string.IsNullOrEmpty(this._opacity))
 			{
 				this._opacity = "100";
 			}
-			this._alwaysonscreen = this._dofusHunt.GetConfigValue(configFilePath, "AlwaysOnScreen");
-			this._advancedLog = this._dofusHunt.GetConfigValue(configFilePath, "LogAdvanced");
-			this._dark = this._dofusHunt.GetConfigValue(configFilePath, "Dark");
-			this._seuil = int.Parse(this._dofusHunt.GetConfigValue(configFilePath, "Detection"));
+			this._alwaysonscreen = this._Dofus_Hunt.GetConfigValue(configFilePath, "AlwaysOnScreen");
+			this._dark = this._Dofus_Hunt.GetConfigValue(configFilePath, "Dark");
+			this._advancedLog = this._Dofus_Hunt.GetConfigValue(configFilePath, "AdvancedLog");
+			this._deleteTempFiles = this._Dofus_Hunt.GetConfigValue(configFilePath, "DeleteTempFiles");
+			this._deleteLog = this._Dofus_Hunt.GetConfigValue(configFilePath, "DeleteLogs");
+			this._notify = this._Dofus_Hunt.GetConfigValue(configFilePath, "Notify");
+			this._updateDHU = this._Dofus_Hunt.GetConfigValue(configFilePath, "UpdateDHU");
+			this._googleVision = this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAuto_GoogleVision");
+			this._modeOffline = this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAuto_Offline");
+			this._notify_App_Connect = this._Dofus_Hunt.GetConfigValue(configFilePath, "Notify_App_Connect");
+			this._notify_App_GetData = this._Dofus_Hunt.GetConfigValue(configFilePath, "Notify_App_GetData");
+			this._notify_App_Restart = this._Dofus_Hunt.GetConfigValue(configFilePath, "Notify_App_Restart");
+			this._notify_Hunt_NoData = this._Dofus_Hunt.GetConfigValue(configFilePath, "Notify_Hunt_NoData");
+			this._notify_Indice_OK = this._Dofus_Hunt.GetConfigValue(configFilePath, "Notify_Indice_OK");
+			this._notify_Indice_KO = this._Dofus_Hunt.GetConfigValue(configFilePath, "Notify_Indice_KO");
+			this._notify_Indice_Phorreur = this._Dofus_Hunt.GetConfigValue(configFilePath, "Notify_Indice_Phorreur");
+			this._notify_Indice_Correct = this._Dofus_Hunt.GetConfigValue(configFilePath, "Notify_Indice_Correct");
+			this._notify_App_Update = this._Dofus_Hunt.GetConfigValue(configFilePath, "Notify_App_Update");
+			this._HuntAutoPosition_X = int.Parse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoPosition_X"));
+			this._HuntAutoPosition_Y = int.Parse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoPosition_Y"));
+			this._HuntAutoPosition_Width = int.Parse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoPosition_width"));
+			this._HuntAutoPosition_Height = int.Parse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoPosition_height"));
+			this._HuntAutoPosition_largeurTexte = int.Parse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoPosition_largeurTexte"));
+			this._HuntAutoPosition_hauteurTexte = int.Parse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoPosition_hauteurTexte"));
+			double.TryParse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoPosition_threshold"), out this._HuntAutoPosition_Threshold);
+			double.TryParse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoIndice_OCRStart"), out this._HuntAutoIndice_Threshold_Start);
+			double.TryParse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoIndice_OCRCoche"), out this._HuntAutoIndice_Threshold_Coche);
+			double.TryParse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoIndice_OCRArrow"), out this._HuntAutoIndice_Threshold_Arrow);
+			this._HuntAutoIndice_largeurTexte_Start = int.Parse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoIndice_LStart"));
+			this._HuntAutoIndice_hauteurTexte_Start = int.Parse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoIndice_HStart"));
+			this._HuntAutoIndice_largeurTexte_Coche = int.Parse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoIndice_LIndice"));
+			this._HuntAutoIndice_hauteurTexte_Coche = int.Parse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoIndice_HIndice"));
+			this._HuntAutoIndice_similarityThreshold = int.Parse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoIndice_similarityThreshold"));
 		}
 
-		// Token: 0x06000048 RID: 72 RVA: 0x00005C50 File Offset: 0x00003E50
-		private void updateConfig()
+		// Token: 0x0600000A RID: 10 RVA: 0x00002BF4 File Offset: 0x00000DF4
+		private void initConfig()
 		{
+			if (base.InvokeRequired)
+			{
+				base.Invoke(new Action(this.initConfig));
+				return;
+			}
+			double opacityDouble;
+			double.TryParse(this._opacity, out opacityDouble);
 			int opacityInt;
 			int.TryParse(this._opacity, out opacityInt);
-			if (opacityInt != this.trackBarControl_opacity.Value)
+			if (opacityDouble >= 0.0 && opacityDouble <= 100.0)
 			{
-				this._dofusHunt.UpdateParameterValue(this._configPath + "/appSettings.xml", "Opacity", this.trackBarControl_opacity.Value.ToString());
-			}
-			bool alwaysOnScreenValue;
-			bool.TryParse(this._alwaysonscreen, out alwaysOnScreenValue);
-			if (this.checkEdit_alwaysonscreen.Checked != alwaysOnScreenValue)
-			{
-				this._dofusHunt.UpdateParameterValue(this._configPath + "/appSettings.xml", "AlwaysOnScreen", this.checkEdit_alwaysonscreen.Checked.ToString());
-			}
-			bool logAdvencedValue;
-			bool.TryParse(this._advancedLog, out logAdvencedValue);
-			if (this.checkEdit_AdvancedLogs.Checked != logAdvencedValue)
-			{
-				this._dofusHunt.UpdateParameterValue(this._configPath + "/appSettings.xml", "LogAdvanced", this.checkEdit_AdvancedLogs.Checked.ToString());
-			}
-			if (this._dark == "False")
-			{
-				this._dofusHunt.UpdateParameterValue(this._configPath + "/appSettings.xml", "Dark", "False");
+				base.Opacity = opacityDouble / 100.0;
+				this.trackBarControl_Hunt_Config_Logiciel_Opacity.Value = opacityInt;
 			}
 			else
 			{
-				this._dofusHunt.UpdateParameterValue(this._configPath + "/appSettings.xml", "Dark", "True");
+				base.Opacity = 100.0;
+				this.trackBarControl_Hunt_Config_Logiciel_Opacity.Value = 100;
 			}
-			this._dofusHunt.UpdateParameterValue(this._configPath + "/appSettings.xml", "Detection", this.textEdit_ConfigSeuil.Text);
+			if (this._alwaysonscreen == "True")
+			{
+				base.TopMost = true;
+				this.checkEdit_Hunt_Config_Logiciel_Ecran.Checked = true;
+			}
+			else
+			{
+				base.TopMost = false;
+			}
+			if (this._advancedLog == "True")
+			{
+				this.checkEdit_Hunt_Config_Logiciel_LogAvance.Checked = true;
+			}
+			if (this._dark == "True")
+			{
+				this.checkEdit_Hunt_Config_Logiciel_Theme.Checked = true;
+			}
+			if (this._deleteTempFiles == "True")
+			{
+				this.checkEdit_Hunt_Config_Logiciel_DeleteFile.Checked = true;
+			}
+			if (this._deleteLog == "True")
+			{
+				this.checkEdit_Hunt_Config_Logiciel_DeleteLog.Checked = true;
+			}
+			if (this._notify == "True")
+			{
+				this.checkEdit_Hunt_Config_Logiciel_Notifications.Checked = true;
+			}
+			if (this._updateDHU == "True")
+			{
+				this.checkEdit_Hunt_Config_Logiciel_UpdateDHU.Checked = true;
+			}
+			if (this._googleVision == "True")
+			{
+				this.checkEdit_Hunt_Config_UseGoogleVision.Checked = true;
+			}
+			if (this._modeOffline == "True")
+			{
+				this.checkEdit_Hunt_Config_Offline.Checked = true;
+			}
+			this.textEdit_Indices_CorrectIndice.Text = this._notify_Indice_Correct;
+			this.textEdit_Indices_IndiceKO.Text = this._notify_Indice_KO;
+			this.textEdit_Indices_IndiceOK.Text = this._notify_Indice_OK;
+			this.textEdit_Indices_Phorreur.Text = this._notify_Indice_Phorreur;
+			this.textEdit_Notify_Hunt_NoData.Text = this._notify_Hunt_NoData;
+			this.textEdit_Notify_App_PbCo.Text = this._notify_App_Connect;
+			this.textEdit_Notify_App_PbData.Text = this._notify_App_GetData;
+			this.textEdit_Notify_App_Restart.Text = this._notify_App_Restart;
+			this.textEdit_Notify_App_Update.Text = this._notify_App_Update;
+			this.textEdit_Hunt_Config_Hunt_Position_X.Text = this._HuntAutoPosition_X.ToString();
+			this.textEdit_Hunt_Config_Hunt_Position_Y.Text = this._HuntAutoPosition_Y.ToString();
+			this.textEdit_Hunt_Config_Hunt_Position_width.Text = this._HuntAutoPosition_Width.ToString();
+			this.textEdit_Hunt_Config_Hunt_Position_height.Text = this._HuntAutoPosition_Height.ToString();
+			this.textEdit_Hunt_Config_Hunt_Position_threshold.Text = this._HuntAutoPosition_Threshold.ToString();
+			this.textEdit_Hunt_Config_Hunt_Position_largeurTexte.Text = this._HuntAutoPosition_largeurTexte.ToString();
+			this.textEdit_Hunt_Config_Hunt_Position_hauteurTexte.Text = this._HuntAutoPosition_hauteurTexte.ToString();
+			this.textEdit_Hunt_Config_Hunt_Position_threshold.Text = this._HuntAutoPosition_Threshold.ToString();
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRStart.Text = this._HuntAutoIndice_Threshold_Start.ToString();
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRCoche.Text = this._HuntAutoIndice_Threshold_Coche.ToString();
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRFleche.Text = this._HuntAutoIndice_Threshold_Arrow.ToString();
+			this.textEdit_Hunt_Config_Hunt_Indice_LStart.Text = this._HuntAutoIndice_largeurTexte_Start.ToString();
+			this.textEdit_Hunt_Config_Hunt_Indice_HStart.Text = this._HuntAutoIndice_hauteurTexte_Start.ToString();
+			this.textEdit_Hunt_Config_Hunt_Indice_LIndice.Text = this._HuntAutoIndice_largeurTexte_Coche.ToString();
+			this.textEdit_Hunt_Config_Hunt_Indice_HIndice.Text = this._HuntAutoIndice_hauteurTexte_Coche.ToString();
+			this.textEdit_Hunt_Config_Hunt_Indice_Detection.Text = this._HuntAutoIndice_similarityThreshold.ToString();
 		}
 
-		// Token: 0x06000049 RID: 73 RVA: 0x00005DD8 File Offset: 0x00003FD8
+		// Token: 0x0600000B RID: 11 RVA: 0x00002FA4 File Offset: 0x000011A4
+		private void saveConfig()
+		{
+			int opacityInt;
+			int.TryParse(this._opacity, out opacityInt);
+			if (opacityInt != this.trackBarControl_Hunt_Config_Logiciel_Opacity.Value)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Opacity", this.trackBarControl_Hunt_Config_Logiciel_Opacity.Value.ToString());
+			}
+			bool alwaysOnScreenValue;
+			bool.TryParse(this._alwaysonscreen, out alwaysOnScreenValue);
+			if (this.checkEdit_Hunt_Config_Logiciel_Ecran.Checked != alwaysOnScreenValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "AlwaysOnScreen", this.checkEdit_Hunt_Config_Logiciel_Ecran.Checked.ToString());
+			}
+			bool logAdvencedValue;
+			bool.TryParse(this._advancedLog, out logAdvencedValue);
+			if (this.checkEdit_Hunt_Config_Logiciel_LogAvance.Checked != logAdvencedValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "AdvancedLog", this.checkEdit_Hunt_Config_Logiciel_LogAvance.Checked.ToString());
+			}
+			bool darkValue;
+			bool.TryParse(this._dark, out darkValue);
+			if (this.checkEdit_Hunt_Config_Logiciel_Theme.Checked != darkValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Dark", this.checkEdit_Hunt_Config_Logiciel_Theme.Checked.ToString());
+			}
+			bool deleteTempFilesValue;
+			bool.TryParse(this._deleteTempFiles, out deleteTempFilesValue);
+			if (this.checkEdit_Hunt_Config_Logiciel_DeleteFile.Checked != deleteTempFilesValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "DeleteTempFiles", this.checkEdit_Hunt_Config_Logiciel_DeleteFile.Checked.ToString());
+			}
+			bool deleteLogValue;
+			bool.TryParse(this._deleteLog, out deleteLogValue);
+			if (this.checkEdit_Hunt_Config_Logiciel_DeleteLog.Checked != deleteLogValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "DeleteLogs", this.checkEdit_Hunt_Config_Logiciel_DeleteLog.Checked.ToString());
+			}
+			bool notifyValue;
+			bool.TryParse(this._notify, out notifyValue);
+			if (this.checkEdit_Hunt_Config_Logiciel_Notifications.Checked != notifyValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify", this.checkEdit_Hunt_Config_Logiciel_Notifications.Checked.ToString());
+			}
+			bool updateDHUValue;
+			bool.TryParse(this._updateDHU, out updateDHUValue);
+			if (this.checkEdit_Hunt_Config_Logiciel_UpdateDHU.Checked != updateDHUValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "UpdateDHU", this.checkEdit_Hunt_Config_Logiciel_UpdateDHU.Checked.ToString());
+			}
+			bool googleVisionValue;
+			bool.TryParse(this._googleVision, out googleVisionValue);
+			if (this.checkEdit_Hunt_Config_UseGoogleVision.Checked != googleVisionValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAuto_GoogleVision", this.checkEdit_Hunt_Config_UseGoogleVision.Checked.ToString());
+			}
+			bool modeOfflineValue;
+			bool.TryParse(this._modeOffline, out modeOfflineValue);
+			if (this.checkEdit_Hunt_Config_Offline.Checked != modeOfflineValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAuto_Offline", this.checkEdit_Hunt_Config_Offline.Checked.ToString());
+			}
+		}
+
+		// Token: 0x0600000C RID: 12 RVA: 0x000032D0 File Offset: 0x000014D0
+		private void accordionControlElement_SubMenu_Config_Logiciel_Click(object sender, EventArgs e)
+		{
+			this.panelControl_Hunt_Indice.Visible = false;
+			this.panelControl_Hunt_Init.Visible = false;
+			this.panelControl_Hunt_Notifications.Visible = false;
+			this.panelControl_Hunt_Config_Logiciel.Visible = true;
+			this.panelControl_Hunt_Debug.Visible = false;
+			this.panelControl_Hunt_ConfigHuntAuto.Visible = false;
+			this.panelControl_Hunt_Hunt.Visible = false;
+			this.panelControl_Hunt_HuntAuto.Visible = false;
+		}
+
+		// Token: 0x0600000D RID: 13 RVA: 0x00003340 File Offset: 0x00001540
+		private void accordionControlElement_SubMenu_Config_Indice_Click(object sender, EventArgs e)
+		{
+			this.panelControl_Hunt_Config_Logiciel.Visible = false;
+			this.panelControl_Hunt_Indice.Visible = true;
+			this.panelControl_Hunt_Notifications.Visible = false;
+			this.panelControl_Hunt_Init.Visible = false;
+			this.panelControl_Hunt_Debug.Visible = false;
+			this.panelControl_Hunt_ConfigHuntAuto.Visible = false;
+			this.panelControl_Hunt_Hunt.Visible = false;
+			this.panelControl_Hunt_HuntAuto.Visible = false;
+			this.dataGridView_Hunt_Indice_List.Rows.Clear();
+			try
+			{
+				foreach (Dofus_Hunt.Correction correction in this._Dofus_Hunt.LoadCorrections())
+				{
+					this.dataGridView_Hunt_Indice_List.Rows.Add(new object[] { correction.Erroneous, correction.Correct });
+				}
+			}
+			catch (Exception ex)
+			{
+				this._Dofus_Hunt.AddLog("Erreur lors du chargement de la correction des indices :\n" + ex.Message);
+				MessageBox.Show("Erreur : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+			}
+		}
+
+		// Token: 0x0600000E RID: 14 RVA: 0x00003478 File Offset: 0x00001678
+		private void accordionControlElement_SubMenu_Config_Notif_Click(object sender, EventArgs e)
+		{
+			this.panelControl_Hunt_Config_Logiciel.Visible = false;
+			this.panelControl_Hunt_Indice.Visible = false;
+			this.panelControl_Hunt_Notifications.Visible = true;
+			this.panelControl_Hunt_Init.Visible = false;
+			this.panelControl_Hunt_Debug.Visible = false;
+			this.panelControl_Hunt_ConfigHuntAuto.Visible = false;
+			this.panelControl_Hunt_Hunt.Visible = false;
+			this.panelControl_Hunt_HuntAuto.Visible = false;
+		}
+
+		// Token: 0x0600000F RID: 15 RVA: 0x000034E8 File Offset: 0x000016E8
+		private void accordionControlElement_SubMenu_Config_Debug_Click(object sender, EventArgs e)
+		{
+			this.panelControl_Hunt_Config_Logiciel.Visible = false;
+			this.panelControl_Hunt_Indice.Visible = false;
+			this.panelControl_Hunt_Notifications.Visible = false;
+			this.panelControl_Hunt_Init.Visible = false;
+			this.panelControl_Hunt_Debug.Visible = true;
+			this.panelControl_Hunt_ConfigHuntAuto.Visible = false;
+			this.panelControl_Hunt_Hunt.Visible = false;
+			this.panelControl_Hunt_HuntAuto.Visible = false;
+		}
+
+		// Token: 0x06000010 RID: 16 RVA: 0x00003558 File Offset: 0x00001758
+		private void accordionControlElement_SubMenu_Config_HuntAuto_Click(object sender, EventArgs e)
+		{
+			this.panelControl_Hunt_Config_Logiciel.Visible = false;
+			this.panelControl_Hunt_Indice.Visible = false;
+			this.panelControl_Hunt_Notifications.Visible = false;
+			this.panelControl_Hunt_Init.Visible = false;
+			this.panelControl_Hunt_Debug.Visible = false;
+			this.panelControl_Hunt_ConfigHuntAuto.Visible = true;
+			this.panelControl_Hunt_Hunt.Visible = false;
+			this.panelControl_Hunt_HuntAuto.Visible = false;
+		}
+
+		// Token: 0x06000011 RID: 17 RVA: 0x000035C8 File Offset: 0x000017C8
+		private void accordionControlElement_SubMenu_Hunt_Click(object sender, EventArgs e)
+		{
+			this.panelControl_Hunt_Config_Logiciel.Visible = false;
+			this.panelControl_Hunt_Indice.Visible = false;
+			this.panelControl_Hunt_Notifications.Visible = false;
+			this.panelControl_Hunt_Init.Visible = false;
+			this.panelControl_Hunt_Debug.Visible = false;
+			this.panelControl_Hunt_ConfigHuntAuto.Visible = false;
+			this.panelControl_Hunt_Hunt.Visible = true;
+			this.panelControl_Hunt_HuntAuto.Visible = false;
+		}
+
+		// Token: 0x06000012 RID: 18 RVA: 0x00003638 File Offset: 0x00001838
+		private void accordionControlElement_SubMenu_HuntAuto_Click(object sender, EventArgs e)
+		{
+			this.panelControl_Hunt_Config_Logiciel.Visible = false;
+			this.panelControl_Hunt_Indice.Visible = false;
+			this.panelControl_Hunt_Notifications.Visible = false;
+			this.panelControl_Hunt_Init.Visible = false;
+			this.panelControl_Hunt_Debug.Visible = false;
+			this.panelControl_Hunt_ConfigHuntAuto.Visible = false;
+			this.panelControl_Hunt_Hunt.Visible = false;
+			this.panelControl_Hunt_HuntAuto.Visible = true;
+		}
+
+		// Token: 0x06000013 RID: 19 RVA: 0x000036A8 File Offset: 0x000018A8
+		private void trackBarControl_Hunt_Config_Logiciel_Opacity_Click(object sender, EventArgs e)
+		{
+			int trackBarValue = this.trackBarControl_Hunt_Config_Logiciel_Opacity.Value;
+			base.Opacity = (double)trackBarValue / 100.0;
+		}
+
+		// Token: 0x06000014 RID: 20 RVA: 0x000036D4 File Offset: 0x000018D4
+		private void simpleButton_Hunt_Indice_Add_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				string detectedText = this.textEdit_Hunt_Indice_Incorrect.Text.Trim();
+				string correctedText = this.textEdit_Hunt_Indice_Correct.Text.Trim();
+				if (string.IsNullOrEmpty(detectedText) || string.IsNullOrEmpty(correctedText))
+				{
+					MessageBox.Show("Veuillez remplir les deux champs avant de sauvegarder.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+				}
+				else if (!File.Exists(FormHome._configPath + "/corrections.xml"))
+				{
+					new XDocument(new object[]
+					{
+						new XElement("Corrections", new XElement("Correction", new object[]
+						{
+							new XElement("Erroneous", detectedText),
+							new XElement("Correct", correctedText)
+						}))
+					}).Save(FormHome._configPath + "/corrections.xml");
+					if (this._notify == "True")
+					{
+						this.toastNotificationsManager.ShowNotification("Indice_Correct");
+					}
+				}
+				else
+				{
+					XDocument doc = XDocument.Load(FormHome._configPath + "/corrections.xml");
+					XElement existingCorrection = doc.Descendants("Correction").FirstOrDefault(delegate(XElement x)
+					{
+						XElement xelement = x.Element("Erroneous");
+						if (((xelement != null) ? xelement.Value : null) == detectedText)
+						{
+							XElement xelement2 = x.Element("Correct");
+							return ((xelement2 != null) ? xelement2.Value : null) == correctedText;
+						}
+						return false;
+					});
+					if (existingCorrection != null)
+					{
+						existingCorrection.Element("Correct").Value = correctedText;
+						if (this._notify == "True")
+						{
+							this.toastNotificationsManager.ShowNotification("Indice_Correct");
+						}
+					}
+					else
+					{
+						doc.Element("Corrections").Add(new XElement("Correction", new object[]
+						{
+							new XElement("Erroneous", detectedText),
+							new XElement("Correct", correctedText)
+						}));
+						if (this._notify == "True")
+						{
+							this.toastNotificationsManager.ShowNotification("Indice_Correct");
+						}
+					}
+					doc.Save(FormHome._configPath + "/corrections.xml");
+					this.textEdit_Hunt_Indice_Incorrect.Text = (this.textEdit_Hunt_Indice_Correct.Text = "");
+				}
+			}
+			catch (Exception ex)
+			{
+				this._Dofus_Hunt.AddLog("Erreur lors de l'ajout d'une correction :\n" + ex.Message);
+				MessageBox.Show("Erreur : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+			}
+		}
+
+		// Token: 0x06000015 RID: 21 RVA: 0x00003988 File Offset: 0x00001B88
+		private async void simpleButton_Hunt_Debug_Token_Click(object sender, EventArgs e)
+		{
+			await this._Hunt.GetToken();
+			this._token = this._Hunt.Token;
+			this.textEdit_Hunt_Debug_Token.Text = this._token;
+		}
+
+		// Token: 0x06000016 RID: 22 RVA: 0x000020D3 File Offset: 0x000002D3
+		private void simpleButton_Hunt_Debug_Capture_Click(object sender, EventArgs e)
+		{
+			this._Hunt.CaptureGame(FormHome._logPathImg + "/screenshot.png");
+		}
+
+		// Token: 0x06000017 RID: 23 RVA: 0x000039C0 File Offset: 0x00001BC0
+		private void simpleButton_Hunt_Debug_GetPositionIndice_Click(object sender, EventArgs e)
+		{
+			string indice = this._Hunt.GetIndice(this._token, this.textEdit_Hunt_Debug_X.Text, this.textEdit_Hunt_Debug_Y.Text, this.textEdit_Hunt_Debug_Dir.Text);
+			int currentX = int.Parse(this.textEdit_Hunt_Debug_X.Text);
+			int currentY = int.Parse(this.textEdit_Hunt_Debug_Y.Text);
+			ValueTuple<int, int, string> position = this._Hunt.GetIndicePosition(indice, this.textEdit_Hunt_Debug_Indice.Text, currentX, currentY);
+			DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(109, 6);
+			defaultInterpolatedStringHandler.AppendLiteral("L'indice : ");
+			defaultInterpolatedStringHandler.AppendFormatted(this.textEdit_Hunt_Debug_Indice.Text);
+			defaultInterpolatedStringHandler.AppendLiteral(" qui a comme position de départ [");
+			defaultInterpolatedStringHandler.AppendFormatted(this.textEdit_Hunt_Debug_X.Text);
+			defaultInterpolatedStringHandler.AppendLiteral(",");
+			defaultInterpolatedStringHandler.AppendFormatted(this.textEdit_Hunt_Debug_Y.Text);
+			defaultInterpolatedStringHandler.AppendLiteral("] vers la direction ");
+			defaultInterpolatedStringHandler.AppendFormatted(this.textEdit_Hunt_Debug_Dir.Text);
+			defaultInterpolatedStringHandler.AppendLiteral(" a été trouvé !\nPosition trouvée :\nX = ");
+			defaultInterpolatedStringHandler.AppendFormatted<int>(position.Item1);
+			defaultInterpolatedStringHandler.AppendLiteral("\nY = ");
+			defaultInterpolatedStringHandler.AppendFormatted<int>(position.Item2);
+			MessageBox.Show(defaultInterpolatedStringHandler.ToStringAndClear(), "Résultat de la recherche", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+		}
+
+		// Token: 0x06000018 RID: 24 RVA: 0x00003B08 File Offset: 0x00001D08
+		private async void simpleButton_Hunt_Debug_GetPosition_Click(object sender, EventArgs e)
+		{
+			await Task.Run(delegate
+			{
+				this._Hunt.DetectCurrentMap(this._HuntAutoPosition_X, this._HuntAutoPosition_Y, this._HuntAutoPosition_Width, this._HuntAutoPosition_Height, this._HuntAutoPosition_Threshold, this._HuntAutoPosition_largeurTexte, this._HuntAutoPosition_hauteurTexte);
+			});
+			string croppedMapPath = FormHome._logPathImg + "/cropped_map.png";
+			if (File.Exists(croppedMapPath))
+			{
+				string map = await Task.Run<string>(() => this._Hunt.PerformOCRTesseractMap(croppedMapPath));
+				int X;
+				int Y;
+				if (!this._Hunt.ExtractCoordinatesSimple(map, out X, out Y))
+				{
+					string mapGoogle = await Task.Run<string>(() => this._Hunt.PerformOCRMapWithGoogleVision(croppedMapPath, this._googleAPI));
+					this._Hunt.ExtractCoordinatesSimple(mapGoogle, out X, out Y);
+					Dofus_Hunt dofus_Hunt = this._Dofus_Hunt;
+					DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(45, 2);
+					defaultInterpolatedStringHandler.AppendLiteral("Coordonnées extraites avec Google Vision [");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(X);
+					defaultInterpolatedStringHandler.AppendLiteral(", ");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(Y);
+					defaultInterpolatedStringHandler.AppendLiteral("]");
+					dofus_Hunt.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
+					defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(45, 2);
+					defaultInterpolatedStringHandler.AppendLiteral("Coordonnées extraites avec Google Vision [");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(X);
+					defaultInterpolatedStringHandler.AppendLiteral(", ");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(Y);
+					defaultInterpolatedStringHandler.AppendLiteral("]");
+					MessageBox.Show(defaultInterpolatedStringHandler.ToStringAndClear());
+				}
+				else
+				{
+					Dofus_Hunt dofus_Hunt2 = this._Dofus_Hunt;
+					DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(41, 2);
+					defaultInterpolatedStringHandler.AppendLiteral("Coordonnées extraites avec Tesseract [");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(X);
+					defaultInterpolatedStringHandler.AppendLiteral(", ");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(Y);
+					defaultInterpolatedStringHandler.AppendLiteral("]");
+					dofus_Hunt2.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
+					defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(41, 2);
+					defaultInterpolatedStringHandler.AppendLiteral("Coordonnées extraites avec Tesseract [");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(X);
+					defaultInterpolatedStringHandler.AppendLiteral(", ");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(Y);
+					defaultInterpolatedStringHandler.AppendLiteral("]");
+					MessageBox.Show(defaultInterpolatedStringHandler.ToStringAndClear());
+				}
+			}
+			else
+			{
+				MessageBox.Show("L'image recadrée n'a pas été trouvée. Veuillez réessayer.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+			}
+		}
+
+		// Token: 0x06000019 RID: 25 RVA: 0x00003B40 File Offset: 0x00001D40
+		private void textEdit_Hunt_Config_Debug_EditValueChanged(object sender, EventArgs e)
+		{
+			string dateFormat = DateTime.Now.ToString("yyyyMMdd");
+			if (this.textEdit_Hunt_Config_Debug.Text == dateFormat)
+			{
+				this.checkEdit_Hunt_Config_Debug.Enabled = true;
+				return;
+			}
+			this.checkEdit_Hunt_Config_Debug.Enabled = false;
+		}
+
+		// Token: 0x0600001A RID: 26 RVA: 0x000020EF File Offset: 0x000002EF
+		private void checkEdit_Hunt_Config_Debug_CheckedChanged(object sender, EventArgs e)
+		{
+			if (this.checkEdit_Hunt_Config_Debug.Checked)
+			{
+				this.accordionControlElement_SubMenu_Config_Debug.Visible = true;
+			}
+			if (!this.checkEdit_Hunt_Config_Debug.Checked)
+			{
+				this.accordionControlElement_SubMenu_Config_Debug.Visible = false;
+			}
+		}
+
+		// Token: 0x0600001B RID: 27 RVA: 0x00003B8C File Offset: 0x00001D8C
+		private void simpleButton_Hunt_Debug_GetIndice_Click(object sender, EventArgs e)
+		{
+			string indice = this._Hunt.getIndiceTexte(this._HuntAutoIndice_Threshold_Start, this._HuntAutoIndice_largeurTexte_Start, this._HuntAutoIndice_hauteurTexte_Start, this._HuntAutoIndice_Threshold_Coche, this._HuntAutoIndice_largeurTexte_Coche, this._HuntAutoIndice_hauteurTexte_Coche);
+			MessageBox.Show("L'indice trouvé est : " + indice, "Résultat de la recherche", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+		}
+
+		// Token: 0x0600001C RID: 28 RVA: 0x00003BE4 File Offset: 0x00001DE4
+		private void simpleButton_Hunt_Debug_GetArrow_Click(object sender, EventArgs e)
+		{
+			string arrow = this._Hunt.DetectArrowDirectionAfterOCR(this._HuntAutoIndice_Threshold_Arrow);
+			string img_arrow = this._Hunt.GetArrowIcon(arrow);
+			MessageBox.Show("La direction de la flèche est : " + img_arrow, "Résultat de la recherche", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+		}
+
+		// Token: 0x0600001D RID: 29 RVA: 0x00003C2C File Offset: 0x00001E2C
+		private void checkEdit_Hunt_Config_Logiciel_Ecran_CheckedChanged(object sender, EventArgs e)
+		{
+			bool alwaysOnScreenValue;
+			bool.TryParse(this._alwaysonscreen, out alwaysOnScreenValue);
+			if (this.checkEdit_Hunt_Config_Logiciel_Ecran.Checked != alwaysOnScreenValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "AlwaysOnScreen", this.checkEdit_Hunt_Config_Logiciel_Ecran.Checked.ToString());
+				this._alwaysonscreen = this.checkEdit_Hunt_Config_Logiciel_Ecran.Checked.ToString();
+				this.initConfig();
+			}
+		}
+
+		// Token: 0x0600001E RID: 30 RVA: 0x00003CA8 File Offset: 0x00001EA8
+		private void checkEdit_Hunt_Config_Logiciel_LogAvance_CheckedChanged(object sender, EventArgs e)
+		{
+			bool logAdvencedValue;
+			bool.TryParse(this._advancedLog, out logAdvencedValue);
+			if (this.checkEdit_Hunt_Config_Logiciel_LogAvance.Checked != logAdvencedValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "AdvancedLog", this.checkEdit_Hunt_Config_Logiciel_LogAvance.Checked.ToString());
+				this._advancedLog = this.checkEdit_Hunt_Config_Logiciel_LogAvance.Checked.ToString();
+				this.initConfig();
+				this._Hunt = new Hunt(this._dofus, this._advancedLog, this._HuntAutoIndice_similarityThreshold);
+			}
+		}
+
+		// Token: 0x0600001F RID: 31 RVA: 0x00003D40 File Offset: 0x00001F40
+		private void checkEdit_Hunt_Config_Logiciel_Theme_CheckedChanged(object sender, EventArgs e)
+		{
+			bool darkValue;
+			bool.TryParse(this._dark, out darkValue);
+			if (this.checkEdit_Hunt_Config_Logiciel_Theme.Checked != darkValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Dark", this.checkEdit_Hunt_Config_Logiciel_Theme.Checked.ToString());
+				this._dark = this.checkEdit_Hunt_Config_Logiciel_Theme.Checked.ToString();
+				this.initConfig();
+			}
+			if (!this.checkEdit_Hunt_Config_Logiciel_Theme.Checked)
+			{
+				UserLookAndFeel.Default.SkinName = "Metropolis";
+				return;
+			}
+			UserLookAndFeel.Default.SkinName = "Metropolis Dark";
+		}
+
+		// Token: 0x06000020 RID: 32 RVA: 0x00003DE8 File Offset: 0x00001FE8
+		private void checkEdit_Hunt_Config_Logiciel_DeleteFile_CheckedChanged(object sender, EventArgs e)
+		{
+			bool deleteTempFilesValue;
+			bool.TryParse(this._deleteTempFiles, out deleteTempFilesValue);
+			if (this.checkEdit_Hunt_Config_Logiciel_DeleteFile.Checked != deleteTempFilesValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "DeleteTempFiles", this.checkEdit_Hunt_Config_Logiciel_DeleteFile.Checked.ToString());
+				this._deleteTempFiles = this.checkEdit_Hunt_Config_Logiciel_DeleteFile.Checked.ToString();
+				this.initConfig();
+			}
+		}
+
+		// Token: 0x06000021 RID: 33 RVA: 0x00003E64 File Offset: 0x00002064
+		private void checkEdit_Hunt_Config_Logiciel_DeleteLog_CheckedChanged(object sender, EventArgs e)
+		{
+			bool deleteLogValue;
+			bool.TryParse(this._deleteLog, out deleteLogValue);
+			if (this.checkEdit_Hunt_Config_Logiciel_DeleteLog.Checked != deleteLogValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "DeleteLogs", this.checkEdit_Hunt_Config_Logiciel_DeleteLog.Checked.ToString());
+				this._deleteLog = this.checkEdit_Hunt_Config_Logiciel_DeleteLog.Checked.ToString();
+				this.initConfig();
+			}
+		}
+
+		// Token: 0x06000022 RID: 34 RVA: 0x00003EE0 File Offset: 0x000020E0
+		private void checkEdit_Hunt_Config_Logiciel_Notifications_CheckedChanged(object sender, EventArgs e)
+		{
+			bool notifyValue;
+			bool.TryParse(this._notify, out notifyValue);
+			if (this.checkEdit_Hunt_Config_Logiciel_Notifications.Checked != notifyValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify", this.checkEdit_Hunt_Config_Logiciel_Notifications.Checked.ToString());
+				this._notify = this.checkEdit_Hunt_Config_Logiciel_Notifications.Checked.ToString();
+				this.initConfig();
+			}
+		}
+
+		// Token: 0x06000023 RID: 35 RVA: 0x00003F5C File Offset: 0x0000215C
+		private void checkEdit_Hunt_Config_Logiciel_UpdateDHU_CheckedChanged(object sender, EventArgs e)
+		{
+			bool updateDHUValue;
+			bool.TryParse(this._updateDHU, out updateDHUValue);
+			if (this.checkEdit_Hunt_Config_Logiciel_UpdateDHU.Checked != updateDHUValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "UpdateDHU", this.checkEdit_Hunt_Config_Logiciel_UpdateDHU.Checked.ToString());
+				this._updateDHU = this.checkEdit_Hunt_Config_Logiciel_UpdateDHU.Checked.ToString();
+				this.initConfig();
+			}
+		}
+
+		// Token: 0x06000024 RID: 36 RVA: 0x00003FD8 File Offset: 0x000021D8
+		private void checkEdit_Hunt_Config_UseGoogleVision_CheckedChanged(object sender, EventArgs e)
+		{
+			bool googleVisionValue;
+			bool.TryParse(this._googleVision, out googleVisionValue);
+			if (this.checkEdit_Hunt_Config_UseGoogleVision.Checked != googleVisionValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAuto_GoogleVision", this.checkEdit_Hunt_Config_UseGoogleVision.Checked.ToString());
+				this._googleVision = this.checkEdit_Hunt_Config_UseGoogleVision.Checked.ToString();
+				this.initConfig();
+			}
+		}
+
+		// Token: 0x06000025 RID: 37 RVA: 0x00004054 File Offset: 0x00002254
+		private void checkEdit_Hunt_Config_Offline_CheckedChanged(object sender, EventArgs e)
+		{
+			bool modeOfflineValue;
+			bool.TryParse(this._modeOffline, out modeOfflineValue);
+			if (this.checkEdit_Hunt_Config_Offline.Checked != modeOfflineValue)
+			{
+				this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAuto_Offline", this.checkEdit_Hunt_Config_Offline.Checked.ToString());
+				this._modeOffline = this.checkEdit_Hunt_Config_Offline.Checked.ToString();
+				this.initConfig();
+			}
+		}
+
+		// Token: 0x06000026 RID: 38 RVA: 0x000040D0 File Offset: 0x000022D0
+		private void simpleButton_Notify_Reinit_Click(object sender, EventArgs e)
+		{
+			this.textEdit_Notify_App_Update.Text = "Une mise à jour est disponible !";
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_App_Update", this.textEdit_Notify_App_Update.Text);
+			this.textEdit_Notify_App_PbCo.Text = "Problème de connexion, vérifier votre connexion ou réessayer plus tard.";
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_App_Connect", this.textEdit_Notify_App_PbCo.Text);
+			this.textEdit_Notify_App_PbData.Text = "Erreur lors de la récupération des données.";
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_App_GetData", this.textEdit_Notify_App_PbData.Text);
+			this.textEdit_Notify_App_Restart.Text = "L'application demande une mise à jour.";
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_App_Restart", this.textEdit_Notify_App_Restart.Text);
+			this.textEdit_Notify_Hunt_NoData.Text = "Aucune données trouvée à la position.";
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_Hunt_NoData", this.textEdit_Notify_Hunt_NoData.Text);
+			this.textEdit_Indices_IndiceOK.Text = "Merci de vous rendre à la position pour continuer.";
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_Indice_OK", this.textEdit_Indices_IndiceOK.Text);
+			this.textEdit_Indices_IndiceKO.Text = "Erreur lors de la récupération de la position de l'indice ...\nPeut être vérifier l'indice détecté et faire une correction manuelle.";
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_Indice_KO", this.textEdit_Indices_IndiceKO.Text);
+			this.textEdit_Indices_Phorreur.Text = "L'indice en cours semble être un Phorreur, pourquoi ne pas le faire manuellement ?";
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_Indice_Phorreur", this.textEdit_Indices_Phorreur.Text);
+			this.textEdit_Indices_CorrectIndice.Text = "Correction d'indice ajoutée avec succès.";
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_Indice_Correct", this.textEdit_Indices_CorrectIndice.Text);
+		}
+
+		// Token: 0x06000027 RID: 39 RVA: 0x000042E8 File Offset: 0x000024E8
+		private void simpleButton_Notify_Save_Click(object sender, EventArgs e)
+		{
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_App_Update", this.textEdit_Notify_App_Update.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_App_Connect", this.textEdit_Notify_App_PbCo.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_App_GetData", this.textEdit_Notify_App_PbData.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_App_Restart", this.textEdit_Notify_App_Restart.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_Hunt_NoData", this.textEdit_Notify_Hunt_NoData.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_Indice_OK", this.textEdit_Indices_IndiceOK.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_Indice_KO", this.textEdit_Indices_IndiceKO.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_Indice_Phorreur", this.textEdit_Indices_Phorreur.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_Indice_Correct", this.textEdit_Indices_CorrectIndice.Text);
+		}
+
+		// Token: 0x06000028 RID: 40 RVA: 0x00002123 File Offset: 0x00000323
+		private void groupControl2_Paint(object sender, PaintEventArgs e)
+		{
+		}
+
+		// Token: 0x06000029 RID: 41 RVA: 0x00004470 File Offset: 0x00002670
+		private void pictureBox_Hunt_Config_Hunt_Template_Coche_Click(object sender, EventArgs e)
+		{
+			using (OpenFileDialog openFileDialog = new OpenFileDialog())
+			{
+				openFileDialog.Filter = "Image Files|*.png";
+				openFileDialog.Title = "Sélectionner un template";
+				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				{
+					string fileName = openFileDialog.FileName;
+					string targetDirectory = Path.Combine(Application.StartupPath, "ressources", "img");
+					string targetFilePath = Path.Combine(targetDirectory, "coche_blanche.png");
+					if (!Directory.Exists(targetDirectory))
+					{
+						Directory.CreateDirectory(targetDirectory);
+					}
+					if (this.pictureBox_Hunt_Config_Hunt_Template_Coche.Image != null)
+					{
+						this.pictureBox_Hunt_Config_Hunt_Template_Coche.Image.Dispose();
+						this.pictureBox_Hunt_Config_Hunt_Template_Coche.Image = null;
+					}
+					File.Copy(fileName, targetFilePath, true);
+					this._Dofus_Hunt.AddLog("Modification de l'image Template Coche Blanche effectuée avec succès.");
+					this.pictureBox_Hunt_Config_Hunt_Template_Coche.Image = Image.FromFile(targetFilePath);
+				}
+			}
+		}
+
+		// Token: 0x0600002A RID: 42 RVA: 0x0000454C File Offset: 0x0000274C
+		private void pictureBox_Hunt_Config_Hunt_Template_Start_Click(object sender, EventArgs e)
+		{
+			using (OpenFileDialog openFileDialog = new OpenFileDialog())
+			{
+				openFileDialog.Filter = "Image Files|*.png";
+				openFileDialog.Title = "Sélectionner un template";
+				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				{
+					string fileName = openFileDialog.FileName;
+					string targetDirectory = Path.Combine(Application.StartupPath, "ressources", "img");
+					string targetFilePath = Path.Combine(targetDirectory, "depart_template.png");
+					if (!Directory.Exists(targetDirectory))
+					{
+						Directory.CreateDirectory(targetDirectory);
+					}
+					if (this.pictureBox_Hunt_Config_Hunt_Template_Start.Image != null)
+					{
+						this.pictureBox_Hunt_Config_Hunt_Template_Start.Image.Dispose();
+						this.pictureBox_Hunt_Config_Hunt_Template_Start.Image = null;
+					}
+					File.Copy(fileName, targetFilePath, true);
+					this._Dofus_Hunt.AddLog("Modification de l'image Template Départ effectuée avec succès.");
+					this.pictureBox_Hunt_Config_Hunt_Template_Start.Image = Image.FromFile(targetFilePath);
+				}
+			}
+		}
+
+		// Token: 0x0600002B RID: 43 RVA: 0x00004628 File Offset: 0x00002828
+		private void pictureBox_Hunt_Config_Hunt_Template_Level_Click(object sender, EventArgs e)
+		{
+			using (OpenFileDialog openFileDialog = new OpenFileDialog())
+			{
+				openFileDialog.Filter = "Image Files|*.png";
+				openFileDialog.Title = "Sélectionner un template";
+				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				{
+					string fileName = openFileDialog.FileName;
+					string targetDirectory = Path.Combine(Application.StartupPath, "ressources", "img");
+					string targetFilePath = Path.Combine(targetDirectory, "niveau.png");
+					if (!Directory.Exists(targetDirectory))
+					{
+						Directory.CreateDirectory(targetDirectory);
+					}
+					if (this.pictureBox_Hunt_Config_Hunt_Template_Level.Image != null)
+					{
+						this.pictureBox_Hunt_Config_Hunt_Template_Level.Image.Dispose();
+						this.pictureBox_Hunt_Config_Hunt_Template_Level.Image = null;
+					}
+					File.Copy(fileName, targetFilePath, true);
+					this._Dofus_Hunt.AddLog("Modification de l'image Template Level effectuée avec succès.");
+					this.pictureBox_Hunt_Config_Hunt_Template_Level.Image = Image.FromFile(targetFilePath);
+				}
+			}
+		}
+
+		// Token: 0x0600002C RID: 44 RVA: 0x00004704 File Offset: 0x00002904
+		private void pictureBox_Hunt_Config_Hunt_Template_Arrow_6_Click(object sender, EventArgs e)
+		{
+			using (OpenFileDialog openFileDialog = new OpenFileDialog())
+			{
+				openFileDialog.Filter = "Image Files|*.png";
+				openFileDialog.Title = "Sélectionner un template";
+				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				{
+					string fileName = openFileDialog.FileName;
+					string targetDirectory = Path.Combine(Application.StartupPath, "ressources", "img");
+					string targetFilePath = Path.Combine(targetDirectory, "fleche_haut.png");
+					if (!Directory.Exists(targetDirectory))
+					{
+						Directory.CreateDirectory(targetDirectory);
+					}
+					if (this.pictureBox_Hunt_Config_Hunt_Template_Arrow_6.Image != null)
+					{
+						this.pictureBox_Hunt_Config_Hunt_Template_Arrow_6.Image.Dispose();
+						this.pictureBox_Hunt_Config_Hunt_Template_Arrow_6.Image = null;
+					}
+					File.Copy(fileName, targetFilePath, true);
+					this._Dofus_Hunt.AddLog("Modification de l'image Template Flèche Haut effectuée avec succès.");
+					this.pictureBox_Hunt_Config_Hunt_Template_Arrow_6.Image = Image.FromFile(targetFilePath);
+				}
+			}
+		}
+
+		// Token: 0x0600002D RID: 45 RVA: 0x000047E0 File Offset: 0x000029E0
+		private void pictureBox_Hunt_Config_Hunt_Template_Arrow_0_Click(object sender, EventArgs e)
+		{
+			using (OpenFileDialog openFileDialog = new OpenFileDialog())
+			{
+				openFileDialog.Filter = "Image Files|*.png";
+				openFileDialog.Title = "Sélectionner un template";
+				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				{
+					string fileName = openFileDialog.FileName;
+					string targetDirectory = Path.Combine(Application.StartupPath, "ressources", "img");
+					string targetFilePath = Path.Combine(targetDirectory, "fleche_droite.png");
+					if (!Directory.Exists(targetDirectory))
+					{
+						Directory.CreateDirectory(targetDirectory);
+					}
+					if (this.pictureBox_Hunt_Config_Hunt_Template_Arrow_0.Image != null)
+					{
+						this.pictureBox_Hunt_Config_Hunt_Template_Arrow_0.Image.Dispose();
+						this.pictureBox_Hunt_Config_Hunt_Template_Arrow_0.Image = null;
+					}
+					File.Copy(fileName, targetFilePath, true);
+					this._Dofus_Hunt.AddLog("Modification de l'image Template Flèche Droite effectuée avec succès.");
+					this.pictureBox_Hunt_Config_Hunt_Template_Arrow_0.Image = Image.FromFile(targetFilePath);
+				}
+			}
+		}
+
+		// Token: 0x0600002E RID: 46 RVA: 0x000048BC File Offset: 0x00002ABC
+		private void pictureBox_Hunt_Config_Hunt_Template_Arrow_2_Click(object sender, EventArgs e)
+		{
+			using (OpenFileDialog openFileDialog = new OpenFileDialog())
+			{
+				openFileDialog.Filter = "Image Files|*.png";
+				openFileDialog.Title = "Sélectionner un template";
+				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				{
+					string fileName = openFileDialog.FileName;
+					string targetDirectory = Path.Combine(Application.StartupPath, "ressources", "img");
+					string targetFilePath = Path.Combine(targetDirectory, "fleche_bas.png");
+					if (!Directory.Exists(targetDirectory))
+					{
+						Directory.CreateDirectory(targetDirectory);
+					}
+					if (this.pictureBox_Hunt_Config_Hunt_Template_Arrow_2.Image != null)
+					{
+						this.pictureBox_Hunt_Config_Hunt_Template_Arrow_2.Image.Dispose();
+						this.pictureBox_Hunt_Config_Hunt_Template_Arrow_2.Image = null;
+					}
+					File.Copy(fileName, targetFilePath, true);
+					this._Dofus_Hunt.AddLog("Modification de l'image Template Flèche Bas effectuée avec succès.");
+					this.pictureBox_Hunt_Config_Hunt_Template_Arrow_2.Image = Image.FromFile(targetFilePath);
+				}
+			}
+		}
+
+		// Token: 0x0600002F RID: 47 RVA: 0x00004998 File Offset: 0x00002B98
+		private void pictureBox_Hunt_Config_Hunt_Template_Arrow_4_Click(object sender, EventArgs e)
+		{
+			using (OpenFileDialog openFileDialog = new OpenFileDialog())
+			{
+				openFileDialog.Filter = "Image Files|*.png";
+				openFileDialog.Title = "Sélectionner un template";
+				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				{
+					string fileName = openFileDialog.FileName;
+					string targetDirectory = Path.Combine(Application.StartupPath, "ressources", "img");
+					string targetFilePath = Path.Combine(targetDirectory, "fleche_gauche.png");
+					if (!Directory.Exists(targetDirectory))
+					{
+						Directory.CreateDirectory(targetDirectory);
+					}
+					if (this.pictureBox_Hunt_Config_Hunt_Template_Arrow_4.Image != null)
+					{
+						this.pictureBox_Hunt_Config_Hunt_Template_Arrow_4.Image.Dispose();
+						this.pictureBox_Hunt_Config_Hunt_Template_Arrow_4.Image = null;
+					}
+					File.Copy(fileName, targetFilePath, true);
+					this._Dofus_Hunt.AddLog("Modification de l'image Template Flèche Gauche effectuée avec succès.");
+					this.pictureBox_Hunt_Config_Hunt_Template_Arrow_4.Image = Image.FromFile(targetFilePath);
+				}
+			}
+		}
+
+		// Token: 0x06000030 RID: 48 RVA: 0x00002125 File Offset: 0x00000325
+		private string ReplaceDotWithComma(string input)
+		{
+			return input.Replace('.', ',');
+		}
+
+		// Token: 0x06000031 RID: 49 RVA: 0x00004A74 File Offset: 0x00002C74
+		private void simpleButton_Hunt_Config_Hunt_Position_save_Click(object sender, EventArgs e)
+		{
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoPosition_X", this.textEdit_Hunt_Config_Hunt_Position_X.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoPosition_Y", this.textEdit_Hunt_Config_Hunt_Position_Y.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoPosition_width", this.textEdit_Hunt_Config_Hunt_Position_width.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoPosition_height", this.textEdit_Hunt_Config_Hunt_Position_height.Text);
+			string thresholdValue = this.ReplaceDotWithComma(this.textEdit_Hunt_Config_Hunt_Position_threshold.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoPosition_threshold", thresholdValue);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoPosition_largeurTexte", this.textEdit_Hunt_Config_Hunt_Position_largeurTexte.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoPosition_hauteurTexte", this.textEdit_Hunt_Config_Hunt_Position_hauteurTexte.Text);
+		}
+
+		// Token: 0x06000032 RID: 50 RVA: 0x00004BB0 File Offset: 0x00002DB0
+		private void simpleButton_Hunt_Config_Hunt_Indice_Save_Click(object sender, EventArgs e)
+		{
+			string HuntAutoIndice_OCRStart = this.ReplaceDotWithComma(this.textEdit_Hunt_Config_Hunt_Indice_OCRStart.Text);
+			string HuntAutoIndice_OCRCoche = this.ReplaceDotWithComma(this.textEdit_Hunt_Config_Hunt_Indice_OCRCoche.Text);
+			string HuntAutoIndice_OCRArrow = this.ReplaceDotWithComma(this.textEdit_Hunt_Config_Hunt_Indice_OCRFleche.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoIndice_OCRStart", HuntAutoIndice_OCRStart);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoIndice_LStart", this.textEdit_Hunt_Config_Hunt_Indice_LStart.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoIndice_HStart", this.textEdit_Hunt_Config_Hunt_Indice_HStart.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoIndice_OCRCoche", HuntAutoIndice_OCRCoche);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoIndice_LIndice", this.textEdit_Hunt_Config_Hunt_Indice_LIndice.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoIndice_HIndice", this.textEdit_Hunt_Config_Hunt_Indice_HIndice.Text);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoIndice_OCRArrow", HuntAutoIndice_OCRArrow);
+			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoIndice_similarityThreshold", this.textEdit_Hunt_Config_Hunt_Indice_Detection.Text);
+		}
+
+		// Token: 0x06000033 RID: 51 RVA: 0x00004D28 File Offset: 0x00002F28
 		private void PopulateComboBox(string jsonResponse, int currentX, int currentY)
 		{
 			try
 			{
-				this.comboBoxEdit_huntindice.Properties.Items.Clear();
+				this.comboBoxEdit_Hunt_Indice.Properties.Items.Clear();
 				this.huntIndicePositions.Clear();
 				HashSet<string> namesSet = new HashSet<string>();
 				JObject parsedJson = JObject.Parse(jsonResponse);
@@ -353,29 +1153,64 @@ namespace Dofus_Hunt
 						while (enumerator3.MoveNext())
 						{
 							string name = enumerator3.Current;
-							this.comboBoxEdit_huntindice.Properties.Items.Add(name);
+							this.comboBoxEdit_Hunt_Indice.Properties.Items.Add(name);
 						}
-						goto IL_0231;
+						goto IL_0221;
 					}
 				}
-				this.toastNotificationsManager.ShowNotification("NoDataJSON");
 				if (this._advancedLog == "True")
 				{
-					this._dofusHunt.AddLog("Aucune donnée trouvée dans la réponse JSON.");
+					this._Dofus_Hunt.AddLog("Aucune donnée trouvée dans la réponse JSON.");
 				}
-				IL_0231:;
+				IL_0221:;
 			}
 			catch (Exception ex)
 			{
-				this.toastNotificationsManager.ShowNotification("ErreurComboBox");
 				if (this._advancedLog == "True")
 				{
-					this._dofusHunt.AddLog("Erreur lors de l'ajout des éléments à la comboBox : " + ex.Message);
+					this._Dofus_Hunt.AddLog("Erreur lors de l'ajout des éléments à la comboBox : " + ex.Message);
 				}
 			}
 		}
 
-		// Token: 0x0600004A RID: 74 RVA: 0x000060C0 File Offset: 0x000042C0
+		// Token: 0x06000034 RID: 52 RVA: 0x00004FF0 File Offset: 0x000031F0
+		private void simpleButton_Hunt_6_Click(object sender, EventArgs e)
+		{
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_2);
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_0);
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_6);
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_4);
+			this.ChangeColorButtonHunt(this.simpleButton_Hunt_6);
+			string direction = "6";
+			if (this._modeOffline == "True")
+			{
+				this.comboBoxEdit_Hunt_Indice.Properties.Items.Clear();
+				using (List<IndiceData>.Enumerator enumerator = (from indice in this._Hunt.GetHuntData(this.textEdit_Hunt_X.Text, this.textEdit_Hunt_Y.Text, direction)
+					orderby indice.indice
+					select indice).ToList<IndiceData>().GetEnumerator())
+				{
+					while (enumerator.MoveNext())
+					{
+						IndiceData indiceJSON = enumerator.Current;
+						this.huntIndicePositions.Clear();
+						this.comboBoxEdit_Hunt_Indice.Properties.Items.Add(indiceJSON.indice);
+					}
+					return;
+				}
+			}
+			string indice2 = this._Hunt.GetIndice(this._token, this.textEdit_Hunt_X.Text, this.textEdit_Hunt_Y.Text, direction);
+			int currentX = int.Parse(this.textEdit_Hunt_X.Text);
+			int currentY = int.Parse(this.textEdit_Hunt_Y.Text);
+			this.PopulateComboBox(indice2, currentX, currentY);
+		}
+
+		// Token: 0x06000035 RID: 53 RVA: 0x00002131 File Offset: 0x00000331
+		private void RessetColorButtonHunt(SimpleButton simpleButton)
+		{
+			simpleButton.Appearance.ForeColor = SystemColors.ControlText;
+		}
+
+		// Token: 0x06000036 RID: 54 RVA: 0x0000516C File Offset: 0x0000336C
 		private void ChangeColorButtonHunt(SimpleButton simpleButton)
 		{
 			if (this._dark == "False")
@@ -386,344 +1221,190 @@ namespace Dofus_Hunt
 			simpleButton.ForeColor = Color.FromArgb(220, 135, 13);
 		}
 
-		// Token: 0x0600004B RID: 75 RVA: 0x000022A8 File Offset: 0x000004A8
-		private void RessetColorButtonHunt(SimpleButton simpleButton)
+		// Token: 0x06000037 RID: 55 RVA: 0x000051BC File Offset: 0x000033BC
+		private void comboBoxEdit_Hunt_Indice_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			simpleButton.Appearance.ForeColor = SystemColors.ControlText;
-		}
-
-		// Token: 0x0600004C RID: 76 RVA: 0x00006110 File Offset: 0x00004310
-		private void textEdit_passdebug_EditValueChanged(object sender, EventArgs e)
-		{
-			string dateFormat = DateTime.Now.ToString("yyyyMMdd");
-			if (this.textEdit_passdebug.Text == dateFormat)
+			if (this._modeOffline == "True")
 			{
-				this.checkEdit_debug.Enabled = true;
-				return;
-			}
-			this.checkEdit_debug.Enabled = false;
-		}
-
-		// Token: 0x0600004D RID: 77 RVA: 0x0000615C File Offset: 0x0000435C
-		private void trackBarControl_opacity_EditValueChanged(object sender, EventArgs e)
-		{
-			int trackBarValue = this.trackBarControl_opacity.Value;
-			base.Opacity = (double)trackBarValue / 100.0;
-		}
-
-		// Token: 0x0600004E RID: 78 RVA: 0x000022BA File Offset: 0x000004BA
-		private void checkEdit_alwaysonscreen_CheckedChanged(object sender, EventArgs e)
-		{
-			if (this.checkEdit_alwaysonscreen.Checked)
-			{
-				base.TopMost = true;
-				return;
-			}
-			base.TopMost = false;
-		}
-
-		// Token: 0x0600004F RID: 79 RVA: 0x000022D8 File Offset: 0x000004D8
-		private void checkEdit_AdvancedLogs_CheckedChanged(object sender, EventArgs e)
-		{
-			this.toastNotificationsManager.ShowNotification("RestartAppConfig");
-		}
-
-		// Token: 0x06000050 RID: 80 RVA: 0x000022EA File Offset: 0x000004EA
-		private void Timer_Tick(object sender, EventArgs e)
-		{
-			this.GetToken();
-		}
-
-		// Token: 0x06000051 RID: 81 RVA: 0x000022F3 File Offset: 0x000004F3
-		private void FormHome_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			this.updateConfig();
-			this._dofusHunt.DeleteOldLogFiles(3);
-			Application.Exit();
-		}
-
-		// Token: 0x06000052 RID: 82 RVA: 0x00006188 File Offset: 0x00004388
-		private void pictureBox_skin_Click(object sender, EventArgs e)
-		{
-			if (this._dark == "True")
-			{
-				this._dark = "False";
-				UserLookAndFeel.Default.SkinName = "Metropolis";
-			}
-			else
-			{
-				this._dark = "True";
-				UserLookAndFeel.Default.SkinName = "Metropolis Dark";
-			}
-			this.setIconSkin();
-		}
-
-		// Token: 0x06000053 RID: 83 RVA: 0x000022EA File Offset: 0x000004EA
-		private void simpleButton_GetToken_Click(object sender, EventArgs e)
-		{
-			this.GetToken();
-		}
-
-		// Token: 0x06000054 RID: 84 RVA: 0x000061E4 File Offset: 0x000043E4
-		private void simpleButtonGetPositionIndice_Click(object sender, EventArgs e)
-		{
-			string indice = this._dofusHunt.GetIndice(this._token, this.textEdit_debugX.Text, this.textEdit_debugY.Text, this.textEdit_debugDirection.Text);
-			int currentX = int.Parse(this.textEdit_debugX.Text);
-			int currentY = int.Parse(this.textEdit_debugY.Text);
-			ValueTuple<int, int, string> position = this._dofusHunt.GetIndicePosition(indice, this.textEdit_debugIndice.Text, currentX, currentY);
-			DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(109, 6);
-			defaultInterpolatedStringHandler.AppendLiteral("L'indice : ");
-			defaultInterpolatedStringHandler.AppendFormatted(this.textEdit_debugIndice.Text);
-			defaultInterpolatedStringHandler.AppendLiteral(" qui a comme position de départ [");
-			defaultInterpolatedStringHandler.AppendFormatted(this.textEdit_debugX.Text);
-			defaultInterpolatedStringHandler.AppendLiteral(",");
-			defaultInterpolatedStringHandler.AppendFormatted(this.textEdit_debugY.Text);
-			defaultInterpolatedStringHandler.AppendLiteral("] vers la direction ");
-			defaultInterpolatedStringHandler.AppendFormatted(this.textEdit_debugDirection.Text);
-			defaultInterpolatedStringHandler.AppendLiteral(" a été trouvé !\nPosition trouvée :\nX = ");
-			defaultInterpolatedStringHandler.AppendFormatted<int>(position.Item1);
-			defaultInterpolatedStringHandler.AppendLiteral("\nY = ");
-			defaultInterpolatedStringHandler.AppendFormatted<int>(position.Item2);
-			MessageBox.Show(defaultInterpolatedStringHandler.ToStringAndClear(), "Résultat de la recherche", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-		}
-
-		// Token: 0x06000055 RID: 85 RVA: 0x0000632C File Offset: 0x0000452C
-		private void simpleButton_Capture_Click(object sender, EventArgs e)
-		{
-			string windowName = this._dofus;
-			AutoItX.WinActivate(windowName, "");
-			AutoItX.WinWaitActive(windowName, "", 0);
-			if (AutoItX.WinActive(windowName, "") == 1)
-			{
-				Rectangle winPos = AutoItX.WinGetPos(windowName, "");
-				Rectangle captureRect = new Rectangle(winPos.Left, winPos.Top, winPos.Width, winPos.Height);
-				this._dofusHunt.CaptureWindow(captureRect).Save(this._logPathImg + "/screenshot.png", ImageFormat.Png);
-			}
-		}
-
-		// Token: 0x06000056 RID: 86 RVA: 0x000063BC File Offset: 0x000045BC
-		private async void simpleButton_GetPosition_Click(object sender, EventArgs e)
-		{
-			await Task.Run(delegate
-			{
-				this._dofusHunt.DetectCurrentMap();
-			});
-			string croppedMapPath = this._logPathImg + "/cropped_map.png";
-			if (File.Exists(croppedMapPath))
-			{
-				string map = await Task.Run<string>(() => this._dofusHunt.PerformOCRTesseractMap(croppedMapPath));
-				int X;
-				int Y;
-				if (!this._dofusHunt.ExtractCoordinatesSimple(map, out X, out Y))
+				object selectedItem2 = this.comboBoxEdit_Hunt_Indice.SelectedItem;
+				string selectedIndice = ((selectedItem2 != null) ? selectedItem2.ToString() : null);
+				ValueTuple<int, int, string> position = this._Hunt.GetIndicePositionOffline(selectedIndice);
+				if (!string.IsNullOrEmpty(selectedIndice))
 				{
-					string mapGoogle = await Task.Run<string>(() => this._dofusHunt.PerformOCRMapWithGoogleVision(croppedMapPath, this.googleAPI));
-					this._dofusHunt.ExtractCoordinatesSimple(mapGoogle, out X, out Y);
-					DofusHunt dofusHunt = this._dofusHunt;
-					DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(45, 2);
-					defaultInterpolatedStringHandler.AppendLiteral("Coordonnées extraites avec Google Vision [");
-					defaultInterpolatedStringHandler.AppendFormatted<int>(X);
+					this.textEdit_Hunt_X.Text = position.Item1.ToString();
+					this.textEdit_Hunt_Y.Text = position.Item2.ToString();
+					Control control = this.labelControl_Hunt_Map;
+					DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(4, 2);
+					defaultInterpolatedStringHandler.AppendLiteral("[");
+					defaultInterpolatedStringHandler.AppendFormatted(position.Item1.ToString());
 					defaultInterpolatedStringHandler.AppendLiteral(", ");
-					defaultInterpolatedStringHandler.AppendFormatted<int>(Y);
+					defaultInterpolatedStringHandler.AppendFormatted(position.Item2.ToString());
 					defaultInterpolatedStringHandler.AppendLiteral("]");
-					dofusHunt.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
-					defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(45, 2);
-					defaultInterpolatedStringHandler.AppendLiteral("Coordonnées extraites avec Google Vision [");
-					defaultInterpolatedStringHandler.AppendFormatted<int>(X);
-					defaultInterpolatedStringHandler.AppendLiteral(", ");
-					defaultInterpolatedStringHandler.AppendFormatted<int>(Y);
-					defaultInterpolatedStringHandler.AppendLiteral("]");
-					MessageBox.Show(defaultInterpolatedStringHandler.ToStringAndClear());
-				}
-				else
-				{
-					DofusHunt dofusHunt2 = this._dofusHunt;
-					DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(41, 2);
-					defaultInterpolatedStringHandler.AppendLiteral("Coordonnées extraites avec Tesseract [");
-					defaultInterpolatedStringHandler.AppendFormatted<int>(X);
-					defaultInterpolatedStringHandler.AppendLiteral(", ");
-					defaultInterpolatedStringHandler.AppendFormatted<int>(Y);
-					defaultInterpolatedStringHandler.AppendLiteral("]");
-					dofusHunt2.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
-					defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(41, 2);
-					defaultInterpolatedStringHandler.AppendLiteral("Coordonnées extraites avec Tesseract [");
-					defaultInterpolatedStringHandler.AppendFormatted<int>(X);
-					defaultInterpolatedStringHandler.AppendLiteral(", ");
-					defaultInterpolatedStringHandler.AppendFormatted<int>(Y);
-					defaultInterpolatedStringHandler.AppendLiteral("]");
-					MessageBox.Show(defaultInterpolatedStringHandler.ToStringAndClear());
-				}
-			}
-			else
-			{
-				MessageBox.Show("L'image recadrée n'a pas été trouvée. Veuillez réessayer.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-			}
-		}
-
-		// Token: 0x06000057 RID: 87 RVA: 0x000063F4 File Offset: 0x000045F4
-		private void simpleButton_changeIndice_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				string detectedText = this.textEdit_detectedindice.Text.Trim();
-				string correctedText = this.textEdit_indiceok.Text.Trim();
-				if (string.IsNullOrEmpty(detectedText) || string.IsNullOrEmpty(correctedText))
-				{
-					MessageBox.Show("Veuillez remplir les deux champs avant de sauvegarder.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-				}
-				else if (!File.Exists(this._configPath + "/corrections.xml"))
-				{
-					new XDocument(new object[]
+					control.Text = defaultInterpolatedStringHandler.ToStringAndClear();
+					if (this.checkEdit_Hunt_AutoTravel.Checked)
 					{
-						new XElement("Corrections", new XElement("Correction", new object[]
-						{
-							new XElement("Erroneous", detectedText),
-							new XElement("Correct", correctedText)
-						}))
-					}).Save(this._configPath + "/corrections.xml");
-					this.toastNotificationsManager.ShowNotification("SaveCorrections");
-				}
-				else
-				{
-					XDocument doc = XDocument.Load(this._configPath + "/corrections.xml");
-					XElement existingCorrection = doc.Descendants("Correction").FirstOrDefault(delegate(XElement x)
-					{
-						XElement xelement = x.Element("Erroneous");
-						if (((xelement != null) ? xelement.Value : null) == detectedText)
-						{
-							XElement xelement2 = x.Element("Correct");
-							return ((xelement2 != null) ? xelement2.Value : null) == correctedText;
-						}
-						return false;
-					});
-					if (existingCorrection != null)
-					{
-						existingCorrection.Element("Correct").Value = correctedText;
-						this.toastNotificationsManager.ShowNotification("SaveCorrections");
+						defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(9, 2);
+						defaultInterpolatedStringHandler.AppendLiteral("/travel ");
+						defaultInterpolatedStringHandler.AppendFormatted<int>(position.Item1);
+						defaultInterpolatedStringHandler.AppendLiteral(" ");
+						defaultInterpolatedStringHandler.AppendFormatted<int>(position.Item2);
+						Clipboard.SetText(defaultInterpolatedStringHandler.ToStringAndClear());
 					}
-					else
-					{
-						doc.Element("Corrections").Add(new XElement("Correction", new object[]
-						{
-							new XElement("Erroneous", detectedText),
-							new XElement("Correct", correctedText)
-						}));
-						this.toastNotificationsManager.ShowNotification("SaveCorrections");
-					}
-					doc.Save(this._configPath + "/corrections.xml");
-					this.textEdit_detectedindice.Text = (this.textEdit_indiceok.Text = "");
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show("Erreur : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-			}
-		}
-
-		// Token: 0x06000058 RID: 88 RVA: 0x00006654 File Offset: 0x00004854
-		private void simpleButton_GetIndice_Click(object sender, EventArgs e)
-		{
-			string dofus = this._dofus;
-			AutoItX.WinActivate(dofus, "");
-			AutoItX.WinWaitActive(dofus, "", 0);
-			if (AutoItX.WinActive(dofus, "") == 1)
-			{
-				this._dofusHunt.DetectAndExtractHuntInfo();
-				Mat template = CvInvoke.Imread("ressources/img/coche_blanche.png", ImreadModes.Color);
-				if (template.IsEmpty)
-				{
-					this._dofusHunt.AddLog("Erreur : image de la Coche introuvable (coche_blanche.png)");
+					this.comboBoxEdit_Hunt_Indice.Text = "";
+					this.comboBoxEdit_Hunt_Indice.Properties.Items.Clear();
+					this.RessetColorButtonHunt(this.simpleButton_Hunt_2);
+					this.RessetColorButtonHunt(this.simpleButton_Hunt_0);
+					this.RessetColorButtonHunt(this.simpleButton_Hunt_6);
+					this.RessetColorButtonHunt(this.simpleButton_Hunt_4);
 					return;
 				}
-				Mat screenMat = new Mat(this._logPathImg + "/cropped_hunt.png", ImreadModes.Color);
-				Mat result = new Mat();
-				CvInvoke.MatchTemplate(screenMat, template, result, TemplateMatchingType.CcoeffNormed, null);
-				double minVal = 0.0;
-				double maxVal = 0.0;
-				Point minLoc = default(Point);
-				Point maxLoc = default(Point);
-				CvInvoke.MinMaxLoc(result, ref minVal, ref maxVal, ref minLoc, ref maxLoc, null);
-				DofusHunt dofusHunt = this._dofusHunt;
-				DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(51, 2);
-				defaultInterpolatedStringHandler.AppendLiteral("Valeur de correspondance maximale : ");
-				defaultInterpolatedStringHandler.AppendFormatted<double>(maxVal);
-				defaultInterpolatedStringHandler.AppendLiteral(" à la position ");
-				defaultInterpolatedStringHandler.AppendFormatted<Point>(maxLoc);
-				dofusHunt.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
-				if (maxVal >= 0.8)
+			}
+			else
+			{
+				object selectedItem3 = this.comboBoxEdit_Hunt_Indice.SelectedItem;
+				string selectedItem = ((selectedItem3 != null) ? selectedItem3.ToString() : null);
+				if (!string.IsNullOrEmpty(selectedItem) && this.huntIndicePositions.ContainsKey(selectedItem))
 				{
-					DofusHunt dofusHunt2 = this._dofusHunt;
-					defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(17, 1);
-					defaultInterpolatedStringHandler.AppendLiteral("Coche détectée : ");
-					defaultInterpolatedStringHandler.AppendFormatted<Point>(maxLoc);
-					dofusHunt2.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
-					int offsetX = maxLoc.X - 450;
-					int offsetY = maxLoc.Y - 10;
-					int largeurTexte = 190;
-					int hauteurTexte = 40;
-					if (offsetX < 0)
+					ValueTuple<int, int> positions = this.huntIndicePositions[selectedItem];
+					this.textEdit_Hunt_X.Text = positions.Item1.ToString();
+					this.textEdit_Hunt_Y.Text = positions.Item2.ToString();
+					Control control2 = this.labelControl_Hunt_Map;
+					DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(4, 2);
+					defaultInterpolatedStringHandler.AppendLiteral("[");
+					defaultInterpolatedStringHandler.AppendFormatted(positions.Item1.ToString());
+					defaultInterpolatedStringHandler.AppendLiteral(", ");
+					defaultInterpolatedStringHandler.AppendFormatted(positions.Item2.ToString());
+					defaultInterpolatedStringHandler.AppendLiteral("]");
+					control2.Text = defaultInterpolatedStringHandler.ToStringAndClear();
+					if (this.checkEdit_Hunt_AutoTravel.Checked)
 					{
-						offsetX = 0;
+						defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(9, 2);
+						defaultInterpolatedStringHandler.AppendLiteral("/travel ");
+						defaultInterpolatedStringHandler.AppendFormatted<int>(positions.Item1);
+						defaultInterpolatedStringHandler.AppendLiteral(" ");
+						defaultInterpolatedStringHandler.AppendFormatted<int>(positions.Item2);
+						Clipboard.SetText(defaultInterpolatedStringHandler.ToStringAndClear());
 					}
-					if (offsetY < 0)
-					{
-						offsetY = 0;
-					}
-					Rectangle textArea = new Rectangle(offsetX, offsetY, largeurTexte, hauteurTexte);
-					DofusHunt dofusHunt3 = this._dofusHunt;
-					defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(87, 4);
-					defaultInterpolatedStringHandler.AppendLiteral("Dimensions de la zone de texte capturée : Position (X = ");
-					defaultInterpolatedStringHandler.AppendFormatted<int>(textArea.X);
-					defaultInterpolatedStringHandler.AppendLiteral(", Y = ");
-					defaultInterpolatedStringHandler.AppendFormatted<int>(textArea.Y);
-					defaultInterpolatedStringHandler.AppendLiteral("), Largeur = ");
-					defaultInterpolatedStringHandler.AppendFormatted<int>(textArea.Width);
-					defaultInterpolatedStringHandler.AppendLiteral(", Hauteur = ");
-					defaultInterpolatedStringHandler.AppendFormatted<int>(textArea.Height);
-					dofusHunt3.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
-					new Mat(screenMat, textArea).Save(this._logPathImg + "/cropped_text.png");
-					this._dofusHunt.AddLog("Zone de texte recadrée et sauvegardée : cropped_text.png");
-					File.ReadAllBytes(this._logPathImg + "/cropped_text.png");
-					string extractedText = this._dofusHunt.PerformOCRTesseract(this._logPathImg + "/cropped_text.png");
-					MessageBox.Show("Texte extrait : " + extractedText, "Résultat de l'analyse OCR", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+					this.comboBoxEdit_Hunt_Indice.Text = "";
+					this.comboBoxEdit_Hunt_Indice.Properties.Items.Clear();
+					this.huntIndicePositions.Clear();
+					this.RessetColorButtonHunt(this.simpleButton_Hunt_2);
+					this.RessetColorButtonHunt(this.simpleButton_Hunt_0);
+					this.RessetColorButtonHunt(this.simpleButton_Hunt_6);
+					this.RessetColorButtonHunt(this.simpleButton_Hunt_4);
 				}
 			}
 		}
 
-		// Token: 0x06000059 RID: 89 RVA: 0x000068EC File Offset: 0x00004AEC
-		private void simpleButton_Arrow_Click(object sender, EventArgs e)
+		// Token: 0x06000038 RID: 56 RVA: 0x000054D8 File Offset: 0x000036D8
+		private void simpleButton_Hunt_0_Click(object sender, EventArgs e)
 		{
-			Mat croppedMat = new Mat(this._logPathImg + "/cropped_text.png", ImreadModes.Color);
-			string arrow = this._dofusHunt.DetectArrowDirectionAfterOCR(croppedMat);
-			string img_arrow = this._dofusHunt.GetArrowIcon(arrow);
-			MessageBox.Show("Direction de la flèche : " + img_arrow, "Résultat de la recherche", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-		}
-
-		// Token: 0x0600005A RID: 90 RVA: 0x00006944 File Offset: 0x00004B44
-		private void checkEdit_debug_CheckedChanged(object sender, EventArgs e)
-		{
-			if (this.checkEdit_debug.Checked)
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_2);
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_0);
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_6);
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_4);
+			this.ChangeColorButtonHunt(this.simpleButton_Hunt_0);
+			string direction = "0";
+			if (this._modeOffline == "True")
 			{
-				base.Size = new Size(690, 370);
-				this.panelControl_debug.Visible = true;
+				this.comboBoxEdit_Hunt_Indice.Properties.Items.Clear();
+				using (List<IndiceData>.Enumerator enumerator = (from indice in this._Hunt.GetHuntData(this.textEdit_Hunt_X.Text, this.textEdit_Hunt_Y.Text, direction)
+					orderby indice.indice
+					select indice).ToList<IndiceData>().GetEnumerator())
+				{
+					while (enumerator.MoveNext())
+					{
+						IndiceData indiceJSON = enumerator.Current;
+						this.huntIndicePositions.Clear();
+						this.comboBoxEdit_Hunt_Indice.Properties.Items.Add(indiceJSON.indice);
+					}
+					return;
+				}
 			}
-			if (!this.checkEdit_debug.Checked)
-			{
-				base.Size = new Size(320, 370);
-				this.panelControl_debug.Visible = false;
-			}
+			string indice2 = this._Hunt.GetIndice(this._token, this.textEdit_Hunt_X.Text, this.textEdit_Hunt_Y.Text, direction);
+			int currentX = int.Parse(this.textEdit_Hunt_X.Text);
+			int currentY = int.Parse(this.textEdit_Hunt_Y.Text);
+			this.PopulateComboBox(indice2, currentX, currentY);
 		}
 
-		// Token: 0x0600005B RID: 91 RVA: 0x0000230C File Offset: 0x0000050C
-		private void pictureBox_config_Click(object sender, EventArgs e)
+		// Token: 0x06000039 RID: 57 RVA: 0x00005654 File Offset: 0x00003854
+		private void simpleButton_Hunt_2_Click(object sender, EventArgs e)
 		{
-			this.panelControl_init.Visible = false;
-			this.panelControl_config.Visible = true;
-			this.panelControl_hunt.Visible = false;
-			this.panelControl_huntauto.Visible = false;
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_2);
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_0);
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_6);
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_4);
+			this.ChangeColorButtonHunt(this.simpleButton_Hunt_2);
+			string direction = "2";
+			if (this._modeOffline == "True")
+			{
+				this.comboBoxEdit_Hunt_Indice.Properties.Items.Clear();
+				using (List<IndiceData>.Enumerator enumerator = (from indice in this._Hunt.GetHuntData(this.textEdit_Hunt_X.Text, this.textEdit_Hunt_Y.Text, direction)
+					orderby indice.indice
+					select indice).ToList<IndiceData>().GetEnumerator())
+				{
+					while (enumerator.MoveNext())
+					{
+						IndiceData indiceJSON = enumerator.Current;
+						this.huntIndicePositions.Clear();
+						this.comboBoxEdit_Hunt_Indice.Properties.Items.Add(indiceJSON.indice);
+					}
+					return;
+				}
+			}
+			string indice2 = this._Hunt.GetIndice(this._token, this.textEdit_Hunt_X.Text, this.textEdit_Hunt_Y.Text, direction);
+			int currentX = int.Parse(this.textEdit_Hunt_X.Text);
+			int currentY = int.Parse(this.textEdit_Hunt_Y.Text);
+			this.PopulateComboBox(indice2, currentX, currentY);
 		}
 
-		// Token: 0x0600005C RID: 92 RVA: 0x000069B0 File Offset: 0x00004BB0
-		private void pictureBox_update_Click(object sender, EventArgs e)
+		// Token: 0x0600003A RID: 58 RVA: 0x000057D0 File Offset: 0x000039D0
+		private void simpleButton_Hunt_4_Click(object sender, EventArgs e)
+		{
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_2);
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_0);
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_6);
+			this.RessetColorButtonHunt(this.simpleButton_Hunt_4);
+			this.ChangeColorButtonHunt(this.simpleButton_Hunt_4);
+			string direction = "4";
+			if (this._modeOffline == "True")
+			{
+				this.comboBoxEdit_Hunt_Indice.Properties.Items.Clear();
+				using (List<IndiceData>.Enumerator enumerator = (from indice in this._Hunt.GetHuntData(this.textEdit_Hunt_X.Text, this.textEdit_Hunt_Y.Text, direction)
+					orderby indice.indice
+					select indice).ToList<IndiceData>().GetEnumerator())
+				{
+					while (enumerator.MoveNext())
+					{
+						IndiceData indiceJSON = enumerator.Current;
+						this.huntIndicePositions.Clear();
+						this.comboBoxEdit_Hunt_Indice.Properties.Items.Add(indiceJSON.indice);
+					}
+					return;
+				}
+			}
+			string indice2 = this._Hunt.GetIndice(this._token, this.textEdit_Hunt_X.Text, this.textEdit_Hunt_Y.Text, direction);
+			int currentX = int.Parse(this.textEdit_Hunt_X.Text);
+			int currentY = int.Parse(this.textEdit_Hunt_Y.Text);
+			this.PopulateComboBox(indice2, currentX, currentY);
+		}
+
+		// Token: 0x0600003B RID: 59 RVA: 0x0000594C File Offset: 0x00003B4C
+		private void ResetInterfaceChasse()
+		{
+			this.labelControl_HuntAuto_MapStart.Text = "Map de départ :";
+			this.labelControl_HuntAuto_Indice.Text = "Indice :";
+			this.labelControl_HuntAuto_IndiceCor.Text = "Indice corrigé :";
+			this.labelControl_HuntAuto_IndiceCor.Visible = false;
+			this.labelControl_HuntAuto_Direction.Text = "Direction :";
+			this.labelControl_HuntAuto_MapIndice.Text = "Map de l'indice :";
+			this.simpleButton_HuntAutoStart.Enabled = true;
+			this.simpleButton_HuntAutoStop.Enabled = false;
+			this.checkEdit_HuntAuto_AutoTravel.Checked = true;
+		}
+
+		// Token: 0x0600003C RID: 60 RVA: 0x000059DC File Offset: 0x00003BDC
+		private void accordionControlElement_SubMenu_Config_Update_Click(object sender, EventArgs e)
 		{
 			try
 			{
@@ -748,387 +1429,261 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600005D RID: 93 RVA: 0x00006A44 File Offset: 0x00004C44
-		private void pictureBox_hunt_Click(object sender, EventArgs e)
+		// Token: 0x0600003D RID: 61 RVA: 0x00005A70 File Offset: 0x00003C70
+		private async void simpleButton_HuntAutoStart_Click(object sender, EventArgs e)
 		{
-			this.textEdit_huntX.Text = "";
-			this.textEdit_huntY.Text = "";
-			this.comboBoxEdit_huntindice.Text = "";
-			this.comboBoxEdit_huntindice.Properties.Items.Clear();
-			this.labelControl_huntresultat.Text = "";
-			this.checkEdit_hunt.Checked = true;
-			this.panelControl_init.Visible = false;
-			this.panelControl_config.Visible = false;
-			this.panelControl_hunt.Visible = true;
-			this.panelControl_huntauto.Visible = false;
-		}
-
-		// Token: 0x0600005E RID: 94 RVA: 0x00006AE4 File Offset: 0x00004CE4
-		private void comboBoxEdit_huntindice_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			object selectedItem2 = this.comboBoxEdit_huntindice.SelectedItem;
-			string selectedItem = ((selectedItem2 != null) ? selectedItem2.ToString() : null);
-			if (!string.IsNullOrEmpty(selectedItem) && this.huntIndicePositions.ContainsKey(selectedItem))
+			FormHome.<>c__DisplayClass111_0 CS$<>8__locals1 = new FormHome.<>c__DisplayClass111_0();
+			CS$<>8__locals1.<>4__this = this;
+			string dofus = this._dofus;
+			this.simpleButton_HuntAutoStart.Enabled = false;
+			this.simpleButton_HuntAutoStop.Enabled = true;
+			this._Hunt.CaptureGame(FormHome._logPathImg + "/screenshot.png");
+			await Task.Run(delegate
 			{
-				ValueTuple<int, int> positions = this.huntIndicePositions[selectedItem];
-				this.textEdit_huntX.Text = positions.Item1.ToString();
-				this.textEdit_huntY.Text = positions.Item2.ToString();
-				Control control = this.labelControl_huntresultat;
-				DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(4, 2);
-				defaultInterpolatedStringHandler.AppendLiteral("[");
-				defaultInterpolatedStringHandler.AppendFormatted(positions.Item1.ToString());
+				CS$<>8__locals1.<>4__this._Hunt.DetectCurrentMap(CS$<>8__locals1.<>4__this._HuntAutoPosition_X, CS$<>8__locals1.<>4__this._HuntAutoPosition_Y, CS$<>8__locals1.<>4__this._HuntAutoPosition_Width, CS$<>8__locals1.<>4__this._HuntAutoPosition_Height, CS$<>8__locals1.<>4__this._HuntAutoPosition_Threshold, CS$<>8__locals1.<>4__this._HuntAutoPosition_largeurTexte, CS$<>8__locals1.<>4__this._HuntAutoPosition_hauteurTexte);
+			});
+			CS$<>8__locals1.croppedMapPath = FormHome._logPathImg + "/cropped_map.png";
+			if (File.Exists(CS$<>8__locals1.croppedMapPath))
+			{
+				FormHome.<>c__DisplayClass111_1 CS$<>8__locals2 = new FormHome.<>c__DisplayClass111_1();
+				CS$<>8__locals2.CS$<>8__locals1 = CS$<>8__locals1;
+				string map = await Task.Run<string>(() => CS$<>8__locals2.CS$<>8__locals1.<>4__this._Hunt.PerformOCRTesseractMap(CS$<>8__locals2.CS$<>8__locals1.croppedMapPath));
+				DefaultInterpolatedStringHandler defaultInterpolatedStringHandler;
+				if (!this._Hunt.ExtractCoordinatesSimple(map, out this._currentX, out this._currentY) && this._googleVision == "True")
+				{
+					string mapGoogle = await Task.Run<string>(() => CS$<>8__locals2.CS$<>8__locals1.<>4__this._Hunt.PerformOCRMapWithGoogleVision(CS$<>8__locals2.CS$<>8__locals1.croppedMapPath, CS$<>8__locals2.CS$<>8__locals1.<>4__this._googleAPI));
+					this._Hunt.ExtractCoordinatesSimple(mapGoogle, out this._currentX, out this._currentY);
+					if (this._advancedLog == "True")
+					{
+						Dofus_Hunt dofus_Hunt = this._Dofus_Hunt;
+						defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(45, 2);
+						defaultInterpolatedStringHandler.AppendLiteral("Coordonnées extraites avec Google Vision [");
+						defaultInterpolatedStringHandler.AppendFormatted<int>(this._currentX);
+						defaultInterpolatedStringHandler.AppendLiteral(", ");
+						defaultInterpolatedStringHandler.AppendFormatted<int>(this._currentY);
+						defaultInterpolatedStringHandler.AppendLiteral("]");
+						dofus_Hunt.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
+					}
+				}
+				else if (this._advancedLog == "True")
+				{
+					Dofus_Hunt dofus_Hunt2 = this._Dofus_Hunt;
+					defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(41, 2);
+					defaultInterpolatedStringHandler.AppendLiteral("Coordonnées extraites avec Tesseract [");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(this._currentX);
+					defaultInterpolatedStringHandler.AppendLiteral(", ");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(this._currentY);
+					defaultInterpolatedStringHandler.AppendLiteral("]");
+					dofus_Hunt2.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
+				}
+				Control control = this.labelControl_HuntAuto_MapStart;
+				defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(20, 2);
+				defaultInterpolatedStringHandler.AppendLiteral("Map de départ : [");
+				defaultInterpolatedStringHandler.AppendFormatted<int>(this._currentX);
 				defaultInterpolatedStringHandler.AppendLiteral(", ");
-				defaultInterpolatedStringHandler.AppendFormatted(positions.Item2.ToString());
+				defaultInterpolatedStringHandler.AppendFormatted<int>(this._currentY);
 				defaultInterpolatedStringHandler.AppendLiteral("]");
 				control.Text = defaultInterpolatedStringHandler.ToStringAndClear();
-				if (this.checkEdit_hunt.Checked)
+				CS$<>8__locals2.indice = this._Hunt.getIndiceTexte(this._HuntAutoIndice_Threshold_Start, this._HuntAutoIndice_largeurTexte_Start, this._HuntAutoIndice_hauteurTexte_Start, this._HuntAutoIndice_Threshold_Coche, this._HuntAutoIndice_largeurTexte_Coche, this._HuntAutoIndice_hauteurTexte_Coche);
+				if (CS$<>8__locals2.indice == string.Empty)
 				{
-					defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(9, 2);
-					defaultInterpolatedStringHandler.AppendLiteral("/travel ");
-					defaultInterpolatedStringHandler.AppendFormatted<int>(positions.Item1);
-					defaultInterpolatedStringHandler.AppendLiteral(" ");
-					defaultInterpolatedStringHandler.AppendFormatted<int>(positions.Item2);
-					Clipboard.SetText(defaultInterpolatedStringHandler.ToStringAndClear());
+					this._Dofus_Hunt.AddLog("Indice de départ non détecté. Veuillez réessayer.");
+					this.ResetInterfaceChasse();
+					if (this._notify == "True")
+					{
+						this.toastNotificationsManager.ShowNotification("App_GetData");
+					}
 				}
-				this.comboBoxEdit_huntindice.Text = "";
-				this.comboBoxEdit_huntindice.Properties.Items.Clear();
-				this.huntIndicePositions.Clear();
-				this.RessetColorButtonHunt(this.simpleButton_hunt6);
-				this.RessetColorButtonHunt(this.simpleButton_hunt0);
-				this.RessetColorButtonHunt(this.simpleButton_hunt2);
-				this.RessetColorButtonHunt(this.simpleButton_hunt4);
+				else
+				{
+					string correctedText = this._Hunt.GetCorrectedText(CS$<>8__locals2.indice);
+					this.labelControl_HuntAuto_Indice.Text = "Indice : " + correctedText;
+					this._lastDetectedIndice = correctedText;
+					CS$<>8__locals2.arrow = this._Hunt.DetectArrowDirectionAfterOCR(this._HuntAutoIndice_Threshold_Arrow);
+					if (CS$<>8__locals2.arrow == string.Empty)
+					{
+						this._Dofus_Hunt.AddLog("Flèche de l'indice non détectée. Veuillez réessayer.");
+						this.ResetInterfaceChasse();
+						if (this._notify == "True")
+						{
+							this.toastNotificationsManager.ShowNotification("App_GetData");
+						}
+					}
+					else
+					{
+						string img_arrow = this._Hunt.GetArrowIcon(CS$<>8__locals2.arrow);
+						this.labelControl_HuntAuto_Direction.Text = "Direction : " + img_arrow;
+						if (this._Hunt.DetectPhorreur(this._lastDetectedIndice) == 1)
+						{
+							this._lastIndiceIsPhorreur = true;
+							if (this._advancedLog == "True")
+							{
+								this._Dofus_Hunt.AddLog("L'indice est un Phorreur.");
+							}
+							if (this._notify == "True")
+							{
+								this.toastNotificationsManager.ShowNotification("Indice_Phorreur");
+							}
+							this.labelControl_HuntAuto_IndiceCor.Visible = false;
+							this.labelControl_HuntAuto_IndiceCor.Text = "Indice corrigé : ";
+							this.StartMonitorigChasse();
+						}
+						else
+						{
+							this._lastIndiceIsPhorreur = false;
+							if (this._modeOffline == "True")
+							{
+								ValueTuple<int, int, string> position = this._Hunt.GetIndicePositionOfflineAuto(correctedText, CS$<>8__locals2.arrow, this._currentX, this._currentY);
+								if (correctedText != position.Item3)
+								{
+									this.labelControl_HuntAuto_IndiceCor.Text = "Indice corrigé : " + position.Item3;
+									this.labelControl_HuntAuto_IndiceCor.Visible = true;
+								}
+								else
+								{
+									this.labelControl_HuntAuto_IndiceCor.Visible = false;
+									this.labelControl_HuntAuto_IndiceCor.Text = "Indice corrigé : ";
+								}
+								if (position.Item1 == -99 && position.Item2 == -99)
+								{
+									this._Dofus_Hunt.AddLog("Position de l'indice non trouvée. Veuillez réessayer.");
+									this.simpleButton_HuntAutoStart.Enabled = true;
+									this.simpleButton_HuntAutoStop.Enabled = false;
+									if (this._notify == "True")
+									{
+										this.toastNotificationsManager.ShowNotification("App_GetData");
+									}
+									return;
+								}
+								Control control2 = this.labelControl_HuntAuto_MapIndice;
+								defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(22, 2);
+								defaultInterpolatedStringHandler.AppendLiteral("Map de l'indice : [");
+								defaultInterpolatedStringHandler.AppendFormatted(position.Item1.ToString());
+								defaultInterpolatedStringHandler.AppendLiteral(", ");
+								defaultInterpolatedStringHandler.AppendFormatted(position.Item2.ToString());
+								defaultInterpolatedStringHandler.AppendLiteral("]");
+								control2.Text = defaultInterpolatedStringHandler.ToStringAndClear();
+								this._currentX = position.Item1;
+								this._currentY = position.Item2;
+								if (this.checkEdit_HuntAuto_AutoTravel.Checked)
+								{
+									Clipboard.SetText("/travel " + position.Item1.ToString() + " " + position.Item2.ToString());
+								}
+								if (this._notify == "True")
+								{
+									this.toastNotificationsManager.ShowNotification("Indice_OK");
+								}
+								this.StartMonitorigChasse();
+							}
+							else
+							{
+								await Task.Run<string>(() => CS$<>8__locals2.CS$<>8__locals1.<>4__this._Hunt.GetIndice(CS$<>8__locals2.CS$<>8__locals1.<>4__this._token, CS$<>8__locals2.CS$<>8__locals1.<>4__this._currentX.ToString(), CS$<>8__locals2.CS$<>8__locals1.<>4__this._currentY.ToString(), CS$<>8__locals2.arrow));
+								ValueTuple<int, int, string> position2 = await Task.Run<ValueTuple<int, int, string>>(() => CS$<>8__locals2.CS$<>8__locals1.<>4__this._Hunt.GetIndicePosition(CS$<>8__locals2.indice, CS$<>8__locals2.CS$<>8__locals1.<>4__this._lastDetectedIndice, CS$<>8__locals2.CS$<>8__locals1.<>4__this._currentX, CS$<>8__locals2.CS$<>8__locals1.<>4__this._currentY));
+								if (correctedText != position2.Item3)
+								{
+									this.labelControl_HuntAuto_IndiceCor.Text = "Indice corrigé : " + position2.Item3;
+									this.labelControl_HuntAuto_IndiceCor.Visible = true;
+								}
+								else
+								{
+									this.labelControl_HuntAuto_IndiceCor.Visible = false;
+									this.labelControl_HuntAuto_IndiceCor.Text = "Indice corrigé : ";
+								}
+								if (position2.Item1 == -99 && position2.Item2 == -99)
+								{
+									this._Dofus_Hunt.AddLog("Position de l'indice non trouvée. Veuillez réessayer.");
+									this.simpleButton_HuntAutoStart.Enabled = true;
+									this.simpleButton_HuntAutoStop.Enabled = false;
+									if (this._notify == "True")
+									{
+										this.toastNotificationsManager.ShowNotification("App_GetData");
+									}
+									return;
+								}
+								Control control3 = this.labelControl_HuntAuto_MapIndice;
+								defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(22, 2);
+								defaultInterpolatedStringHandler.AppendLiteral("Map de l'indice : [");
+								defaultInterpolatedStringHandler.AppendFormatted(position2.Item1.ToString());
+								defaultInterpolatedStringHandler.AppendLiteral(", ");
+								defaultInterpolatedStringHandler.AppendFormatted(position2.Item2.ToString());
+								defaultInterpolatedStringHandler.AppendLiteral("]");
+								control3.Text = defaultInterpolatedStringHandler.ToStringAndClear();
+								this._currentX = position2.Item1;
+								this._currentY = position2.Item2;
+								if (this.checkEdit_HuntAuto_AutoTravel.Checked)
+								{
+									Clipboard.SetText("/travel " + position2.Item1.ToString() + " " + position2.Item2.ToString());
+								}
+								if (this._notify == "True")
+								{
+									this.toastNotificationsManager.ShowNotification("Indice_OK");
+								}
+								this.StartMonitorigChasse();
+							}
+						}
+						CS$<>8__locals2 = null;
+						correctedText = null;
+					}
+				}
+			}
+			else
+			{
+				this._Dofus_Hunt.AddLog("L'image recadrée n'a pas été trouvée. Veuillez réessayer.");
+				this.ResetInterfaceChasse();
+				if (this._notify == "True")
+				{
+					this.toastNotificationsManager.ShowNotification("Hunt_NoData");
+				}
 			}
 		}
 
-		// Token: 0x0600005F RID: 95 RVA: 0x00006C7C File Offset: 0x00004E7C
-		private void simpleButton_hunt6_Click(object sender, EventArgs e)
+		// Token: 0x0600003E RID: 62 RVA: 0x00005AA8 File Offset: 0x00003CA8
+		private void StartMonitorigChasse()
 		{
-			string indice = this._dofusHunt.GetIndice(this._token, this.textEdit_huntX.Text, this.textEdit_huntY.Text, "6");
-			int currentX = int.Parse(this.textEdit_huntX.Text);
-			int currentY = int.Parse(this.textEdit_huntY.Text);
-			this.PopulateComboBox(indice, currentX, currentY);
-			this.ChangeColorButtonHunt(this.simpleButton_hunt6);
+			FormHome.<>c__DisplayClass112_0 CS$<>8__locals1 = new FormHome.<>c__DisplayClass112_0();
+			CS$<>8__locals1.<>4__this = this;
+			CS$<>8__locals1.erreurs = 0;
+			this._cancellationTokenSource = new CancellationTokenSource();
+			CS$<>8__locals1.token = this._cancellationTokenSource.Token;
+			Thread thread = new Thread(delegate
+			{
+				FormHome.<>c__DisplayClass112_0.<<StartMonitorigChasse>b__0>d <<StartMonitorigChasse>b__0>d;
+				<<StartMonitorigChasse>b__0>d.<>t__builder = AsyncVoidMethodBuilder.Create();
+				<<StartMonitorigChasse>b__0>d.<>4__this = CS$<>8__locals1;
+				<<StartMonitorigChasse>b__0>d.<>1__state = -1;
+				<<StartMonitorigChasse>b__0>d.<>t__builder.Start<FormHome.<>c__DisplayClass112_0.<<StartMonitorigChasse>b__0>d>(ref <<StartMonitorigChasse>b__0>d);
+			});
+			thread.SetApartmentState(ApartmentState.STA);
+			thread.Start();
 		}
 
-		// Token: 0x06000060 RID: 96 RVA: 0x00006CF0 File Offset: 0x00004EF0
-		private void simpleButton_hunt0_Click(object sender, EventArgs e)
-		{
-			string indice = this._dofusHunt.GetIndice(this._token, this.textEdit_huntX.Text, this.textEdit_huntY.Text, "0");
-			int currentX = int.Parse(this.textEdit_huntX.Text);
-			int currentY = int.Parse(this.textEdit_huntY.Text);
-			this.PopulateComboBox(indice, currentX, currentY);
-			this.ChangeColorButtonHunt(this.simpleButton_hunt0);
-		}
-
-		// Token: 0x06000061 RID: 97 RVA: 0x00006D64 File Offset: 0x00004F64
-		private void simpleButton_hunt2_Click(object sender, EventArgs e)
-		{
-			string indice = this._dofusHunt.GetIndice(this._token, this.textEdit_huntX.Text, this.textEdit_huntY.Text, "2");
-			int currentX = int.Parse(this.textEdit_huntX.Text);
-			int currentY = int.Parse(this.textEdit_huntY.Text);
-			this.PopulateComboBox(indice, currentX, currentY);
-			this.ChangeColorButtonHunt(this.simpleButton_hunt2);
-		}
-
-		// Token: 0x06000062 RID: 98 RVA: 0x00006DD8 File Offset: 0x00004FD8
-		private void simpleButton_hunt4_Click(object sender, EventArgs e)
-		{
-			string indice = this._dofusHunt.GetIndice(this._token, this.textEdit_huntX.Text, this.textEdit_huntY.Text, "4");
-			int currentX = int.Parse(this.textEdit_huntX.Text);
-			int currentY = int.Parse(this.textEdit_huntY.Text);
-			this.PopulateComboBox(indice, currentX, currentY);
-			this.ChangeColorButtonHunt(this.simpleButton_hunt4);
-		}
-
-		// Token: 0x06000063 RID: 99 RVA: 0x0000233E File Offset: 0x0000053E
-		private void pictureBox_autoHunt_Click(object sender, EventArgs e)
-		{
-			this.panelControl_init.Visible = false;
-			this.panelControl_config.Visible = false;
-			this.panelControl_hunt.Visible = false;
-			this.panelControl_huntauto.Visible = true;
-		}
-
-		// Token: 0x06000064 RID: 100 RVA: 0x00002370 File Offset: 0x00000570
-		private void checkEdit_debug_Click(object sender, EventArgs e)
-		{
-		}
-
-		// Token: 0x06000065 RID: 101 RVA: 0x00006E4C File Offset: 0x0000504C
-		private void simpleButton_stopHunt_Click(object sender, EventArgs e)
+		// Token: 0x0600003F RID: 63 RVA: 0x00002143 File Offset: 0x00000343
+		private void simpleButton_HuntAutoStop_Click(object sender, EventArgs e)
 		{
 			if (this._cancellationTokenSource != null)
 			{
 				this._cancellationTokenSource.Cancel();
 				if (this._advancedLog == "True")
 				{
-					this._dofusHunt.AddLog("Demande d'annulation de la surveillance de l'indice envoyée.");
+					this._Dofus_Hunt.AddLog("Demande d'annulation de la surveillance de l'indice envoyée.");
 				}
-				this.checkEdit_huntAutoTravel.Checked = true;
-				this.labelControl_huntAutoStart.Text = "Map de départ :";
-				this.labelControl_huntAutoIndice.Text = "Indice :";
-				this.labelControl_huntAutoIndiceCor.Text = "Indice corrigé :";
-				this.labelControl_huntAutoDir.Text = "Direction :";
-				this.labelControl_huntAutoMInd.Text = "Map de l'indice :";
-				this.simpleButton_startHunt.Enabled = true;
-				this.simpleButton_stopHunt.Enabled = false;
+				this.ResetInterfaceChasse();
 			}
 		}
 
-		// Token: 0x06000066 RID: 102 RVA: 0x00006F08 File Offset: 0x00005108
-		private async void simpleButton_startHunt_Click(object sender, EventArgs e)
+		// Token: 0x06000040 RID: 64 RVA: 0x00005B00 File Offset: 0x00003D00
+		private void labelControl_HuntAuto_IndiceCor_Click(object sender, EventArgs e)
 		{
-			FormHome.<>c__DisplayClass61_0 CS$<>8__locals1 = new FormHome.<>c__DisplayClass61_0();
-			CS$<>8__locals1.<>4__this = this;
-			string dofus = this._dofus;
-			this.simpleButton_startHunt.Enabled = false;
-			this.simpleButton_stopHunt.Enabled = true;
-			Rectangle winPos = AutoItX.WinGetPos(dofus, "");
-			CS$<>8__locals1.captureRect = new Rectangle(winPos.Left, winPos.Top, winPos.Width, winPos.Height);
-			(await Task.Run<Bitmap>(() => CS$<>8__locals1.<>4__this._dofusHunt.CaptureWindow(CS$<>8__locals1.captureRect))).Save(this._logPathImg + "/screenshot.png", ImageFormat.Png);
-			await Task.Run(delegate
+			if (this.labelControl_HuntAuto_IndiceCor.Text != "Indice corrigé :")
 			{
-				CS$<>8__locals1.<>4__this._dofusHunt.DetectCurrentMap();
-			});
-			CS$<>8__locals1.croppedMapPath = this._logPathImg + "/cropped_map.png";
-			if (File.Exists(CS$<>8__locals1.croppedMapPath))
-			{
-				string map = await Task.Run<string>(() => CS$<>8__locals1.<>4__this._dofusHunt.PerformOCRTesseractMap(CS$<>8__locals1.croppedMapPath));
-				if (!this._dofusHunt.ExtractCoordinatesSimple(map, out this._currentX, out this._currentY))
-				{
-					string mapGoogle = await Task.Run<string>(() => CS$<>8__locals1.<>4__this._dofusHunt.PerformOCRMapWithGoogleVision(CS$<>8__locals1.croppedMapPath, CS$<>8__locals1.<>4__this.googleAPI));
-					this._dofusHunt.ExtractCoordinatesSimple(mapGoogle, out this._currentX, out this._currentY);
-					this.labelControl_huntAutoStart.Text = string.Concat(new string[]
-					{
-						"Map de départ : [",
-						this._currentX.ToString(),
-						", ",
-						this._currentY.ToString(),
-						"]"
-					});
-					if (this._advancedLog == "True")
-					{
-						DofusHunt dofusHunt = this._dofusHunt;
-						DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(45, 2);
-						defaultInterpolatedStringHandler.AppendLiteral("Coordonnées extraites avec Google Vision [");
-						defaultInterpolatedStringHandler.AppendFormatted<int>(this._currentX);
-						defaultInterpolatedStringHandler.AppendLiteral(", ");
-						defaultInterpolatedStringHandler.AppendFormatted<int>(this._currentY);
-						defaultInterpolatedStringHandler.AppendLiteral("]");
-						dofusHunt.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
-					}
-				}
-				else
-				{
-					this.labelControl_huntAutoStart.Text = string.Concat(new string[]
-					{
-						"Map de départ : [",
-						this._currentX.ToString(),
-						", ",
-						this._currentY.ToString(),
-						"]"
-					});
-					if (this._advancedLog == "True")
-					{
-						DofusHunt dofusHunt2 = this._dofusHunt;
-						DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(41, 2);
-						defaultInterpolatedStringHandler.AppendLiteral("Coordonnées extraites avec Tesseract [");
-						defaultInterpolatedStringHandler.AppendFormatted<int>(this._currentX);
-						defaultInterpolatedStringHandler.AppendLiteral(", ");
-						defaultInterpolatedStringHandler.AppendFormatted<int>(this._currentY);
-						defaultInterpolatedStringHandler.AppendLiteral("]");
-						dofusHunt2.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
-					}
-				}
-				await Task.Run(delegate
-				{
-					CS$<>8__locals1.<>4__this._dofusHunt.DetectAndExtractHuntInfo();
-				});
-				Mat template = CvInvoke.Imread("ressources/img/coche_blanche.png", ImreadModes.Color);
-				if (template.IsEmpty)
-				{
-					this._dofusHunt.AddLog("Erreur : image de la Coche introuvable (coche_blanche.png)");
-					this.ResetInterfaceChasse();
-				}
-				else
-				{
-					Mat screenMat = new Mat(this._logPathImg + "/cropped_hunt.png", ImreadModes.Color);
-					Mat result = new Mat();
-					CvInvoke.MatchTemplate(screenMat, template, result, TemplateMatchingType.CcoeffNormed, null);
-					double minVal = 0.0;
-					double maxVal = 0.0;
-					Point minLoc = default(Point);
-					Point maxLoc = default(Point);
-					CvInvoke.MinMaxLoc(result, ref minVal, ref maxVal, ref minLoc, ref maxLoc, null);
-					if (this._advancedLog == "True")
-					{
-						DofusHunt dofusHunt3 = this._dofusHunt;
-						DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(51, 2);
-						defaultInterpolatedStringHandler.AppendLiteral("Valeur de correspondance maximale : ");
-						defaultInterpolatedStringHandler.AppendFormatted<double>(maxVal);
-						defaultInterpolatedStringHandler.AppendLiteral(" à la position ");
-						defaultInterpolatedStringHandler.AppendFormatted<Point>(maxLoc);
-						dofusHunt3.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
-					}
-					if (maxVal >= 0.8)
-					{
-						FormHome.<>c__DisplayClass61_1 CS$<>8__locals2 = new FormHome.<>c__DisplayClass61_1();
-						CS$<>8__locals2.CS$<>8__locals1 = CS$<>8__locals1;
-						if (this._advancedLog == "True")
-						{
-							DofusHunt dofusHunt4 = this._dofusHunt;
-							DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(17, 1);
-							defaultInterpolatedStringHandler.AppendLiteral("Coche détectée : ");
-							defaultInterpolatedStringHandler.AppendFormatted<Point>(maxLoc);
-							dofusHunt4.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
-						}
-						int offsetX = maxLoc.X - 450;
-						int offsetY = maxLoc.Y - 10;
-						int largeurTexte = 190;
-						int hauteurTexte = 40;
-						if (offsetX < 0)
-						{
-							offsetX = 0;
-						}
-						if (offsetY < 0)
-						{
-							offsetY = 0;
-						}
-						Rectangle textArea = new Rectangle(offsetX, offsetY, largeurTexte, hauteurTexte);
-						if (this._advancedLog == "True")
-						{
-							DofusHunt dofusHunt5 = this._dofusHunt;
-							DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(87, 4);
-							defaultInterpolatedStringHandler.AppendLiteral("Dimensions de la zone de texte capturée : Position (X = ");
-							defaultInterpolatedStringHandler.AppendFormatted<int>(textArea.X);
-							defaultInterpolatedStringHandler.AppendLiteral(", Y = ");
-							defaultInterpolatedStringHandler.AppendFormatted<int>(textArea.Y);
-							defaultInterpolatedStringHandler.AppendLiteral("), Largeur = ");
-							defaultInterpolatedStringHandler.AppendFormatted<int>(textArea.Width);
-							defaultInterpolatedStringHandler.AppendLiteral(", Hauteur = ");
-							defaultInterpolatedStringHandler.AppendFormatted<int>(textArea.Height);
-							dofusHunt5.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
-						}
-						CS$<>8__locals2.croppedMat = new Mat(screenMat, textArea);
-						CS$<>8__locals2.croppedMat.Save(this._logPathImg + "/cropped_text.png");
-						if (this._advancedLog == "True")
-						{
-							this._dofusHunt.AddLog("Zone de texte recadrée et sauvegardée : cropped_text.png");
-						}
-						File.ReadAllBytes(this._logPathImg + "/cropped_text.png");
-						string extractedText = await Task.Run<string>(() => CS$<>8__locals2.CS$<>8__locals1.<>4__this._dofusHunt.PerformOCRTesseract(CS$<>8__locals2.CS$<>8__locals1.<>4__this._logPathImg + "/cropped_text.png"));
-						string correctedText = this._dofusHunt.GetCorrectedText(extractedText);
-						this._lastDetectedIndice = correctedText;
-						this.labelControl_huntAutoIndice.Text = "Indice : " + correctedText;
-						CS$<>8__locals2.arrow = await Task.Run<string>(() => CS$<>8__locals2.CS$<>8__locals1.<>4__this._dofusHunt.DetectArrowDirectionAfterOCR(CS$<>8__locals2.croppedMat));
-						string arrowDirection = this._dofusHunt.GetArrowIcon(CS$<>8__locals2.arrow);
-						this.labelControl_huntAutoDir.Text = "Direction : " + arrowDirection;
-						TaskAwaiter<int> taskAwaiter = Task.Run<int>(() => CS$<>8__locals2.CS$<>8__locals1.<>4__this._dofusHunt.DetectPhorreur(CS$<>8__locals2.CS$<>8__locals1.<>4__this._lastDetectedIndice)).GetAwaiter();
-						if (!taskAwaiter.IsCompleted)
-						{
-							await taskAwaiter;
-							TaskAwaiter<int> taskAwaiter2;
-							taskAwaiter = taskAwaiter2;
-							taskAwaiter2 = default(TaskAwaiter<int>);
-						}
-						if (taskAwaiter.GetResult() == 1)
-						{
-							this._lastIndiceIsPhorreur = true;
-							if (this._advancedLog == "True")
-							{
-								this._dofusHunt.AddLog("L'indice est un Phorreur.");
-							}
-							this.toastNotificationsManager.ShowNotification("Phorreur");
-							this.labelControl_huntAutoIndiceCor.Text = "Indice corrigé :";
-							this.StartMonitorigChasse();
-						}
-						else
-						{
-							FormHome.<>c__DisplayClass61_2 CS$<>8__locals3 = new FormHome.<>c__DisplayClass61_2();
-							CS$<>8__locals3.CS$<>8__locals2 = CS$<>8__locals2;
-							this._lastIndiceIsPhorreur = false;
-							CS$<>8__locals3.indice = await Task.Run<string>(() => CS$<>8__locals3.CS$<>8__locals2.CS$<>8__locals1.<>4__this._dofusHunt.GetIndice(CS$<>8__locals3.CS$<>8__locals2.CS$<>8__locals1.<>4__this._token, CS$<>8__locals3.CS$<>8__locals2.CS$<>8__locals1.<>4__this._currentX.ToString(), CS$<>8__locals3.CS$<>8__locals2.CS$<>8__locals1.<>4__this._currentY.ToString(), CS$<>8__locals3.CS$<>8__locals2.arrow));
-							ValueTuple<int, int, string> position = await Task.Run<ValueTuple<int, int, string>>(() => CS$<>8__locals3.CS$<>8__locals2.CS$<>8__locals1.<>4__this._dofusHunt.GetIndicePosition(CS$<>8__locals3.indice, CS$<>8__locals3.CS$<>8__locals2.CS$<>8__locals1.<>4__this._lastDetectedIndice, CS$<>8__locals3.CS$<>8__locals2.CS$<>8__locals1.<>4__this._currentX, CS$<>8__locals3.CS$<>8__locals2.CS$<>8__locals1.<>4__this._currentY));
-							if (correctedText != position.Item3)
-							{
-								this.labelControl_huntAutoIndiceCor.Text = "Indice corrigé : " + position.Item3;
-							}
-							else
-							{
-								this.labelControl_huntAutoIndiceCor.Text = "Indice corrigé :";
-							}
-							if (position.Item1 == -99 && position.Item2 == -99)
-							{
-								this._dofusHunt.AddLog("Erreur de la récupération de la position de l'indice.");
-								this.ResetInterfaceChasse();
-								return;
-							}
-							Control control = this.labelControl_huntAutoMInd;
-							DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(22, 2);
-							defaultInterpolatedStringHandler.AppendLiteral("Map de l'indice : [");
-							defaultInterpolatedStringHandler.AppendFormatted<int>(position.Item1);
-							defaultInterpolatedStringHandler.AppendLiteral(", ");
-							defaultInterpolatedStringHandler.AppendFormatted<int>(position.Item2);
-							defaultInterpolatedStringHandler.AppendLiteral("]");
-							control.Text = defaultInterpolatedStringHandler.ToStringAndClear();
-							if (this._advancedLog == "True")
-							{
-								DofusHunt dofusHunt6 = this._dofusHunt;
-								defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(27, 2);
-								defaultInterpolatedStringHandler.AppendLiteral("Position de l'indice : [");
-								defaultInterpolatedStringHandler.AppendFormatted<int>(position.Item1);
-								defaultInterpolatedStringHandler.AppendLiteral(", ");
-								defaultInterpolatedStringHandler.AppendFormatted<int>(position.Item2);
-								defaultInterpolatedStringHandler.AppendLiteral("]");
-								dofusHunt6.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
-							}
-							this._currentX = position.Item1;
-							this._currentY = position.Item2;
-							if (this.checkEdit_huntAutoTravel.Checked)
-							{
-								defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(9, 2);
-								defaultInterpolatedStringHandler.AppendLiteral("/travel ");
-								defaultInterpolatedStringHandler.AppendFormatted<int>(position.Item1);
-								defaultInterpolatedStringHandler.AppendLiteral(" ");
-								defaultInterpolatedStringHandler.AppendFormatted<int>(position.Item2);
-								Clipboard.SetText(defaultInterpolatedStringHandler.ToStringAndClear());
-							}
-							this.toastNotificationsManager.ShowNotification("IndiceOk");
-							this.StartMonitorigChasse();
-							CS$<>8__locals3 = null;
-						}
-						CS$<>8__locals2 = null;
-						correctedText = null;
-					}
-					else
-					{
-						this.simpleButton_startHunt.Enabled = true;
-						this.simpleButton_stopHunt.Enabled = false;
-						this._dofusHunt.AddLog("La zone de l'indice n'a pas pu être trouvée.");
-					}
-				}
-			}
-			else
-			{
-				this.simpleButton_startHunt.Enabled = true;
-				this.simpleButton_stopHunt.Enabled = false;
-				this._dofusHunt.AddLog("L'image recadrée n'a pas été trouvée. Veuillez réessayer.");
-			}
-		}
-
-		// Token: 0x06000067 RID: 103 RVA: 0x00006F40 File Offset: 0x00005140
-		private void labelControl_huntAutoIndiceCor_Click(object sender, EventArgs e)
-		{
-			if (this.labelControl_huntAutoIndiceCor.Text != "Indice corrigé :")
-			{
-				string labelText_Ok = this.labelControl_huntAutoIndiceCor.Text;
+				string labelText_Ok = this.labelControl_HuntAuto_IndiceCor.Text;
 				string prefix_Ok = "Indice corrigé : ";
 				string correctedIndice_Ok = string.Empty;
 				if (labelText_Ok.StartsWith(prefix_Ok))
 				{
 					correctedIndice_Ok = labelText_Ok.Substring(prefix_Ok.Length).Trim();
 				}
-				string labelText = this.labelControl_huntAutoIndice.Text;
+				string labelText = this.labelControl_HuntAuto_Indice.Text;
 				string prefix = "Indice : ";
 				string correctedIndice = string.Empty;
 				if (labelText.StartsWith(prefix))
@@ -1143,7 +1698,7 @@ namespace Dofus_Hunt
 					{
 						MessageBox.Show("Veuillez remplir les deux champs avant de sauvegarder.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Hand);
 					}
-					else if (!File.Exists(this._configPath + "/corrections.xml"))
+					else if (!File.Exists(FormHome._configPath + "/corrections.xml"))
 					{
 						new XDocument(new object[]
 						{
@@ -1152,12 +1707,15 @@ namespace Dofus_Hunt
 								new XElement("Erroneous", detectedText),
 								new XElement("Correct", correctedText)
 							}))
-						}).Save(this._configPath + "/corrections.xml");
-						this.toastNotificationsManager.ShowNotification("SaveCorrections");
+						}).Save(FormHome._configPath + "/corrections.xml");
+						if (this._notify == "True")
+						{
+							this.toastNotificationsManager.ShowNotification("Indice_Correct");
+						}
 					}
 					else
 					{
-						XDocument doc = XDocument.Load(this._configPath + "/corrections.xml");
+						XDocument doc = XDocument.Load(FormHome._configPath + "/corrections.xml");
 						XElement existingCorrection = doc.Descendants("Correction").FirstOrDefault(delegate(XElement x)
 						{
 							XElement xelement = x.Element("Erroneous");
@@ -1171,7 +1729,10 @@ namespace Dofus_Hunt
 						if (existingCorrection != null)
 						{
 							existingCorrection.Element("Correct").Value = correctedText;
-							this.toastNotificationsManager.ShowNotification("SaveCorrections");
+							if (this._notify == "True")
+							{
+								this.toastNotificationsManager.ShowNotification("Indice_Correct");
+							}
 						}
 						else
 						{
@@ -1180,10 +1741,12 @@ namespace Dofus_Hunt
 								new XElement("Erroneous", detectedText),
 								new XElement("Correct", correctedText)
 							}));
-							this.toastNotificationsManager.ShowNotification("SaveCorrections");
+							if (this._notify == "True")
+							{
+								this.toastNotificationsManager.ShowNotification("Indice_Correct");
+							}
 						}
-						doc.Save(this._configPath + "/corrections.xml");
-						this.textEdit_detectedindice.Text = (this.textEdit_indiceok.Text = "");
+						doc.Save(FormHome._configPath + "/corrections.xml");
 					}
 				}
 				catch (Exception ex)
@@ -1193,113 +1756,164 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x06000068 RID: 104 RVA: 0x0000721C File Offset: 0x0000541C
-		private void ResetInterfaceChasse()
-		{
-			this.labelControl_huntAutoStart.Text = "Map de départ :";
-			this.labelControl_huntAutoIndice.Text = "Indice :";
-			this.labelControl_huntAutoIndiceCor.Text = "Indice corrigé :";
-			this.labelControl_huntAutoDir.Text = "Direction :";
-			this.labelControl_huntAutoMInd.Text = "Map de l'indice :";
-			this.simpleButton_startHunt.Enabled = true;
-			this.simpleButton_stopHunt.Enabled = false;
-			this.checkEdit_huntAutoTravel.Checked = true;
-		}
+		// Token: 0x04000001 RID: 1
+		private static readonly string _configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Dofus Hunt");
 
-		// Token: 0x06000069 RID: 105 RVA: 0x000072A0 File Offset: 0x000054A0
-		private void StartMonitorigChasse()
-		{
-			FormHome.<>c__DisplayClass64_0 CS$<>8__locals1 = new FormHome.<>c__DisplayClass64_0();
-			CS$<>8__locals1.<>4__this = this;
-			CS$<>8__locals1.erreurs = 0;
-			this._cancellationTokenSource = new CancellationTokenSource();
-			CS$<>8__locals1.token = this._cancellationTokenSource.Token;
-			Thread thread = new Thread(delegate
-			{
-				FormHome.<>c__DisplayClass64_0.<<StartMonitorigChasse>b__0>d <<StartMonitorigChasse>b__0>d;
-				<<StartMonitorigChasse>b__0>d.<>t__builder = AsyncVoidMethodBuilder.Create();
-				<<StartMonitorigChasse>b__0>d.<>4__this = CS$<>8__locals1;
-				<<StartMonitorigChasse>b__0>d.<>1__state = -1;
-				<<StartMonitorigChasse>b__0>d.<>t__builder.Start<FormHome.<>c__DisplayClass64_0.<<StartMonitorigChasse>b__0>d>(ref <<StartMonitorigChasse>b__0>d);
-			});
-			thread.SetApartmentState(ApartmentState.STA);
-			thread.Start();
-		}
+		// Token: 0x04000002 RID: 2
+		private static readonly string _logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Dofus Hunt", "logs");
 
-		// Token: 0x0600006A RID: 106 RVA: 0x00002372 File Offset: 0x00000572
-		private void labelControl_huntAutoIndice_Click(object sender, EventArgs e)
-		{
-			Clipboard.SetText(this._dofusHunt.ExtractIndiceText(this.labelControl_huntAutoIndice.Text));
-		}
+		// Token: 0x04000003 RID: 3
+		private static readonly string _logPathImg = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Dofus Hunt", "logs", "img");
 
-		// Token: 0x0400001E RID: 30
-		private string version;
+		// Token: 0x04000004 RID: 4
+		private static readonly string RevisionFilePath = "revision.txt";
 
-		// Token: 0x0400001F RID: 31
-		private string _logPathImg = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Dofus Hunt", "logs", "img");
+		// Token: 0x04000005 RID: 5
+		private static readonly string RevisionDHUFilePath = "revision_update.txt";
 
-		// Token: 0x04000020 RID: 32
-		private string _logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Dofus Hunt", "logs");
+		// Token: 0x04000006 RID: 6
+		private static readonly string configFilePath = FormHome._configPath + "/appSettings.xml";
 
-		// Token: 0x04000021 RID: 33
-		private string _configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Dofus Hunt");
-
-		// Token: 0x04000022 RID: 34
-		private const string RevisionFilePath = "revision.txt";
-
-		// Token: 0x04000023 RID: 35
-		private DofusHunt _dofusHunt;
-
-		// Token: 0x04000024 RID: 36
-		private ProxyServer proxyServer;
-
-		// Token: 0x04000025 RID: 37
-		private ExplicitProxyEndPoint proxyEndPoint;
-
-		// Token: 0x04000026 RID: 38
-		private CancellationTokenSource _cancellationTokenSource;
-
-		// Token: 0x04000027 RID: 39
+		// Token: 0x04000007 RID: 7
 		[TupleElementNames(new string[] { "posX", "posY" })]
 		private Dictionary<string, ValueTuple<int, int>> huntIndicePositions = new Dictionary<string, ValueTuple<int, int>>();
 
-		// Token: 0x04000028 RID: 40
+		// Token: 0x04000008 RID: 8
+		private Dofus_Hunt _Dofus_Hunt;
+
+		// Token: 0x04000009 RID: 9
+		private Hunt _Hunt;
+
+		// Token: 0x0400000A RID: 10
+		private CancellationTokenSource _cancellationTokenSource;
+
+		// Token: 0x0400000B RID: 11
 		private string _dofus;
 
-		// Token: 0x04000029 RID: 41
+		// Token: 0x0400000C RID: 12
 		private string _opacity;
 
-		// Token: 0x0400002A RID: 42
-		private string _advancedLog;
-
-		// Token: 0x0400002B RID: 43
-		private string _token;
-
-		// Token: 0x0400002C RID: 44
+		// Token: 0x0400000D RID: 13
 		private string _alwaysonscreen;
 
-		// Token: 0x0400002D RID: 45
+		// Token: 0x0400000E RID: 14
 		private string _dark;
 
-		// Token: 0x0400002E RID: 46
-		private string _lastDetectedIndice = string.Empty;
+		// Token: 0x0400000F RID: 15
+		private string _advancedLog;
 
-		// Token: 0x0400002F RID: 47
-		private bool _lastIndiceIsPhorreur;
+		// Token: 0x04000010 RID: 16
+		private string _deleteTempFiles;
 
-		// Token: 0x04000030 RID: 48
-		private int _currentX;
+		// Token: 0x04000011 RID: 17
+		private string _deleteLog;
 
-		// Token: 0x04000031 RID: 49
-		private int _currentY;
+		// Token: 0x04000012 RID: 18
+		private string _notify;
 
-		// Token: 0x04000032 RID: 50
+		// Token: 0x04000013 RID: 19
+		private string _updateDHU;
+
+		// Token: 0x04000014 RID: 20
+		private string _version;
+
+		// Token: 0x04000015 RID: 21
+		private string _token;
+
+		// Token: 0x04000016 RID: 22
+		private string _googleVision;
+
+		// Token: 0x04000017 RID: 23
+		private string _modeOffline;
+
+		// Token: 0x04000018 RID: 24
+		private string _googleAPI;
+
+		// Token: 0x04000019 RID: 25
 		private Timer tokenTimer;
 
+		// Token: 0x0400001A RID: 26
+		private string _lastDetectedIndice = string.Empty;
+
+		// Token: 0x0400001B RID: 27
+		private bool _lastIndiceIsPhorreur;
+
+		// Token: 0x0400001C RID: 28
+		private int _currentX;
+
+		// Token: 0x0400001D RID: 29
+		private int _currentY;
+
+		// Token: 0x0400001E RID: 30
+		private string _notify_App_Update;
+
+		// Token: 0x0400001F RID: 31
+		private string _notify_App_Connect;
+
+		// Token: 0x04000020 RID: 32
+		private string _notify_App_GetData;
+
+		// Token: 0x04000021 RID: 33
+		private string _notify_App_Restart;
+
+		// Token: 0x04000022 RID: 34
+		private string _notify_Hunt_NoData;
+
+		// Token: 0x04000023 RID: 35
+		private string _notify_Indice_OK;
+
+		// Token: 0x04000024 RID: 36
+		private string _notify_Indice_KO;
+
+		// Token: 0x04000025 RID: 37
+		private string _notify_Indice_Phorreur;
+
+		// Token: 0x04000026 RID: 38
+		private string _notify_Indice_Correct;
+
+		// Token: 0x04000027 RID: 39
+		private int _HuntAutoPosition_X;
+
+		// Token: 0x04000028 RID: 40
+		private int _HuntAutoPosition_Y;
+
+		// Token: 0x04000029 RID: 41
+		private int _HuntAutoPosition_Width;
+
+		// Token: 0x0400002A RID: 42
+		private int _HuntAutoPosition_Height;
+
+		// Token: 0x0400002B RID: 43
+		private double _HuntAutoPosition_Threshold;
+
+		// Token: 0x0400002C RID: 44
+		private int _HuntAutoPosition_largeurTexte;
+
+		// Token: 0x0400002D RID: 45
+		private int _HuntAutoPosition_hauteurTexte;
+
+		// Token: 0x0400002E RID: 46
+		private double _HuntAutoIndice_Threshold_Start;
+
+		// Token: 0x0400002F RID: 47
+		private double _HuntAutoIndice_Threshold_Coche;
+
+		// Token: 0x04000030 RID: 48
+		private double _HuntAutoIndice_Threshold_Arrow;
+
+		// Token: 0x04000031 RID: 49
+		private int _HuntAutoIndice_largeurTexte_Start;
+
+		// Token: 0x04000032 RID: 50
+		private int _HuntAutoIndice_hauteurTexte_Start;
+
 		// Token: 0x04000033 RID: 51
-		private string googleAPI;
+		private int _HuntAutoIndice_largeurTexte_Coche;
 
 		// Token: 0x04000034 RID: 52
-		private int _seuil;
+		private int _HuntAutoIndice_hauteurTexte_Coche;
+
+		// Token: 0x04000035 RID: 53
+		private int _HuntAutoIndice_similarityThreshold;
 	}
 }
