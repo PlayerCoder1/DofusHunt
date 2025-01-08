@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1C924589-CB6B-47BE-AB2A-6E9B04D956A4}</ProjectGuid>
+    <ProjectGuid>{F101123F-7A15-4CD6-A911-9776972DC7E1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Dof_Hunt</RootNamespace>
     <AssemblyName>Dof Hunt</AssemblyName>
@@ -33,16 +33,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoIt">
-      <HintPath>..\..\..\v1.2.1\AutoIt.dll</HintPath>
+      <HintPath>..\..\..\v1.2.2\AutoIt.dll</HintPath>
     </Reference>
     <Reference Include="Emgu.CV">
-      <HintPath>..\..\..\v1.2.1\Emgu.CV.dll</HintPath>
+      <HintPath>..\..\..\v1.2.2\Emgu.CV.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\v1.2.1\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\v1.2.2\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp">
-      <HintPath>..\..\..\v1.2.1\RestSharp.dll</HintPath>
+      <HintPath>..\..\..\v1.2.2\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections">
       <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Collections.dll</HintPath>
@@ -51,7 +51,7 @@
       <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.ComponentModel.EventBasedAsync.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing.Common">
-      <HintPath>..\..\..\v1.2.1\System.Drawing.Common.dll</HintPath>
+      <HintPath>..\..\..\v1.2.2\System.Drawing.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing.Primitives">
       <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Drawing.Primitives.dll</HintPath>
@@ -63,7 +63,7 @@
       <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Management">
-      <HintPath>..\..\..\v1.2.1\System.Management.dll</HintPath>
+      <HintPath>..\..\..\v1.2.2\System.Management.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
       <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Net.Http.dll</HintPath>
@@ -99,13 +99,13 @@
       <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Xml.XDocument.dll</HintPath>
     </Reference>
     <Reference Include="Tesseract">
-      <HintPath>..\..\..\v1.2.1\Tesseract.dll</HintPath>
+      <HintPath>..\..\..\v1.2.2\Tesseract.dll</HintPath>
     </Reference>
     <Reference Include="Titanium.Web.Proxy">
-      <HintPath>..\..\..\v1.2.1\Titanium.Web.Proxy.dll</HintPath>
+      <HintPath>..\..\..\v1.2.2\Titanium.Web.Proxy.dll</HintPath>
     </Reference>
     <Reference Include="WebDriver">
-      <HintPath>..\..\..\v1.2.1\WebDriver.dll</HintPath>
+      <HintPath>..\..\..\v1.2.2\WebDriver.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

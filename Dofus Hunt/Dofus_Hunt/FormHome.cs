@@ -29,7 +29,7 @@ namespace Dofus_Hunt
 	// Token: 0x02000003 RID: 3
 	public partial class FormHome : XtraForm
 	{
-		// Token: 0x06000003 RID: 3 RVA: 0x00002568 File Offset: 0x00000768
+		// Token: 0x06000003 RID: 3 RVA: 0x0000208C File Offset: 0x0000028C
 		public FormHome(string Dofus)
 		{
 			this.InitializeComponent();
@@ -42,7 +42,7 @@ namespace Dofus_Hunt
 			this.tokenTimer.Start();
 		}
 
-		// Token: 0x06000004 RID: 4 RVA: 0x00002600 File Offset: 0x00000800
+		// Token: 0x06000004 RID: 4 RVA: 0x00002124 File Offset: 0x00000324
 		private async void FormHome_Load(object sender, EventArgs e)
 		{
 			if (this._Dofus_Hunt.CreateDefaultConfigFileIfNotExists(FormHome._configPath + "/appSettings.xml"))
@@ -120,10 +120,11 @@ namespace Dofus_Hunt
 				}
 			});
 			this.panelControl_Hunt_Init.Visible = false;
+			this.panelControl_Home.Visible = true;
 			this.accordionControl1.Enabled = true;
 		}
 
-		// Token: 0x06000005 RID: 5 RVA: 0x00002638 File Offset: 0x00000838
+		// Token: 0x06000005 RID: 5 RVA: 0x0000215C File Offset: 0x0000035C
 		public async Task<string> DownloadUpdateAsync(string updateUrl)
 		{
 			string tempPath = Path.Combine(Path.GetTempPath(), "update.zip");
@@ -146,7 +147,7 @@ namespace Dofus_Hunt
 			return tempPath;
 		}
 
-		// Token: 0x06000006 RID: 6 RVA: 0x0000267C File Offset: 0x0000087C
+		// Token: 0x06000006 RID: 6 RVA: 0x000021A0 File Offset: 0x000003A0
 		private void ConfigToastNotifications()
 		{
 			this.toastNotificationsManager.ApplicationId = "Dofus Hunt";
@@ -161,14 +162,14 @@ namespace Dofus_Hunt
 			this.toastNotificationsManager.Notifications.Add(new ToastNotification("Indice_Correct", Resources.logo_64x64, "Dofus Hunt", this._notify_Indice_Correct, "", ToastNotificationTemplate.ImageAndText02));
 		}
 
-		// Token: 0x06000007 RID: 7 RVA: 0x00002089 File Offset: 0x00000289
+		// Token: 0x06000007 RID: 7 RVA: 0x00002376 File Offset: 0x00000576
 		private void Timer_Tick(object sender, EventArgs e)
 		{
 			this._Hunt.GetToken();
 			this._token = this._Hunt.Token;
 		}
 
-		// Token: 0x06000008 RID: 8 RVA: 0x000020A8 File Offset: 0x000002A8
+		// Token: 0x06000008 RID: 8 RVA: 0x00002395 File Offset: 0x00000595
 		private void FormHome_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			this.saveConfig();
@@ -179,7 +180,7 @@ namespace Dofus_Hunt
 			Application.Exit();
 		}
 
-		// Token: 0x06000009 RID: 9 RVA: 0x00002854 File Offset: 0x00000A54
+		// Token: 0x06000009 RID: 9 RVA: 0x000023C0 File Offset: 0x000005C0
 		private void getConfig()
 		{
 			string configFilePath = FormHome._configPath + "/appSettings.xml";
@@ -224,7 +225,7 @@ namespace Dofus_Hunt
 			this._HuntAutoIndice_similarityThreshold = int.Parse(this._Dofus_Hunt.GetConfigValue(configFilePath, "HuntAutoIndice_similarityThreshold"));
 		}
 
-		// Token: 0x0600000A RID: 10 RVA: 0x00002BF4 File Offset: 0x00000DF4
+		// Token: 0x0600000A RID: 10 RVA: 0x00002760 File Offset: 0x00000960
 		private void initConfig()
 		{
 			if (base.InvokeRequired)
@@ -314,7 +315,7 @@ namespace Dofus_Hunt
 			this.textEdit_Hunt_Config_Hunt_Indice_Detection.Text = this._HuntAutoIndice_similarityThreshold.ToString();
 		}
 
-		// Token: 0x0600000B RID: 11 RVA: 0x00002FA4 File Offset: 0x000011A4
+		// Token: 0x0600000B RID: 11 RVA: 0x00002B10 File Offset: 0x00000D10
 		private void saveConfig()
 		{
 			int opacityInt;
@@ -379,7 +380,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600000C RID: 12 RVA: 0x000032D0 File Offset: 0x000014D0
+		// Token: 0x0600000C RID: 12 RVA: 0x00002E3C File Offset: 0x0000103C
 		private void accordionControlElement_SubMenu_Config_Logiciel_Click(object sender, EventArgs e)
 		{
 			this.panelControl_Hunt_Indice.Visible = false;
@@ -390,9 +391,10 @@ namespace Dofus_Hunt
 			this.panelControl_Hunt_ConfigHuntAuto.Visible = false;
 			this.panelControl_Hunt_Hunt.Visible = false;
 			this.panelControl_Hunt_HuntAuto.Visible = false;
+			this.panelControl_Home.Visible = false;
 		}
 
-		// Token: 0x0600000D RID: 13 RVA: 0x00003340 File Offset: 0x00001540
+		// Token: 0x0600000D RID: 13 RVA: 0x00002EB8 File Offset: 0x000010B8
 		private void accordionControlElement_SubMenu_Config_Indice_Click(object sender, EventArgs e)
 		{
 			this.panelControl_Hunt_Config_Logiciel.Visible = false;
@@ -403,6 +405,7 @@ namespace Dofus_Hunt
 			this.panelControl_Hunt_ConfigHuntAuto.Visible = false;
 			this.panelControl_Hunt_Hunt.Visible = false;
 			this.panelControl_Hunt_HuntAuto.Visible = false;
+			this.panelControl_Home.Visible = false;
 			this.dataGridView_Hunt_Indice_List.Rows.Clear();
 			try
 			{
@@ -418,7 +421,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600000E RID: 14 RVA: 0x00003478 File Offset: 0x00001678
+		// Token: 0x0600000E RID: 14 RVA: 0x00002FFC File Offset: 0x000011FC
 		private void accordionControlElement_SubMenu_Config_Notif_Click(object sender, EventArgs e)
 		{
 			this.panelControl_Hunt_Config_Logiciel.Visible = false;
@@ -429,9 +432,10 @@ namespace Dofus_Hunt
 			this.panelControl_Hunt_ConfigHuntAuto.Visible = false;
 			this.panelControl_Hunt_Hunt.Visible = false;
 			this.panelControl_Hunt_HuntAuto.Visible = false;
+			this.panelControl_Home.Visible = false;
 		}
 
-		// Token: 0x0600000F RID: 15 RVA: 0x000034E8 File Offset: 0x000016E8
+		// Token: 0x0600000F RID: 15 RVA: 0x00003078 File Offset: 0x00001278
 		private void accordionControlElement_SubMenu_Config_Debug_Click(object sender, EventArgs e)
 		{
 			this.panelControl_Hunt_Config_Logiciel.Visible = false;
@@ -442,9 +446,10 @@ namespace Dofus_Hunt
 			this.panelControl_Hunt_ConfigHuntAuto.Visible = false;
 			this.panelControl_Hunt_Hunt.Visible = false;
 			this.panelControl_Hunt_HuntAuto.Visible = false;
+			this.panelControl_Home.Visible = false;
 		}
 
-		// Token: 0x06000010 RID: 16 RVA: 0x00003558 File Offset: 0x00001758
+		// Token: 0x06000010 RID: 16 RVA: 0x000030F4 File Offset: 0x000012F4
 		private void accordionControlElement_SubMenu_Config_HuntAuto_Click(object sender, EventArgs e)
 		{
 			this.panelControl_Hunt_Config_Logiciel.Visible = false;
@@ -455,9 +460,10 @@ namespace Dofus_Hunt
 			this.panelControl_Hunt_ConfigHuntAuto.Visible = true;
 			this.panelControl_Hunt_Hunt.Visible = false;
 			this.panelControl_Hunt_HuntAuto.Visible = false;
+			this.panelControl_Home.Visible = false;
 		}
 
-		// Token: 0x06000011 RID: 17 RVA: 0x000035C8 File Offset: 0x000017C8
+		// Token: 0x06000011 RID: 17 RVA: 0x00003170 File Offset: 0x00001370
 		private void accordionControlElement_SubMenu_Hunt_Click(object sender, EventArgs e)
 		{
 			this.panelControl_Hunt_Config_Logiciel.Visible = false;
@@ -468,9 +474,10 @@ namespace Dofus_Hunt
 			this.panelControl_Hunt_ConfigHuntAuto.Visible = false;
 			this.panelControl_Hunt_Hunt.Visible = true;
 			this.panelControl_Hunt_HuntAuto.Visible = false;
+			this.panelControl_Home.Visible = false;
 		}
 
-		// Token: 0x06000012 RID: 18 RVA: 0x00003638 File Offset: 0x00001838
+		// Token: 0x06000012 RID: 18 RVA: 0x000031EC File Offset: 0x000013EC
 		private void accordionControlElement_SubMenu_HuntAuto_Click(object sender, EventArgs e)
 		{
 			this.panelControl_Hunt_Config_Logiciel.Visible = false;
@@ -481,16 +488,17 @@ namespace Dofus_Hunt
 			this.panelControl_Hunt_ConfigHuntAuto.Visible = false;
 			this.panelControl_Hunt_Hunt.Visible = false;
 			this.panelControl_Hunt_HuntAuto.Visible = true;
+			this.panelControl_Home.Visible = false;
 		}
 
-		// Token: 0x06000013 RID: 19 RVA: 0x000036A8 File Offset: 0x000018A8
+		// Token: 0x06000013 RID: 19 RVA: 0x00003268 File Offset: 0x00001468
 		private void trackBarControl_Hunt_Config_Logiciel_Opacity_Click(object sender, EventArgs e)
 		{
 			int trackBarValue = this.trackBarControl_Hunt_Config_Logiciel_Opacity.Value;
 			base.Opacity = (double)trackBarValue / 100.0;
 		}
 
-		// Token: 0x06000014 RID: 20 RVA: 0x000036D4 File Offset: 0x000018D4
+		// Token: 0x06000014 RID: 20 RVA: 0x00003294 File Offset: 0x00001494
 		private void simpleButton_Hunt_Indice_Add_Click(object sender, EventArgs e)
 		{
 			try
@@ -560,7 +568,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x06000015 RID: 21 RVA: 0x00003988 File Offset: 0x00001B88
+		// Token: 0x06000015 RID: 21 RVA: 0x00003548 File Offset: 0x00001748
 		private async void simpleButton_Hunt_Debug_Token_Click(object sender, EventArgs e)
 		{
 			await this._Hunt.GetToken();
@@ -568,13 +576,13 @@ namespace Dofus_Hunt
 			this.textEdit_Hunt_Debug_Token.Text = this._token;
 		}
 
-		// Token: 0x06000016 RID: 22 RVA: 0x000020D3 File Offset: 0x000002D3
+		// Token: 0x06000016 RID: 22 RVA: 0x0000357F File Offset: 0x0000177F
 		private void simpleButton_Hunt_Debug_Capture_Click(object sender, EventArgs e)
 		{
 			this._Hunt.CaptureGame(FormHome._logPathImg + "/screenshot.png");
 		}
 
-		// Token: 0x06000017 RID: 23 RVA: 0x000039C0 File Offset: 0x00001BC0
+		// Token: 0x06000017 RID: 23 RVA: 0x0000359C File Offset: 0x0000179C
 		private void simpleButton_Hunt_Debug_GetPositionIndice_Click(object sender, EventArgs e)
 		{
 			string indice = this._Hunt.GetIndice(this._token, this.textEdit_Hunt_Debug_X.Text, this.textEdit_Hunt_Debug_Y.Text, this.textEdit_Hunt_Debug_Dir.Text);
@@ -597,7 +605,7 @@ namespace Dofus_Hunt
 			MessageBox.Show(defaultInterpolatedStringHandler.ToStringAndClear(), "Résultat de la recherche", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
 		}
 
-		// Token: 0x06000018 RID: 24 RVA: 0x00003B08 File Offset: 0x00001D08
+		// Token: 0x06000018 RID: 24 RVA: 0x000036E4 File Offset: 0x000018E4
 		private async void simpleButton_Hunt_Debug_GetPosition_Click(object sender, EventArgs e)
 		{
 			await Task.Run(delegate
@@ -655,7 +663,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x06000019 RID: 25 RVA: 0x00003B40 File Offset: 0x00001D40
+		// Token: 0x06000019 RID: 25 RVA: 0x0000371C File Offset: 0x0000191C
 		private void textEdit_Hunt_Config_Debug_EditValueChanged(object sender, EventArgs e)
 		{
 			string dateFormat = DateTime.Now.ToString("yyyyMMdd");
@@ -667,7 +675,7 @@ namespace Dofus_Hunt
 			this.checkEdit_Hunt_Config_Debug.Enabled = false;
 		}
 
-		// Token: 0x0600001A RID: 26 RVA: 0x000020EF File Offset: 0x000002EF
+		// Token: 0x0600001A RID: 26 RVA: 0x00003768 File Offset: 0x00001968
 		private void checkEdit_Hunt_Config_Debug_CheckedChanged(object sender, EventArgs e)
 		{
 			if (this.checkEdit_Hunt_Config_Debug.Checked)
@@ -680,14 +688,14 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600001B RID: 27 RVA: 0x00003B8C File Offset: 0x00001D8C
+		// Token: 0x0600001B RID: 27 RVA: 0x0000379C File Offset: 0x0000199C
 		private void simpleButton_Hunt_Debug_GetIndice_Click(object sender, EventArgs e)
 		{
 			string indice = this._Hunt.getIndiceTexte(this._HuntAutoIndice_Threshold_Start, this._HuntAutoIndice_largeurTexte_Start, this._HuntAutoIndice_hauteurTexte_Start, this._HuntAutoIndice_Threshold_Coche, this._HuntAutoIndice_largeurTexte_Coche, this._HuntAutoIndice_hauteurTexte_Coche);
 			MessageBox.Show("L'indice trouvé est : " + indice, "Résultat de la recherche", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
 		}
 
-		// Token: 0x0600001C RID: 28 RVA: 0x00003BE4 File Offset: 0x00001DE4
+		// Token: 0x0600001C RID: 28 RVA: 0x000037F4 File Offset: 0x000019F4
 		private void simpleButton_Hunt_Debug_GetArrow_Click(object sender, EventArgs e)
 		{
 			string arrow = this._Hunt.DetectArrowDirectionAfterOCR(this._HuntAutoIndice_Threshold_Arrow);
@@ -695,7 +703,7 @@ namespace Dofus_Hunt
 			MessageBox.Show("La direction de la flèche est : " + img_arrow, "Résultat de la recherche", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
 		}
 
-		// Token: 0x0600001D RID: 29 RVA: 0x00003C2C File Offset: 0x00001E2C
+		// Token: 0x0600001D RID: 29 RVA: 0x0000383C File Offset: 0x00001A3C
 		private void checkEdit_Hunt_Config_Logiciel_Ecran_CheckedChanged(object sender, EventArgs e)
 		{
 			bool alwaysOnScreenValue;
@@ -708,7 +716,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600001E RID: 30 RVA: 0x00003CA8 File Offset: 0x00001EA8
+		// Token: 0x0600001E RID: 30 RVA: 0x000038B8 File Offset: 0x00001AB8
 		private void checkEdit_Hunt_Config_Logiciel_LogAvance_CheckedChanged(object sender, EventArgs e)
 		{
 			bool logAdvencedValue;
@@ -722,7 +730,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600001F RID: 31 RVA: 0x00003D40 File Offset: 0x00001F40
+		// Token: 0x0600001F RID: 31 RVA: 0x00003950 File Offset: 0x00001B50
 		private void checkEdit_Hunt_Config_Logiciel_Theme_CheckedChanged(object sender, EventArgs e)
 		{
 			bool darkValue;
@@ -741,7 +749,7 @@ namespace Dofus_Hunt
 			UserLookAndFeel.Default.SkinName = "Metropolis Dark";
 		}
 
-		// Token: 0x06000020 RID: 32 RVA: 0x00003DE8 File Offset: 0x00001FE8
+		// Token: 0x06000020 RID: 32 RVA: 0x000039F8 File Offset: 0x00001BF8
 		private void checkEdit_Hunt_Config_Logiciel_DeleteFile_CheckedChanged(object sender, EventArgs e)
 		{
 			bool deleteTempFilesValue;
@@ -754,7 +762,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x06000021 RID: 33 RVA: 0x00003E64 File Offset: 0x00002064
+		// Token: 0x06000021 RID: 33 RVA: 0x00003A74 File Offset: 0x00001C74
 		private void checkEdit_Hunt_Config_Logiciel_DeleteLog_CheckedChanged(object sender, EventArgs e)
 		{
 			bool deleteLogValue;
@@ -767,7 +775,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x06000022 RID: 34 RVA: 0x00003EE0 File Offset: 0x000020E0
+		// Token: 0x06000022 RID: 34 RVA: 0x00003AF0 File Offset: 0x00001CF0
 		private void checkEdit_Hunt_Config_Logiciel_Notifications_CheckedChanged(object sender, EventArgs e)
 		{
 			bool notifyValue;
@@ -780,7 +788,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x06000023 RID: 35 RVA: 0x00003F5C File Offset: 0x0000215C
+		// Token: 0x06000023 RID: 35 RVA: 0x00003B6C File Offset: 0x00001D6C
 		private void checkEdit_Hunt_Config_Logiciel_UpdateDHU_CheckedChanged(object sender, EventArgs e)
 		{
 			bool updateDHUValue;
@@ -793,7 +801,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x06000024 RID: 36 RVA: 0x00003FD8 File Offset: 0x000021D8
+		// Token: 0x06000024 RID: 36 RVA: 0x00003BE8 File Offset: 0x00001DE8
 		private void checkEdit_Hunt_Config_UseGoogleVision_CheckedChanged(object sender, EventArgs e)
 		{
 			bool googleVisionValue;
@@ -806,7 +814,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x06000025 RID: 37 RVA: 0x00004054 File Offset: 0x00002254
+		// Token: 0x06000025 RID: 37 RVA: 0x00003C64 File Offset: 0x00001E64
 		private void checkEdit_Hunt_Config_Offline_CheckedChanged(object sender, EventArgs e)
 		{
 			bool modeOfflineValue;
@@ -819,7 +827,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x06000026 RID: 38 RVA: 0x000040D0 File Offset: 0x000022D0
+		// Token: 0x06000026 RID: 38 RVA: 0x00003CE0 File Offset: 0x00001EE0
 		private void simpleButton_Notify_Reinit_Click(object sender, EventArgs e)
 		{
 			this.textEdit_Notify_App_Update.Text = "Une mise à jour est disponible !";
@@ -842,7 +850,7 @@ namespace Dofus_Hunt
 			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_Indice_Correct", this.textEdit_Indices_CorrectIndice.Text);
 		}
 
-		// Token: 0x06000027 RID: 39 RVA: 0x000042E8 File Offset: 0x000024E8
+		// Token: 0x06000027 RID: 39 RVA: 0x00003EF8 File Offset: 0x000020F8
 		private void simpleButton_Notify_Save_Click(object sender, EventArgs e)
 		{
 			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_App_Update", this.textEdit_Notify_App_Update.Text);
@@ -856,12 +864,12 @@ namespace Dofus_Hunt
 			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "Notify_Indice_Correct", this.textEdit_Indices_CorrectIndice.Text);
 		}
 
-		// Token: 0x06000028 RID: 40 RVA: 0x00002123 File Offset: 0x00000323
+		// Token: 0x06000028 RID: 40 RVA: 0x0000407F File Offset: 0x0000227F
 		private void groupControl2_Paint(object sender, PaintEventArgs e)
 		{
 		}
 
-		// Token: 0x06000029 RID: 41 RVA: 0x00004470 File Offset: 0x00002670
+		// Token: 0x06000029 RID: 41 RVA: 0x00004084 File Offset: 0x00002284
 		private void pictureBox_Hunt_Config_Hunt_Template_Coche_Click(object sender, EventArgs e)
 		{
 			using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -889,7 +897,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600002A RID: 42 RVA: 0x0000454C File Offset: 0x0000274C
+		// Token: 0x0600002A RID: 42 RVA: 0x00004160 File Offset: 0x00002360
 		private void pictureBox_Hunt_Config_Hunt_Template_Start_Click(object sender, EventArgs e)
 		{
 			using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -917,7 +925,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600002B RID: 43 RVA: 0x00004628 File Offset: 0x00002828
+		// Token: 0x0600002B RID: 43 RVA: 0x0000423C File Offset: 0x0000243C
 		private void pictureBox_Hunt_Config_Hunt_Template_Level_Click(object sender, EventArgs e)
 		{
 			using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -945,7 +953,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600002C RID: 44 RVA: 0x00004704 File Offset: 0x00002904
+		// Token: 0x0600002C RID: 44 RVA: 0x00004318 File Offset: 0x00002518
 		private void pictureBox_Hunt_Config_Hunt_Template_Arrow_6_Click(object sender, EventArgs e)
 		{
 			using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -973,7 +981,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600002D RID: 45 RVA: 0x000047E0 File Offset: 0x000029E0
+		// Token: 0x0600002D RID: 45 RVA: 0x000043F4 File Offset: 0x000025F4
 		private void pictureBox_Hunt_Config_Hunt_Template_Arrow_0_Click(object sender, EventArgs e)
 		{
 			using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -1001,7 +1009,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600002E RID: 46 RVA: 0x000048BC File Offset: 0x00002ABC
+		// Token: 0x0600002E RID: 46 RVA: 0x000044D0 File Offset: 0x000026D0
 		private void pictureBox_Hunt_Config_Hunt_Template_Arrow_2_Click(object sender, EventArgs e)
 		{
 			using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -1029,7 +1037,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600002F RID: 47 RVA: 0x00004998 File Offset: 0x00002B98
+		// Token: 0x0600002F RID: 47 RVA: 0x000045AC File Offset: 0x000027AC
 		private void pictureBox_Hunt_Config_Hunt_Template_Arrow_4_Click(object sender, EventArgs e)
 		{
 			using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -1057,13 +1065,13 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x06000030 RID: 48 RVA: 0x00002125 File Offset: 0x00000325
+		// Token: 0x06000030 RID: 48 RVA: 0x00004688 File Offset: 0x00002888
 		private string ReplaceDotWithComma(string input)
 		{
 			return input.Replace('.', ',');
 		}
 
-		// Token: 0x06000031 RID: 49 RVA: 0x00004A74 File Offset: 0x00002C74
+		// Token: 0x06000031 RID: 49 RVA: 0x00004694 File Offset: 0x00002894
 		private void simpleButton_Hunt_Config_Hunt_Position_save_Click(object sender, EventArgs e)
 		{
 			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoPosition_X", this.textEdit_Hunt_Config_Hunt_Position_X.Text);
@@ -1076,7 +1084,7 @@ namespace Dofus_Hunt
 			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoPosition_hauteurTexte", this.textEdit_Hunt_Config_Hunt_Position_hauteurTexte.Text);
 		}
 
-		// Token: 0x06000032 RID: 50 RVA: 0x00004BB0 File Offset: 0x00002DB0
+		// Token: 0x06000032 RID: 50 RVA: 0x000047D0 File Offset: 0x000029D0
 		private void simpleButton_Hunt_Config_Hunt_Indice_Save_Click(object sender, EventArgs e)
 		{
 			string HuntAutoIndice_OCRStart = this.ReplaceDotWithComma(this.textEdit_Hunt_Config_Hunt_Indice_OCRStart.Text);
@@ -1092,7 +1100,7 @@ namespace Dofus_Hunt
 			this._Dofus_Hunt.UpdateParameterValue(FormHome._configPath + "/appSettings.xml", "HuntAutoIndice_similarityThreshold", this.textEdit_Hunt_Config_Hunt_Indice_Detection.Text);
 		}
 
-		// Token: 0x06000033 RID: 51 RVA: 0x00004D28 File Offset: 0x00002F28
+		// Token: 0x06000033 RID: 51 RVA: 0x00004948 File Offset: 0x00002B48
 		private void PopulateComboBox(string jsonResponse, int currentX, int currentY)
 		{
 			try
@@ -1173,7 +1181,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x06000034 RID: 52 RVA: 0x00004FF0 File Offset: 0x000031F0
+		// Token: 0x06000034 RID: 52 RVA: 0x00004C10 File Offset: 0x00002E10
 		private void simpleButton_Hunt_6_Click(object sender, EventArgs e)
 		{
 			this.RessetColorButtonHunt(this.simpleButton_Hunt_2);
@@ -1204,13 +1212,13 @@ namespace Dofus_Hunt
 			this.PopulateComboBox(indice2, currentX, currentY);
 		}
 
-		// Token: 0x06000035 RID: 53 RVA: 0x00002131 File Offset: 0x00000331
+		// Token: 0x06000035 RID: 53 RVA: 0x00004D8C File Offset: 0x00002F8C
 		private void RessetColorButtonHunt(SimpleButton simpleButton)
 		{
 			simpleButton.Appearance.ForeColor = SystemColors.ControlText;
 		}
 
-		// Token: 0x06000036 RID: 54 RVA: 0x0000516C File Offset: 0x0000336C
+		// Token: 0x06000036 RID: 54 RVA: 0x00004DA0 File Offset: 0x00002FA0
 		private void ChangeColorButtonHunt(SimpleButton simpleButton)
 		{
 			if (this._dark == "False")
@@ -1221,7 +1229,7 @@ namespace Dofus_Hunt
 			simpleButton.ForeColor = Color.FromArgb(220, 135, 13);
 		}
 
-		// Token: 0x06000037 RID: 55 RVA: 0x000051BC File Offset: 0x000033BC
+		// Token: 0x06000037 RID: 55 RVA: 0x00004DF0 File Offset: 0x00002FF0
 		private void comboBoxEdit_Hunt_Indice_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (this._modeOffline == "True")
@@ -1296,7 +1304,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x06000038 RID: 56 RVA: 0x000054D8 File Offset: 0x000036D8
+		// Token: 0x06000038 RID: 56 RVA: 0x0000510C File Offset: 0x0000330C
 		private void simpleButton_Hunt_0_Click(object sender, EventArgs e)
 		{
 			this.RessetColorButtonHunt(this.simpleButton_Hunt_2);
@@ -1327,7 +1335,7 @@ namespace Dofus_Hunt
 			this.PopulateComboBox(indice2, currentX, currentY);
 		}
 
-		// Token: 0x06000039 RID: 57 RVA: 0x00005654 File Offset: 0x00003854
+		// Token: 0x06000039 RID: 57 RVA: 0x00005288 File Offset: 0x00003488
 		private void simpleButton_Hunt_2_Click(object sender, EventArgs e)
 		{
 			this.RessetColorButtonHunt(this.simpleButton_Hunt_2);
@@ -1358,7 +1366,7 @@ namespace Dofus_Hunt
 			this.PopulateComboBox(indice2, currentX, currentY);
 		}
 
-		// Token: 0x0600003A RID: 58 RVA: 0x000057D0 File Offset: 0x000039D0
+		// Token: 0x0600003A RID: 58 RVA: 0x00005404 File Offset: 0x00003604
 		private void simpleButton_Hunt_4_Click(object sender, EventArgs e)
 		{
 			this.RessetColorButtonHunt(this.simpleButton_Hunt_2);
@@ -1389,7 +1397,7 @@ namespace Dofus_Hunt
 			this.PopulateComboBox(indice2, currentX, currentY);
 		}
 
-		// Token: 0x0600003B RID: 59 RVA: 0x0000594C File Offset: 0x00003B4C
+		// Token: 0x0600003B RID: 59 RVA: 0x00005580 File Offset: 0x00003780
 		private void ResetInterfaceChasse()
 		{
 			this.labelControl_HuntAuto_MapStart.Text = "Map de départ :";
@@ -1403,7 +1411,7 @@ namespace Dofus_Hunt
 			this.checkEdit_HuntAuto_AutoTravel.Checked = true;
 		}
 
-		// Token: 0x0600003C RID: 60 RVA: 0x000059DC File Offset: 0x00003BDC
+		// Token: 0x0600003C RID: 60 RVA: 0x00005610 File Offset: 0x00003810
 		private void accordionControlElement_SubMenu_Config_Update_Click(object sender, EventArgs e)
 		{
 			try
@@ -1411,25 +1419,34 @@ namespace Dofus_Hunt
 				string updateProgramPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Dofus Hunt Update.exe");
 				if (File.Exists(updateProgramPath))
 				{
-					Process.Start(new ProcessStartInfo
+					ProcessStartInfo processStartInfo = new ProcessStartInfo
 					{
 						FileName = updateProgramPath,
+						UseShellExecute = true,
 						Verb = "runas"
-					});
-					Application.Exit();
+					};
+					try
+					{
+						Process.Start(processStartInfo);
+						Application.Exit();
+						goto IL_007E;
+					}
+					catch (Win32Exception ex)
+					{
+						MessageBox.Show("L'élévation a été refusée : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+						goto IL_007E;
+					}
 				}
-				else
-				{
-					MessageBox.Show("Le programme de mise à jour n'a pas été trouvé.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-				}
+				MessageBox.Show("Le programme de mise à jour n'a pas été trouvé.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+				IL_007E:;
 			}
-			catch (Exception ex)
+			catch (Exception ex2)
 			{
-				MessageBox.Show("Une erreur s'est produite : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+				MessageBox.Show("Une erreur s'est produite : " + ex2.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Hand);
 			}
 		}
 
-		// Token: 0x0600003D RID: 61 RVA: 0x00005A70 File Offset: 0x00003C70
+		// Token: 0x0600003D RID: 61 RVA: 0x000056DC File Offset: 0x000038DC
 		private async void simpleButton_HuntAutoStart_Click(object sender, EventArgs e)
 		{
 			FormHome.<>c__DisplayClass111_0 CS$<>8__locals1 = new FormHome.<>c__DisplayClass111_0();
@@ -1637,7 +1654,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600003E RID: 62 RVA: 0x00005AA8 File Offset: 0x00003CA8
+		// Token: 0x0600003E RID: 62 RVA: 0x00005714 File Offset: 0x00003914
 		private void StartMonitorigChasse()
 		{
 			FormHome.<>c__DisplayClass112_0 CS$<>8__locals1 = new FormHome.<>c__DisplayClass112_0();
@@ -1657,7 +1674,7 @@ namespace Dofus_Hunt
 			thread.Start();
 		}
 
-		// Token: 0x0600003F RID: 63 RVA: 0x00002143 File Offset: 0x00000343
+		// Token: 0x0600003F RID: 63 RVA: 0x0000576C File Offset: 0x0000396C
 		private void simpleButton_HuntAutoStop_Click(object sender, EventArgs e)
 		{
 			if (this._cancellationTokenSource != null)
@@ -1671,7 +1688,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x06000040 RID: 64 RVA: 0x00005B00 File Offset: 0x00003D00
+		// Token: 0x06000040 RID: 64 RVA: 0x000057AC File Offset: 0x000039AC
 		private void labelControl_HuntAuto_IndiceCor_Click(object sender, EventArgs e)
 		{
 			if (this.labelControl_HuntAuto_IndiceCor.Text != "Indice corrigé :")
@@ -1754,6 +1771,17 @@ namespace Dofus_Hunt
 					MessageBox.Show("Erreur : " + ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Hand);
 				}
 			}
+		}
+
+		// Token: 0x06000041 RID: 65 RVA: 0x00005AA0 File Offset: 0x00003CA0
+		private void pictureBox_Discord_Click(object sender, EventArgs e)
+		{
+			string url = "https://discord.gg/2kBBXQ7R9T";
+			Process.Start(new ProcessStartInfo
+			{
+				FileName = url,
+				UseShellExecute = true
+			});
 		}
 
 		// Token: 0x04000001 RID: 1

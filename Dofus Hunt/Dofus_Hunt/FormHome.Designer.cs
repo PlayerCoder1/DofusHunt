@@ -3,7 +3,7 @@
 	// Token: 0x02000003 RID: 3
 	public partial class FormHome : global::DevExpress.XtraEditors.XtraForm
 	{
-		// Token: 0x06000041 RID: 65 RVA: 0x00002181 File Offset: 0x00000381
+		// Token: 0x06000042 RID: 66 RVA: 0x00005ACC File Offset: 0x00003CCC
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && this.components != null)
@@ -13,7 +13,7 @@
 			base.Dispose(disposing);
 		}
 
-		// Token: 0x06000042 RID: 66 RVA: 0x00005DF4 File Offset: 0x00003FF4
+		// Token: 0x06000043 RID: 67 RVA: 0x00005AEC File Offset: 0x00003CEC
 		private void InitializeComponent()
 		{
 			this.components = new global::System.ComponentModel.Container();
@@ -180,6 +180,10 @@
 			this.simpleButton_HuntAutoStart = new global::DevExpress.XtraEditors.SimpleButton();
 			this.labelControl_HuntAuto_IndiceCor = new global::DevExpress.XtraEditors.LabelControl();
 			this.labelControl_HuntAuto_Indice = new global::DevExpress.XtraEditors.LabelControl();
+			this.panelControl_Home = new global::DevExpress.XtraEditors.PanelControl();
+			this.pictureBox_Discord = new global::System.Windows.Forms.PictureBox();
+			this.separatorControl5 = new global::DevExpress.XtraEditors.SeparatorControl();
+			this.labelControl1 = new global::DevExpress.XtraEditors.LabelControl();
 			((global::System.ComponentModel.ISupportInitialize)this.panelControl_Hunt_Init).BeginInit();
 			this.panelControl_Hunt_Init.SuspendLayout();
 			((global::System.ComponentModel.ISupportInitialize)this.pictureBox_Hunt_Init_Logo).BeginInit();
@@ -279,6 +283,10 @@
 			((global::System.ComponentModel.ISupportInitialize)this.panelControl_Hunt_HuntAuto).BeginInit();
 			this.panelControl_Hunt_HuntAuto.SuspendLayout();
 			((global::System.ComponentModel.ISupportInitialize)this.checkEdit_HuntAuto_AutoTravel.Properties).BeginInit();
+			((global::System.ComponentModel.ISupportInitialize)this.panelControl_Home).BeginInit();
+			this.panelControl_Home.SuspendLayout();
+			((global::System.ComponentModel.ISupportInitialize)this.pictureBox_Discord).BeginInit();
+			((global::System.ComponentModel.ISupportInitialize)this.separatorControl5).BeginInit();
 			base.SuspendLayout();
 			this.panelControl_Hunt_Init.Controls.Add(this.progressPanel1);
 			this.panelControl_Hunt_Init.Controls.Add(this.pictureBox_Hunt_Init_Logo);
@@ -551,7 +559,7 @@
 			dataGridViewCellStyle3.Alignment = global::System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
 			dataGridViewCellStyle3.BackColor = global::System.Drawing.SystemColors.Window;
 			dataGridViewCellStyle3.Font = new global::System.Drawing.Font("Tahoma", 8.25f);
-			dataGridViewCellStyle3.ForeColor = global::System.Drawing.Color.FromArgb(40, 40, 40);
+			dataGridViewCellStyle3.ForeColor = global::System.Drawing.Color.FromArgb(227, 227, 227);
 			dataGridViewCellStyle3.SelectionBackColor = global::System.Drawing.SystemColors.Highlight;
 			dataGridViewCellStyle3.SelectionForeColor = global::System.Drawing.SystemColors.HighlightText;
 			dataGridViewCellStyle3.WrapMode = global::System.Windows.Forms.DataGridViewTriState.False;
@@ -630,11 +638,11 @@
 			this.accordionControlElement_SubMenu_Config_Debug.Text = "Debug";
 			this.accordionControlElement_SubMenu_Config_Debug.Visible = false;
 			this.accordionControlElement_SubMenu_Config_Debug.Click += new global::System.EventHandler(this.accordionControlElement_SubMenu_Config_Debug_Click);
-			this.labelControl_Hunt_Version.Location = new global::System.Drawing.Point(12, 317);
+			this.labelControl_Hunt_Version.Location = new global::System.Drawing.Point(115, 91);
 			this.labelControl_Hunt_Version.Name = "labelControl_Hunt_Version";
-			this.labelControl_Hunt_Version.Size = new global::System.Drawing.Size(42, 13);
+			this.labelControl_Hunt_Version.Size = new global::System.Drawing.Size(71, 13);
 			this.labelControl_Hunt_Version.TabIndex = 15;
-			this.labelControl_Hunt_Version.Text = "Version :";
+			this.labelControl_Hunt_Version.Text = "Version : x.x.x";
 			this.panelControl_Hunt_Debug.Controls.Add(this.simpleButton_Hunt_Debug_GetArrow);
 			this.panelControl_Hunt_Debug.Controls.Add(this.simpleButton_Hunt_Debug_GetIndice);
 			this.panelControl_Hunt_Debug.Controls.Add(this.simpleButton_Hunt_Debug_GetPosition);
@@ -1260,16 +1268,44 @@
 			this.labelControl_HuntAuto_Indice.Size = new global::System.Drawing.Size(36, 13);
 			this.labelControl_HuntAuto_Indice.TabIndex = 19;
 			this.labelControl_HuntAuto_Indice.Text = "Indice :";
+			this.panelControl_Home.Controls.Add(this.pictureBox_Discord);
+			this.panelControl_Home.Controls.Add(this.separatorControl5);
+			this.panelControl_Home.Controls.Add(this.labelControl1);
+			this.panelControl_Home.Controls.Add(this.labelControl_Hunt_Version);
+			this.panelControl_Home.Location = new global::System.Drawing.Point(187, 11);
+			this.panelControl_Home.Name = "panelControl_Home";
+			this.panelControl_Home.Size = new global::System.Drawing.Size(300, 300);
+			this.panelControl_Home.TabIndex = 23;
+			this.panelControl_Home.Visible = false;
+			this.pictureBox_Discord.Image = global::Dofus_Hunt.Properties.Resources.discord_brands_solid__1_;
+			this.pictureBox_Discord.Location = new global::System.Drawing.Point(130, 256);
+			this.pictureBox_Discord.Name = "pictureBox_Discord";
+			this.pictureBox_Discord.Size = new global::System.Drawing.Size(40, 30);
+			this.pictureBox_Discord.SizeMode = global::System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pictureBox_Discord.TabIndex = 16;
+			this.pictureBox_Discord.TabStop = false;
+			this.pictureBox_Discord.Click += new global::System.EventHandler(this.pictureBox_Discord_Click);
+			this.separatorControl5.Location = new global::System.Drawing.Point(44, 59);
+			this.separatorControl5.Name = "separatorControl5";
+			this.separatorControl5.Size = new global::System.Drawing.Size(213, 26);
+			this.separatorControl5.TabIndex = 1;
+			this.labelControl1.Appearance.Font = new global::System.Drawing.Font("Tahoma", 15.75f, global::System.Drawing.FontStyle.Bold, global::System.Drawing.GraphicsUnit.Point, 0);
+			this.labelControl1.Appearance.Options.UseFont = true;
+			this.labelControl1.Location = new global::System.Drawing.Point(91, 27);
+			this.labelControl1.Name = "labelControl1";
+			this.labelControl1.Size = new global::System.Drawing.Size(118, 25);
+			this.labelControl1.TabIndex = 0;
+			this.labelControl1.Text = "Dofus Hunt";
 			base.AutoScaleDimensions = new global::System.Drawing.SizeF(6f, 13f);
 			base.AutoScaleMode = global::System.Windows.Forms.AutoScaleMode.Font;
-			base.ClientSize = new global::System.Drawing.Size(496, 333);
+			base.ClientSize = new global::System.Drawing.Size(490, 311);
+			base.Controls.Add(this.panelControl_Home);
 			base.Controls.Add(this.panelControl_Hunt_HuntAuto);
 			base.Controls.Add(this.panelControl_Hunt_Debug);
 			base.Controls.Add(this.panelControl_Hunt_Hunt);
 			base.Controls.Add(this.panelControl_Hunt_Notifications);
 			base.Controls.Add(this.panelControl_Hunt_Config_Logiciel);
 			base.Controls.Add(this.panelControl_Hunt_ConfigHuntAuto);
-			base.Controls.Add(this.labelControl_Hunt_Version);
 			base.Controls.Add(this.accordionControl1);
 			base.Controls.Add(this.panelControl_Hunt_Indice);
 			base.Controls.Add(this.panelControl_Hunt_Init);
@@ -1389,8 +1425,12 @@
 			this.panelControl_Hunt_HuntAuto.ResumeLayout(false);
 			this.panelControl_Hunt_HuntAuto.PerformLayout();
 			((global::System.ComponentModel.ISupportInitialize)this.checkEdit_HuntAuto_AutoTravel.Properties).EndInit();
+			((global::System.ComponentModel.ISupportInitialize)this.panelControl_Home).EndInit();
+			this.panelControl_Home.ResumeLayout(false);
+			this.panelControl_Home.PerformLayout();
+			((global::System.ComponentModel.ISupportInitialize)this.pictureBox_Discord).EndInit();
+			((global::System.ComponentModel.ISupportInitialize)this.separatorControl5).EndInit();
 			base.ResumeLayout(false);
-			base.PerformLayout();
 		}
 
 		// Token: 0x04000036 RID: 54
@@ -1872,5 +1912,17 @@
 
 		// Token: 0x040000D5 RID: 213
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Indice_Detection;
+
+		// Token: 0x040000D6 RID: 214
+		private global::DevExpress.XtraEditors.PanelControl panelControl_Home;
+
+		// Token: 0x040000D7 RID: 215
+		private global::System.Windows.Forms.PictureBox pictureBox_Discord;
+
+		// Token: 0x040000D8 RID: 216
+		private global::DevExpress.XtraEditors.SeparatorControl separatorControl5;
+
+		// Token: 0x040000D9 RID: 217
+		private global::DevExpress.XtraEditors.LabelControl labelControl1;
 	}
 }

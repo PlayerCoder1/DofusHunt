@@ -1179,6 +1179,7 @@ namespace Dof_Hunt
 					byte[] array = File.ReadAllBytes(this._logPathImg + "/cropped_text.png");
 					string text2 = this.PerformOCRTesseract(this._logPathImg + "/cropped_text.png");
 					text2 = text2.Replace("\r", "").Replace("\n", "");
+					text2 = text2.TrimStart();
 					text = text2;
 				}
 				else
@@ -1189,7 +1190,7 @@ namespace Dof_Hunt
 			return text;
 		}
 
-		// Token: 0x0600003C RID: 60 RVA: 0x000051C4 File Offset: 0x000033C4
+		// Token: 0x0600003C RID: 60 RVA: 0x000051CC File Offset: 0x000033CC
 		public string DetectArrowDirectionAfterOCR(double threshold)
 		{
 			Mat mat = new Mat(this._logPathImg + "/cropped_text.png", ImreadModes.Color);
@@ -1263,7 +1264,7 @@ namespace Dof_Hunt
 			return text6;
 		}
 
-		// Token: 0x0600003D RID: 61 RVA: 0x00005424 File Offset: 0x00003624
+		// Token: 0x0600003D RID: 61 RVA: 0x0000542C File Offset: 0x0000362C
 		public string GetArrowIcon(string arrow)
 		{
 			if (!true)
@@ -1305,7 +1306,7 @@ namespace Dof_Hunt
 			return text;
 		}
 
-		// Token: 0x0600003E RID: 62 RVA: 0x000054A0 File Offset: 0x000036A0
+		// Token: 0x0600003E RID: 62 RVA: 0x000054A8 File Offset: 0x000036A8
 		public List<IndiceData> GetHuntData(string x, string y, string dir)
 		{
 			this.indicePositions.Clear();
@@ -1357,7 +1358,7 @@ namespace Dof_Hunt
 			return list2;
 		}
 
-		// Token: 0x0600003F RID: 63 RVA: 0x000056FC File Offset: 0x000038FC
+		// Token: 0x0600003F RID: 63 RVA: 0x00005704 File Offset: 0x00003904
 		[return: TupleElementNames(new string[] { "posX", "posY", "indiceChecked" })]
 		[return: Nullable(new byte[] { 0, 1 })]
 		public ValueTuple<int, int, string> GetIndicePositionOffline(string indice)
@@ -1418,7 +1419,7 @@ namespace Dof_Hunt
 			return valueTuple2;
 		}
 
-		// Token: 0x06000040 RID: 64 RVA: 0x000058E4 File Offset: 0x00003AE4
+		// Token: 0x06000040 RID: 64 RVA: 0x000058EC File Offset: 0x00003AEC
 		[return: TupleElementNames(new string[] { "posX", "posY", "indiceChecked" })]
 		[return: Nullable(new byte[] { 0, 1 })]
 		public ValueTuple<int, int, string> GetIndicePositionOfflineAuto(string indiceRechercher, string direction, int startX, int startY)
@@ -1509,7 +1510,7 @@ namespace Dof_Hunt
 			return valueTuple;
 		}
 
-		// Token: 0x06000041 RID: 65 RVA: 0x00005C34 File Offset: 0x00003E34
+		// Token: 0x06000041 RID: 65 RVA: 0x00005C3C File Offset: 0x00003E3C
 		public string GetCorrectedText(string input)
 		{
 			string text2;
@@ -1522,14 +1523,22 @@ namespace Dof_Hunt
 					throw new FileNotFoundException("Le fichier " + text + " n'existe pas.");
 				}
 				XDocument xdocument = XDocument.Load(text);
-				XElement xelement = xdocument.Descendants("Correction").FirstOrDefault((XElement c) => (string)c.Element("Erroneous") == input);
+				XElement xelement = xdocument.Descendants("Correction").FirstOrDefault((XElement c) => string.Equals((string)c.Element("Erroneous"), input, StringComparison.OrdinalIgnoreCase));
 				bool flag2 = xelement != null;
 				if (flag2)
 				{
+					Dofus_Hunt dofus_Hunt = this._Dofus_Hunt;
+					DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(29, 2);
+					defaultInterpolatedStringHandler.AppendLiteral("Correction trouvée pour '");
+					defaultInterpolatedStringHandler.AppendFormatted(input);
+					defaultInterpolatedStringHandler.AppendLiteral("' : ");
+					defaultInterpolatedStringHandler.AppendFormatted<XElement>(xelement.Element("Correct"));
+					dofus_Hunt.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
 					text2 = (string)xelement.Element("Correct");
 				}
 				else
 				{
+					this._Dofus_Hunt.AddLog("Aucune correction trouvée pour '" + input + "'.");
 					text2 = input;
 				}
 			}

@@ -556,13 +556,13 @@ namespace Dof_Hunt
 		public class Correction
 		{
 			// Token: 0x17000009 RID: 9
-			// (get) Token: 0x06000048 RID: 72 RVA: 0x00005FA8 File Offset: 0x000041A8
-			// (set) Token: 0x06000049 RID: 73 RVA: 0x00005FB0 File Offset: 0x000041B0
+			// (get) Token: 0x06000048 RID: 72 RVA: 0x00006038 File Offset: 0x00004238
+			// (set) Token: 0x06000049 RID: 73 RVA: 0x00006040 File Offset: 0x00004240
 			public string Erroneous { get; set; }
 
 			// Token: 0x1700000A RID: 10
-			// (get) Token: 0x0600004A RID: 74 RVA: 0x00005FB9 File Offset: 0x000041B9
-			// (set) Token: 0x0600004B RID: 75 RVA: 0x00005FC1 File Offset: 0x000041C1
+			// (get) Token: 0x0600004A RID: 74 RVA: 0x00006049 File Offset: 0x00004249
+			// (set) Token: 0x0600004B RID: 75 RVA: 0x00006051 File Offset: 0x00004251
 			public string Correct { get; set; }
 		}
 
@@ -571,20 +571,20 @@ namespace Dof_Hunt
 		public class UpdateInfo
 		{
 			// Token: 0x1700000B RID: 11
-			// (get) Token: 0x0600004D RID: 77 RVA: 0x00005FD3 File Offset: 0x000041D3
-			// (set) Token: 0x0600004E RID: 78 RVA: 0x00005FDB File Offset: 0x000041DB
+			// (get) Token: 0x0600004D RID: 77 RVA: 0x00006063 File Offset: 0x00004263
+			// (set) Token: 0x0600004E RID: 78 RVA: 0x0000606B File Offset: 0x0000426B
 			[JsonProperty("latestVersion")]
 			public string LatestVersion { get; set; }
 
 			// Token: 0x1700000C RID: 12
-			// (get) Token: 0x0600004F RID: 79 RVA: 0x00005FE4 File Offset: 0x000041E4
-			// (set) Token: 0x06000050 RID: 80 RVA: 0x00005FEC File Offset: 0x000041EC
+			// (get) Token: 0x0600004F RID: 79 RVA: 0x00006074 File Offset: 0x00004274
+			// (set) Token: 0x06000050 RID: 80 RVA: 0x0000607C File Offset: 0x0000427C
 			[JsonProperty("latestVersionUpdate")]
 			public string latestVersionUpdate { get; set; }
 
 			// Token: 0x1700000D RID: 13
-			// (get) Token: 0x06000051 RID: 81 RVA: 0x00005FF5 File Offset: 0x000041F5
-			// (set) Token: 0x06000052 RID: 82 RVA: 0x00005FFD File Offset: 0x000041FD
+			// (get) Token: 0x06000051 RID: 81 RVA: 0x00006085 File Offset: 0x00004285
+			// (set) Token: 0x06000052 RID: 82 RVA: 0x0000608D File Offset: 0x0000428D
 			[JsonProperty("updateUrlUpdate")]
 			public string updateUrlUpdate { get; set; }
 		}

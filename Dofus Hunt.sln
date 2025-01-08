@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dofus Hunt", "Dofus Hunt\Dofus Hunt.csproj", "{3B2237A4-10CC-499A-B87F-D43819DD7B5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dofus Hunt", "Dofus Hunt\Dofus Hunt.csproj", "{1B4472C4-F2DF-4E24-A70F-A7A8C0C1028C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3B2237A4-10CC-499A-B87F-D43819DD7B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3B2237A4-10CC-499A-B87F-D43819DD7B5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3B2237A4-10CC-499A-B87F-D43819DD7B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3B2237A4-10CC-499A-B87F-D43819DD7B5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B4472C4-F2DF-4E24-A70F-A7A8C0C1028C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B4472C4-F2DF-4E24-A70F-A7A8C0C1028C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B4472C4-F2DF-4E24-A70F-A7A8C0C1028C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B4472C4-F2DF-4E24-A70F-A7A8C0C1028C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
