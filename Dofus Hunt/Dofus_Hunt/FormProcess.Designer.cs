@@ -1,9 +1,9 @@
 ﻿namespace Dofus_Hunt
 {
-	// Token: 0x02000004 RID: 4
+	// Token: 0x02000016 RID: 22
 	public partial class FormProcess : global::DevExpress.XtraEditors.XtraForm
 	{
-		// Token: 0x06000052 RID: 82 RVA: 0x0000BBA0 File Offset: 0x00009DA0
+		// Token: 0x06000093 RID: 147 RVA: 0x0000248C File Offset: 0x0000068C
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && this.components != null)
@@ -13,7 +13,7 @@
 			base.Dispose(disposing);
 		}
 
-		// Token: 0x06000053 RID: 83 RVA: 0x0000BBC0 File Offset: 0x00009DC0
+		// Token: 0x06000094 RID: 148 RVA: 0x0000F5F0 File Offset: 0x0000D7F0
 		private void InitializeComponent()
 		{
 			this.components = new global::System.ComponentModel.Container();
@@ -119,37 +119,37 @@
 			base.ResumeLayout(false);
 		}
 
-		// Token: 0x040000DD RID: 221
+		// Token: 0x0400013C RID: 316
 		private global::System.ComponentModel.IContainer components;
 
-		// Token: 0x040000DE RID: 222
+		// Token: 0x0400013D RID: 317
 		private global::DevExpress.XtraEditors.PanelControl panelControl_Process_Licence;
 
-		// Token: 0x040000DF RID: 223
+		// Token: 0x0400013E RID: 318
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Process_NoLicence;
 
-		// Token: 0x040000E0 RID: 224
+		// Token: 0x0400013F RID: 319
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Process_SetLicence;
 
-		// Token: 0x040000E1 RID: 225
+		// Token: 0x04000140 RID: 320
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Process_CodeLicence;
 
-		// Token: 0x040000E2 RID: 226
+		// Token: 0x04000141 RID: 321
 		private global::System.Windows.Forms.PictureBox pictureBox_Process_Logo;
 
-		// Token: 0x040000E3 RID: 227
+		// Token: 0x04000142 RID: 322
 		private global::DevExpress.XtraEditors.PanelControl panelControl_Process_List;
 
-		// Token: 0x040000E4 RID: 228
+		// Token: 0x04000143 RID: 323
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Process_Select;
 
-		// Token: 0x040000E5 RID: 229
+		// Token: 0x04000144 RID: 324
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Process_Actu;
 
-		// Token: 0x040000E6 RID: 230
+		// Token: 0x04000145 RID: 325
 		private global::DevExpress.XtraEditors.ListBoxControl listBoxControl_Process_Process;
 
-		// Token: 0x040000E7 RID: 231
+		// Token: 0x04000146 RID: 326
 		private global::System.Windows.Forms.Timer timer_Process_Process;
 	}
 }

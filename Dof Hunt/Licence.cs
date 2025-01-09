@@ -13,7 +13,7 @@ namespace Dof_Hunt
 	[Nullable(0)]
 	public class Licence
 	{
-		// Token: 0x06000042 RID: 66 RVA: 0x00005DAC File Offset: 0x00003FAC
+		// Token: 0x06000044 RID: 68 RVA: 0x0000606C File Offset: 0x0000426C
 		private string GetMacAddress()
 		{
 			string text;
@@ -37,7 +37,7 @@ namespace Dof_Hunt
 			return text;
 		}
 
-		// Token: 0x06000043 RID: 67 RVA: 0x00005E30 File Offset: 0x00004030
+		// Token: 0x06000045 RID: 69 RVA: 0x000060F0 File Offset: 0x000042F0
 		private bool VerifyLicense(string licenseFilePath, string pcIdentifier, string publicKey)
 		{
 			byte[] array = File.ReadAllBytes(licenseFilePath);
@@ -54,7 +54,7 @@ namespace Dof_Hunt
 			return flag;
 		}
 
-		// Token: 0x06000044 RID: 68 RVA: 0x00005EA8 File Offset: 0x000040A8
+		// Token: 0x06000046 RID: 70 RVA: 0x00006168 File Offset: 0x00004368
 		public string GetPcIdentifier()
 		{
 			string text3;
@@ -82,7 +82,7 @@ namespace Dof_Hunt
 			return text3;
 		}
 
-		// Token: 0x06000045 RID: 69 RVA: 0x00005F74 File Offset: 0x00004174
+		// Token: 0x06000047 RID: 71 RVA: 0x00006234 File Offset: 0x00004434
 		public bool checkLicence()
 		{
 			bool flag2;
@@ -108,7 +108,7 @@ namespace Dof_Hunt
 			return flag2;
 		}
 
-		// Token: 0x06000046 RID: 70 RVA: 0x00005FF0 File Offset: 0x000041F0
+		// Token: 0x06000048 RID: 72 RVA: 0x000062B0 File Offset: 0x000044B0
 		public bool ValidateLicence()
 		{
 			bool flag = this.checkLicence();

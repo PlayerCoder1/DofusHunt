@@ -3,10 +3,10 @@ using System.Windows.Forms;
 
 namespace Dofus_Hunt
 {
-	// Token: 0x02000005 RID: 5
+	// Token: 0x02000018 RID: 24
 	internal static class Program
 	{
-		// Token: 0x06000054 RID: 84 RVA: 0x0000C22F File Offset: 0x0000A42F
+		// Token: 0x06000098 RID: 152 RVA: 0x000024D6 File Offset: 0x000006D6
 		[STAThread]
 		private static void Main()
 		{

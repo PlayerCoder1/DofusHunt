@@ -26,7 +26,7 @@ namespace Dof_Hunt
 			this.initDirectory();
 		}
 
-		// Token: 0x06000002 RID: 2 RVA: 0x00002318 File Offset: 0x00000518
+		// Token: 0x06000002 RID: 2 RVA: 0x0000233C File Offset: 0x0000053C
 		public void initDirectory()
 		{
 			bool flag = !Directory.Exists(this._logPath);
@@ -41,7 +41,7 @@ namespace Dof_Hunt
 			}
 		}
 
-		// Token: 0x06000003 RID: 3 RVA: 0x00002368 File Offset: 0x00000568
+		// Token: 0x06000003 RID: 3 RVA: 0x0000238C File Offset: 0x0000058C
 		public bool AddLog(string message)
 		{
 			bool flag;
@@ -69,7 +69,7 @@ namespace Dof_Hunt
 			return flag;
 		}
 
-		// Token: 0x06000004 RID: 4 RVA: 0x00002428 File Offset: 0x00000628
+		// Token: 0x06000004 RID: 4 RVA: 0x0000244C File Offset: 0x0000064C
 		public async Task<bool> PingUrlAsync(string url)
 		{
 			bool flag;
@@ -91,7 +91,7 @@ namespace Dof_Hunt
 			return flag;
 		}
 
-		// Token: 0x06000005 RID: 5 RVA: 0x00002474 File Offset: 0x00000674
+		// Token: 0x06000005 RID: 5 RVA: 0x00002498 File Offset: 0x00000698
 		public bool CreateDefaultConfigFileIfNotExists(string filePath)
 		{
 			bool flag = !File.Exists(filePath);
@@ -121,7 +121,7 @@ namespace Dof_Hunt
 			return flag2;
 		}
 
-		// Token: 0x06000006 RID: 6 RVA: 0x00002560 File Offset: 0x00000760
+		// Token: 0x06000006 RID: 6 RVA: 0x00002584 File Offset: 0x00000784
 		public void EnsureConfigParameters(string filePath)
 		{
 			bool flag = File.Exists(filePath);
@@ -168,7 +168,7 @@ namespace Dof_Hunt
 			xdocument.Save(filePath);
 		}
 
-		// Token: 0x06000007 RID: 7 RVA: 0x000026C0 File Offset: 0x000008C0
+		// Token: 0x06000007 RID: 7 RVA: 0x000026E4 File Offset: 0x000008E4
 		public string GetConfigValue(string filePath, string parameterName)
 		{
 			string text2;
@@ -199,7 +199,7 @@ namespace Dof_Hunt
 			return text2;
 		}
 
-		// Token: 0x06000008 RID: 8 RVA: 0x00002750 File Offset: 0x00000950
+		// Token: 0x06000008 RID: 8 RVA: 0x00002774 File Offset: 0x00000974
 		public void UpdateParameterValue(string filePath, string parameterName, string newValue)
 		{
 			XDocument xdocument = XDocument.Load(filePath);
@@ -229,7 +229,7 @@ namespace Dof_Hunt
 			xdocument.Save(filePath);
 		}
 
-		// Token: 0x06000009 RID: 9 RVA: 0x0000281C File Offset: 0x00000A1C
+		// Token: 0x06000009 RID: 9 RVA: 0x00002840 File Offset: 0x00000A40
 		public List<Dofus_Hunt.Correction> LoadCorrections()
 		{
 			string text = Path.Combine(this._configPath, this._correctionsFile);
@@ -267,7 +267,7 @@ namespace Dof_Hunt
 			return list2;
 		}
 
-		// Token: 0x0600000A RID: 10 RVA: 0x00002950 File Offset: 0x00000B50
+		// Token: 0x0600000A RID: 10 RVA: 0x00002974 File Offset: 0x00000B74
 		public string ReadVersionFromFile(string filePath)
 		{
 			string text;
@@ -283,7 +283,7 @@ namespace Dof_Hunt
 			return text;
 		}
 
-		// Token: 0x0600000B RID: 11 RVA: 0x000029A0 File Offset: 0x00000BA0
+		// Token: 0x0600000B RID: 11 RVA: 0x000029C4 File Offset: 0x00000BC4
 		public void DeleteOldLogFiles(int daysThreshold)
 		{
 			try
@@ -309,7 +309,7 @@ namespace Dof_Hunt
 			}
 		}
 
-		// Token: 0x0600000C RID: 12 RVA: 0x00002A4C File Offset: 0x00000C4C
+		// Token: 0x0600000C RID: 12 RVA: 0x00002A70 File Offset: 0x00000C70
 		public string GetJsonUrlFromFile()
 		{
 			string text = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "update_url.txt");
@@ -327,7 +327,7 @@ namespace Dof_Hunt
 			return text2;
 		}
 
-		// Token: 0x0600000D RID: 13 RVA: 0x00002AB8 File Offset: 0x00000CB8
+		// Token: 0x0600000D RID: 13 RVA: 0x00002ADC File Offset: 0x00000CDC
 		public string GetVersion()
 		{
 			string text = this.GetJsonUrlFromFile();
@@ -360,7 +360,7 @@ namespace Dof_Hunt
 			return text4;
 		}
 
-		// Token: 0x0600000E RID: 14 RVA: 0x00002BCC File Offset: 0x00000DCC
+		// Token: 0x0600000E RID: 14 RVA: 0x00002BF0 File Offset: 0x00000DF0
 		public string GetVersionUpdate()
 		{
 			string text = this.GetJsonUrlFromFile();
@@ -393,7 +393,7 @@ namespace Dof_Hunt
 			return text4;
 		}
 
-		// Token: 0x0600000F RID: 15 RVA: 0x00002CE0 File Offset: 0x00000EE0
+		// Token: 0x0600000F RID: 15 RVA: 0x00002D04 File Offset: 0x00000F04
 		public static Dofus_Hunt.UpdateInfo GetUpdateInfo()
 		{
 			string jsonUrlFromFile = new Dofus_Hunt().GetJsonUrlFromFile();
@@ -406,7 +406,7 @@ namespace Dof_Hunt
 			return updateInfo;
 		}
 
-		// Token: 0x06000010 RID: 16 RVA: 0x00002D34 File Offset: 0x00000F34
+		// Token: 0x06000010 RID: 16 RVA: 0x00002D58 File Offset: 0x00000F58
 		public async Task<string> DownloadUpdateAsync(string updateUrl)
 		{
 			string tempPath = Path.Combine(Path.GetTempPath(), "update.zip");
@@ -434,13 +434,13 @@ namespace Dof_Hunt
 			return tempPath;
 		}
 
-		// Token: 0x06000011 RID: 17 RVA: 0x00002D80 File Offset: 0x00000F80
+		// Token: 0x06000011 RID: 17 RVA: 0x00002DA4 File Offset: 0x00000FA4
 		public string SkinIsDark()
 		{
 			return this.GetConfigValue(this._configPath + "/appSettings.xml", "Dark");
 		}
 
-		// Token: 0x06000012 RID: 18 RVA: 0x00002DB0 File Offset: 0x00000FB0
+		// Token: 0x06000012 RID: 18 RVA: 0x00002DD4 File Offset: 0x00000FD4
 		private bool IsFileLocked(string filePath)
 		{
 			bool flag;
@@ -458,7 +458,7 @@ namespace Dof_Hunt
 			return flag;
 		}
 
-		// Token: 0x06000013 RID: 19 RVA: 0x00002DFC File Offset: 0x00000FFC
+		// Token: 0x06000013 RID: 19 RVA: 0x00002E20 File Offset: 0x00001020
 		public void ApplyUpdate(string zipPath)
 		{
 			string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
@@ -539,6 +539,8 @@ namespace Dof_Hunt
 			{ "HuntAutoIndice_LIndice", "190" },
 			{ "HuntAutoIndice_HIndice", "40" },
 			{ "HuntAutoIndice_OCRArrow", "0,8" },
+			{ "HuntAutoIndice_OCRCocheChecked", "0,95" },
+			{ "HuntAutoIndice_OCRFight", "0,7" },
 			{ "HuntAutoIndice_similarityThreshold", "70" },
 			{ "Notify_App_Update", "Une mise à jour est disponible !" },
 			{ "Notify_App_Connect", "Problème de connexion, vérifier votre connexion ou réessayer plus tard." },
@@ -556,13 +558,13 @@ namespace Dof_Hunt
 		public class Correction
 		{
 			// Token: 0x17000009 RID: 9
-			// (get) Token: 0x06000048 RID: 72 RVA: 0x00006038 File Offset: 0x00004238
-			// (set) Token: 0x06000049 RID: 73 RVA: 0x00006040 File Offset: 0x00004240
+			// (get) Token: 0x0600004A RID: 74 RVA: 0x000062F8 File Offset: 0x000044F8
+			// (set) Token: 0x0600004B RID: 75 RVA: 0x00006300 File Offset: 0x00004500
 			public string Erroneous { get; set; }
 
 			// Token: 0x1700000A RID: 10
-			// (get) Token: 0x0600004A RID: 74 RVA: 0x00006049 File Offset: 0x00004249
-			// (set) Token: 0x0600004B RID: 75 RVA: 0x00006051 File Offset: 0x00004251
+			// (get) Token: 0x0600004C RID: 76 RVA: 0x00006309 File Offset: 0x00004509
+			// (set) Token: 0x0600004D RID: 77 RVA: 0x00006311 File Offset: 0x00004511
 			public string Correct { get; set; }
 		}
 
@@ -571,20 +573,20 @@ namespace Dof_Hunt
 		public class UpdateInfo
 		{
 			// Token: 0x1700000B RID: 11
-			// (get) Token: 0x0600004D RID: 77 RVA: 0x00006063 File Offset: 0x00004263
-			// (set) Token: 0x0600004E RID: 78 RVA: 0x0000606B File Offset: 0x0000426B
+			// (get) Token: 0x0600004F RID: 79 RVA: 0x00006323 File Offset: 0x00004523
+			// (set) Token: 0x06000050 RID: 80 RVA: 0x0000632B File Offset: 0x0000452B
 			[JsonProperty("latestVersion")]
 			public string LatestVersion { get; set; }
 
 			// Token: 0x1700000C RID: 12
-			// (get) Token: 0x0600004F RID: 79 RVA: 0x00006074 File Offset: 0x00004274
-			// (set) Token: 0x06000050 RID: 80 RVA: 0x0000607C File Offset: 0x0000427C
+			// (get) Token: 0x06000051 RID: 81 RVA: 0x00006334 File Offset: 0x00004534
+			// (set) Token: 0x06000052 RID: 82 RVA: 0x0000633C File Offset: 0x0000453C
 			[JsonProperty("latestVersionUpdate")]
 			public string latestVersionUpdate { get; set; }
 
 			// Token: 0x1700000D RID: 13
-			// (get) Token: 0x06000051 RID: 81 RVA: 0x00006085 File Offset: 0x00004285
-			// (set) Token: 0x06000052 RID: 82 RVA: 0x0000608D File Offset: 0x0000428D
+			// (get) Token: 0x06000053 RID: 83 RVA: 0x00006345 File Offset: 0x00004545
+			// (set) Token: 0x06000054 RID: 84 RVA: 0x0000634D File Offset: 0x0000454D
 			[JsonProperty("updateUrlUpdate")]
 			public string updateUrlUpdate { get; set; }
 		}

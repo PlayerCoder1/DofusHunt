@@ -16,6 +16,7 @@ using System.Xml.Linq;
 using AutoIt;
 using Emgu.CV;
 using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
@@ -34,7 +35,7 @@ namespace Dof_Hunt
 	[Nullable(0)]
 	public class Hunt
 	{
-		// Token: 0x06000024 RID: 36 RVA: 0x0000301C File Offset: 0x0000121C
+		// Token: 0x06000024 RID: 36 RVA: 0x00003040 File Offset: 0x00001240
 		public Hunt(string dofus, string log, int seuil)
 		{
 			this._dofus = dofus;
@@ -55,8 +56,8 @@ namespace Dof_Hunt
 		}
 
 		// Token: 0x17000008 RID: 8
-		// (get) Token: 0x06000025 RID: 37 RVA: 0x00003120 File Offset: 0x00001320
-		// (set) Token: 0x06000026 RID: 38 RVA: 0x00003138 File Offset: 0x00001338
+		// (get) Token: 0x06000025 RID: 37 RVA: 0x00003144 File Offset: 0x00001344
+		// (set) Token: 0x06000026 RID: 38 RVA: 0x0000315C File Offset: 0x0000135C
 		public string Token
 		{
 			get
@@ -69,7 +70,7 @@ namespace Dof_Hunt
 			}
 		}
 
-		// Token: 0x06000027 RID: 39 RVA: 0x00003144 File Offset: 0x00001344
+		// Token: 0x06000027 RID: 39 RVA: 0x00003168 File Offset: 0x00001368
 		private Task OnRequestCapture(object sender, SessionEventArgs e)
 		{
 			HeaderCollection headers = e.HttpClient.Request.Headers;
@@ -90,7 +91,7 @@ namespace Dof_Hunt
 			return Task.CompletedTask;
 		}
 
-		// Token: 0x06000028 RID: 40 RVA: 0x000031F8 File Offset: 0x000013F8
+		// Token: 0x06000028 RID: 40 RVA: 0x0000321C File Offset: 0x0000141C
 		public async Task GetToken()
 		{
 			this._Dofus_Hunt.AddLog("Mise à jour du token en cours ...");
@@ -132,7 +133,7 @@ namespace Dof_Hunt
 			}
 		}
 
-		// Token: 0x06000029 RID: 41 RVA: 0x0000323C File Offset: 0x0000143C
+		// Token: 0x06000029 RID: 41 RVA: 0x00003260 File Offset: 0x00001460
 		private Bitmap CaptureWindow(Rectangle rect)
 		{
 			Bitmap bitmap = new Bitmap(rect.Width, rect.Height);
@@ -143,7 +144,7 @@ namespace Dof_Hunt
 			return bitmap;
 		}
 
-		// Token: 0x0600002A RID: 42 RVA: 0x000032AC File Offset: 0x000014AC
+		// Token: 0x0600002A RID: 42 RVA: 0x000032D0 File Offset: 0x000014D0
 		public void CaptureGame(string Path)
 		{
 			try
@@ -165,7 +166,7 @@ namespace Dof_Hunt
 			}
 		}
 
-		// Token: 0x0600002B RID: 43 RVA: 0x00003360 File Offset: 0x00001560
+		// Token: 0x0600002B RID: 43 RVA: 0x00003384 File Offset: 0x00001584
 		public int LevenshteinDistance(string source, string target)
 		{
 			bool flag = string.IsNullOrEmpty(source);
@@ -210,7 +211,7 @@ namespace Dof_Hunt
 			return num;
 		}
 
-		// Token: 0x0600002C RID: 44 RVA: 0x000034B8 File Offset: 0x000016B8
+		// Token: 0x0600002C RID: 44 RVA: 0x000034DC File Offset: 0x000016DC
 		public string GetIndice(string token, string x, string y, string direction)
 		{
 			bool flag = string.IsNullOrEmpty(token);
@@ -262,7 +263,7 @@ namespace Dof_Hunt
 			return text;
 		}
 
-		// Token: 0x0600002D RID: 45 RVA: 0x00003660 File Offset: 0x00001860
+		// Token: 0x0600002D RID: 45 RVA: 0x00003684 File Offset: 0x00001884
 		[return: TupleElementNames(new string[] { "posX", "posY", "indiceChecked" })]
 		[return: Nullable(new byte[] { 0, 1 })]
 		public ValueTuple<int, int, string> GetIndicePosition(string jsonContent, string indiceRechercher, int currentX, int currentY)
@@ -351,7 +352,7 @@ namespace Dof_Hunt
 			return valueTuple;
 		}
 
-		// Token: 0x0600002E RID: 46 RVA: 0x000039AC File Offset: 0x00001BAC
+		// Token: 0x0600002E RID: 46 RVA: 0x000039D0 File Offset: 0x00001BD0
 		public void DetectCurrentMap(int x, int y, int width, int height, double threshold, int largeurTexte, int hauteurTexte)
 		{
 			Mat mat = CvInvoke.Imread("ressources/img/niveau.png", ImreadModes.Color);
@@ -449,7 +450,7 @@ namespace Dof_Hunt
 			}
 		}
 
-		// Token: 0x0600002F RID: 47 RVA: 0x00003CB4 File Offset: 0x00001EB4
+		// Token: 0x0600002F RID: 47 RVA: 0x00003CD8 File Offset: 0x00001ED8
 		public string PerformOCRTesseractMap(string imagePath)
 		{
 			string text3;
@@ -507,7 +508,7 @@ namespace Dof_Hunt
 			return text3;
 		}
 
-		// Token: 0x06000030 RID: 48 RVA: 0x00003F10 File Offset: 0x00002110
+		// Token: 0x06000030 RID: 48 RVA: 0x00003F34 File Offset: 0x00002134
 		public async Task<string> PerformOCRMapWithGoogleVision(string imagePath, string GoogleAPI)
 		{
 			string text2;
@@ -644,13 +645,13 @@ namespace Dof_Hunt
 			return text2;
 		}
 
-		// Token: 0x06000031 RID: 49 RVA: 0x00003F64 File Offset: 0x00002164
+		// Token: 0x06000031 RID: 49 RVA: 0x00003F88 File Offset: 0x00002188
 		private string CleanExtractedText(string text)
 		{
 			return Regex.Replace(text, "(?<=\\d)-", "");
 		}
 
-		// Token: 0x06000032 RID: 50 RVA: 0x00003F88 File Offset: 0x00002188
+		// Token: 0x06000032 RID: 50 RVA: 0x00003FAC File Offset: 0x000021AC
 		private Bitmap PreprocessImageTesseract(string imagePath)
 		{
 			Bitmap bitmap2;
@@ -713,7 +714,7 @@ namespace Dof_Hunt
 			return bitmap2;
 		}
 
-		// Token: 0x06000033 RID: 51 RVA: 0x0000423C File Offset: 0x0000243C
+		// Token: 0x06000033 RID: 51 RVA: 0x00004260 File Offset: 0x00002460
 		private Pix BitmapToPixTesseract(Bitmap bitmap)
 		{
 			Pix pix;
@@ -726,13 +727,13 @@ namespace Dof_Hunt
 			return pix;
 		}
 
-		// Token: 0x06000034 RID: 52 RVA: 0x00004294 File Offset: 0x00002494
+		// Token: 0x06000034 RID: 52 RVA: 0x000042B8 File Offset: 0x000024B8
 		public int DetectPhorreur(string indice)
 		{
 			return (!string.IsNullOrEmpty(indice) && indice.Contains("Phorreur", StringComparison.OrdinalIgnoreCase)) ? 1 : 0;
 		}
 
-		// Token: 0x06000035 RID: 53 RVA: 0x000042C0 File Offset: 0x000024C0
+		// Token: 0x06000035 RID: 53 RVA: 0x000042E4 File Offset: 0x000024E4
 		public bool ExtractCoordinatesSimple(string text, out int x, out int y)
 		{
 			x = 0;
@@ -827,7 +828,7 @@ namespace Dof_Hunt
 			return flag7;
 		}
 
-		// Token: 0x06000036 RID: 54 RVA: 0x00004604 File Offset: 0x00002804
+		// Token: 0x06000036 RID: 54 RVA: 0x00004628 File Offset: 0x00002828
 		private Bitmap PreprocessImageGoogleMap(string imagePath)
 		{
 			Bitmap bitmap4;
@@ -899,7 +900,7 @@ namespace Dof_Hunt
 			return bitmap4;
 		}
 
-		// Token: 0x06000037 RID: 55 RVA: 0x000048A4 File Offset: 0x00002AA4
+		// Token: 0x06000037 RID: 55 RVA: 0x000048C8 File Offset: 0x00002AC8
 		public string GetGoogleAPIKey(string filePath)
 		{
 			string text2;
@@ -931,7 +932,7 @@ namespace Dof_Hunt
 			return text2;
 		}
 
-		// Token: 0x06000038 RID: 56 RVA: 0x000049C4 File Offset: 0x00002BC4
+		// Token: 0x06000038 RID: 56 RVA: 0x000049E8 File Offset: 0x00002BE8
 		private void DetectAndExtractHuntInfo(double threshold, int largeurTexte, int hauteurTexte)
 		{
 			Mat mat = CvInvoke.Imread("ressources/img/depart_template.png", ImreadModes.Color);
@@ -1022,7 +1023,7 @@ namespace Dof_Hunt
 			}
 		}
 
-		// Token: 0x06000039 RID: 57 RVA: 0x00004C70 File Offset: 0x00002E70
+		// Token: 0x06000039 RID: 57 RVA: 0x00004C94 File Offset: 0x00002E94
 		private string RemoveTextBeforeFirstUppercase(string text)
 		{
 			int num = text.IndexOfAny("ABCDEFGHIJKLMNOPQRSTUVWXYZÉÀ".ToCharArray());
@@ -1043,7 +1044,7 @@ namespace Dof_Hunt
 			return text2;
 		}
 
-		// Token: 0x0600003A RID: 58 RVA: 0x00004CD0 File Offset: 0x00002ED0
+		// Token: 0x0600003A RID: 58 RVA: 0x00004CF4 File Offset: 0x00002EF4
 		public string PerformOCRTesseract(string imagePath)
 		{
 			string text2;
@@ -1096,7 +1097,94 @@ namespace Dof_Hunt
 			return text2;
 		}
 
-		// Token: 0x0600003B RID: 59 RVA: 0x00004ED4 File Offset: 0x000030D4
+		// Token: 0x0600003B RID: 59 RVA: 0x00004EF8 File Offset: 0x000030F8
+		public int CountCocheOccurrences(double threshold)
+		{
+			Mat mat = CvInvoke.Imread("ressources/img/coche_jaune.png", ImreadModes.Color);
+			bool isEmpty = mat.IsEmpty;
+			int num;
+			if (isEmpty)
+			{
+				this._Dofus_Hunt.AddLog("Erreur : image de la Coche introuvable (coche_jaune.png)");
+				num = 0;
+			}
+			else
+			{
+				Mat mat2 = new Mat(this._logPathImg + "/cropped_hunt.png", ImreadModes.Color);
+				Mat mat3 = new Mat();
+				CvInvoke.MatchTemplate(mat2, mat, mat3, TemplateMatchingType.CcoeffNormed, null);
+				double num2 = 0.0;
+				double num3 = 0.0;
+				Point point = default(Point);
+				Point point2 = default(Point);
+				CvInvoke.MinMaxLoc(mat3, ref num2, ref num3, ref point, ref point2, null);
+				int num4 = 0;
+				float[] array = new float[mat3.Rows * mat3.Cols];
+				mat3.CopyTo<float>(array);
+				for (int i = 0; i < mat3.Rows; i++)
+				{
+					for (int j = 0; j < mat3.Cols; j++)
+					{
+						bool flag = (double)array[i * mat3.Cols + j] >= threshold;
+						if (flag)
+						{
+							num4++;
+							CvInvoke.Rectangle(mat3, new Rectangle(j, i, mat.Width, mat.Height), new MCvScalar(0.0), -1, LineType.EightConnected, 0);
+						}
+					}
+				}
+				bool flag2 = this._logAdvanced == 1;
+				if (flag2)
+				{
+					Dofus_Hunt dofus_Hunt = this._Dofus_Hunt;
+					DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(35, 1);
+					defaultInterpolatedStringHandler.AppendLiteral("Nombre de coches jaune détectées : ");
+					defaultInterpolatedStringHandler.AppendFormatted<int>(num4);
+					dofus_Hunt.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
+				}
+				num = num4;
+			}
+			return num;
+		}
+
+		// Token: 0x0600003C RID: 60 RVA: 0x00005090 File Offset: 0x00003290
+		public bool IsCombatDetected(double threshold)
+		{
+			Mat mat = CvInvoke.Imread("ressources/img/combat.png", ImreadModes.Color);
+			bool isEmpty = mat.IsEmpty;
+			bool flag;
+			if (isEmpty)
+			{
+				flag = false;
+			}
+			else
+			{
+				Mat mat2 = new Mat(this._logPathImg + "/cropped_hunt.png", ImreadModes.Color);
+				Mat mat3 = new Mat();
+				CvInvoke.MatchTemplate(mat2, mat, mat3, TemplateMatchingType.CcoeffNormed, null);
+				double num = 0.0;
+				double num2 = 0.0;
+				Point point = default(Point);
+				Point point2 = default(Point);
+				CvInvoke.MinMaxLoc(mat3, ref num, ref num2, ref point, ref point2, null);
+				bool flag2 = this._logAdvanced == 1;
+				if (flag2)
+				{
+					Dofus_Hunt dofus_Hunt = this._Dofus_Hunt;
+					DefaultInterpolatedStringHandler defaultInterpolatedStringHandler = new DefaultInterpolatedStringHandler(69, 2);
+					defaultInterpolatedStringHandler.AppendLiteral("Valeur de correspondance maximale pour 'combat.png' : ");
+					defaultInterpolatedStringHandler.AppendFormatted<double>(num2);
+					defaultInterpolatedStringHandler.AppendLiteral(" à la position ");
+					defaultInterpolatedStringHandler.AppendFormatted<Point>(point2);
+					dofus_Hunt.AddLog(defaultInterpolatedStringHandler.ToStringAndClear());
+				}
+				bool flag3 = num2 >= threshold;
+				flag = flag3;
+			}
+			return flag;
+		}
+
+		// Token: 0x0600003D RID: 61 RVA: 0x00005194 File Offset: 0x00003394
 		public string getIndiceTexte(double thresholdHuntInfo, int largeurTexteHuntInfo, int hauteurTexteHuntInfo, double threshold, int largeurTexte, int hauteurTexte)
 		{
 			this.DetectAndExtractHuntInfo(thresholdHuntInfo, largeurTexteHuntInfo, hauteurTexteHuntInfo);
@@ -1190,7 +1278,7 @@ namespace Dof_Hunt
 			return text;
 		}
 
-		// Token: 0x0600003C RID: 60 RVA: 0x000051CC File Offset: 0x000033CC
+		// Token: 0x0600003E RID: 62 RVA: 0x0000548C File Offset: 0x0000368C
 		public string DetectArrowDirectionAfterOCR(double threshold)
 		{
 			Mat mat = new Mat(this._logPathImg + "/cropped_text.png", ImreadModes.Color);
@@ -1264,7 +1352,7 @@ namespace Dof_Hunt
 			return text6;
 		}
 
-		// Token: 0x0600003D RID: 61 RVA: 0x0000542C File Offset: 0x0000362C
+		// Token: 0x0600003F RID: 63 RVA: 0x000056EC File Offset: 0x000038EC
 		public string GetArrowIcon(string arrow)
 		{
 			if (!true)
@@ -1306,7 +1394,7 @@ namespace Dof_Hunt
 			return text;
 		}
 
-		// Token: 0x0600003E RID: 62 RVA: 0x000054A8 File Offset: 0x000036A8
+		// Token: 0x06000040 RID: 64 RVA: 0x00005768 File Offset: 0x00003968
 		public List<IndiceData> GetHuntData(string x, string y, string dir)
 		{
 			this.indicePositions.Clear();
@@ -1358,7 +1446,7 @@ namespace Dof_Hunt
 			return list2;
 		}
 
-		// Token: 0x0600003F RID: 63 RVA: 0x00005704 File Offset: 0x00003904
+		// Token: 0x06000041 RID: 65 RVA: 0x000059C4 File Offset: 0x00003BC4
 		[return: TupleElementNames(new string[] { "posX", "posY", "indiceChecked" })]
 		[return: Nullable(new byte[] { 0, 1 })]
 		public ValueTuple<int, int, string> GetIndicePositionOffline(string indice)
@@ -1419,7 +1507,7 @@ namespace Dof_Hunt
 			return valueTuple2;
 		}
 
-		// Token: 0x06000040 RID: 64 RVA: 0x000058EC File Offset: 0x00003AEC
+		// Token: 0x06000042 RID: 66 RVA: 0x00005BAC File Offset: 0x00003DAC
 		[return: TupleElementNames(new string[] { "posX", "posY", "indiceChecked" })]
 		[return: Nullable(new byte[] { 0, 1 })]
 		public ValueTuple<int, int, string> GetIndicePositionOfflineAuto(string indiceRechercher, string direction, int startX, int startY)
@@ -1510,7 +1598,7 @@ namespace Dof_Hunt
 			return valueTuple;
 		}
 
-		// Token: 0x06000041 RID: 65 RVA: 0x00005C3C File Offset: 0x00003E3C
+		// Token: 0x06000043 RID: 67 RVA: 0x00005EFC File Offset: 0x000040FC
 		public string GetCorrectedText(string input)
 		{
 			string text2;

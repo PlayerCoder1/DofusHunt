@@ -3,7 +3,7 @@
 	// Token: 0x02000003 RID: 3
 	public partial class FormHome : global::DevExpress.XtraEditors.XtraForm
 	{
-		// Token: 0x06000042 RID: 66 RVA: 0x00005ACC File Offset: 0x00003CCC
+		// Token: 0x06000045 RID: 69 RVA: 0x00002181 File Offset: 0x00000381
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && this.components != null)
@@ -13,7 +13,7 @@
 			base.Dispose(disposing);
 		}
 
-		// Token: 0x06000043 RID: 67 RVA: 0x00005AEC File Offset: 0x00003CEC
+		// Token: 0x06000046 RID: 70 RVA: 0x00006330 File Offset: 0x00004530
 		private void InitializeComponent()
 		{
 			this.components = new global::System.ComponentModel.Container();
@@ -102,8 +102,10 @@
 			this.panelControl_Hunt_ConfigHuntAuto = new global::DevExpress.XtraEditors.PanelControl();
 			this.xtraTabControl_Hunt_Config_HuntAuto = new global::DevExpress.XtraTab.XtraTabControl();
 			this.xtraTabPage1 = new global::DevExpress.XtraTab.XtraTabPage();
+			this.textEdit_Hunt_Config_Hunt_Indice_Detection = new global::DevExpress.XtraEditors.TextEdit();
 			this.textEdit_Hunt_Config_Debug = new global::DevExpress.XtraEditors.TextEdit();
 			this.checkEdit_Hunt_Config_Debug = new global::DevExpress.XtraEditors.CheckEdit();
+			this.labelControl_Hunt_Config_Hunt_Indice_Detection = new global::DevExpress.XtraEditors.LabelControl();
 			this.checkEdit_Hunt_Config_Offline = new global::DevExpress.XtraEditors.CheckEdit();
 			this.checkEdit_Hunt_Config_UseGoogleVision = new global::DevExpress.XtraEditors.CheckEdit();
 			this.xtraTabPage2 = new global::DevExpress.XtraTab.XtraTabPage();
@@ -123,9 +125,11 @@
 			this.textEdit_Hunt_Config_Hunt_Position_X = new global::DevExpress.XtraEditors.TextEdit();
 			this.labelControl_Hunt_Config_Hunt_Position_X = new global::DevExpress.XtraEditors.LabelControl();
 			this.xtraTabPage3 = new global::DevExpress.XtraTab.XtraTabPage();
-			this.textEdit_Hunt_Config_Hunt_Indice_Detection = new global::DevExpress.XtraEditors.TextEdit();
-			this.labelControl_Hunt_Config_Hunt_Indice_Detection = new global::DevExpress.XtraEditors.LabelControl();
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRCombat = new global::DevExpress.XtraEditors.TextEdit();
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCombat = new global::DevExpress.XtraEditors.LabelControl();
 			this.simpleButton_Hunt_Config_Hunt_Indice_Save = new global::DevExpress.XtraEditors.SimpleButton();
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRCocheCheck = new global::DevExpress.XtraEditors.TextEdit();
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCocheChecked = new global::DevExpress.XtraEditors.LabelControl();
 			this.textEdit_Hunt_Config_Hunt_Indice_OCRFleche = new global::DevExpress.XtraEditors.TextEdit();
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRFleche = new global::DevExpress.XtraEditors.LabelControl();
 			this.textEdit_Hunt_Config_Hunt_Indice_HIndice = new global::DevExpress.XtraEditors.TextEdit();
@@ -141,6 +145,8 @@
 			this.textEdit_Hunt_Config_Hunt_Indice_OCRStart = new global::DevExpress.XtraEditors.TextEdit();
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRStart = new global::DevExpress.XtraEditors.LabelControl();
 			this.xtraTabPage4 = new global::DevExpress.XtraTab.XtraTabPage();
+			this.groupControl5 = new global::DevExpress.XtraEditors.GroupControl();
+			this.pictureBox_Hunt_Config_Hunt_Template_Combat = new global::System.Windows.Forms.PictureBox();
 			this.groupControl4 = new global::DevExpress.XtraEditors.GroupControl();
 			this.pictureBox_Hunt_Config_Hunt_Template_Level = new global::System.Windows.Forms.PictureBox();
 			this.groupControl3 = new global::DevExpress.XtraEditors.GroupControl();
@@ -151,6 +157,7 @@
 			this.pictureBox_Hunt_Config_Hunt_Template_Arrow_2 = new global::System.Windows.Forms.PictureBox();
 			this.pictureBox_Hunt_Config_Hunt_Template_Arrow_0 = new global::System.Windows.Forms.PictureBox();
 			this.groupControl1 = new global::DevExpress.XtraEditors.GroupControl();
+			this.pictureBox_Hunt_Config_Hunt_Template_CocheChecked = new global::System.Windows.Forms.PictureBox();
 			this.pictureBox_Hunt_Config_Hunt_Template_Coche = new global::System.Windows.Forms.PictureBox();
 			this.panelControl_Hunt_Hunt = new global::DevExpress.XtraEditors.PanelControl();
 			this.labelControl_Hunt_Map = new global::DevExpress.XtraEditors.LabelControl();
@@ -172,6 +179,7 @@
 			this.labelControl_Hunt_Pos = new global::DevExpress.XtraEditors.LabelControl();
 			this.toastNotificationsManager = new global::DevExpress.XtraBars.ToastNotifications.ToastNotificationsManager(this.components);
 			this.panelControl_Hunt_HuntAuto = new global::DevExpress.XtraEditors.PanelControl();
+			this.checkEdit_Hunt_Auto_ModeReduit = new global::DevExpress.XtraEditors.CheckEdit();
 			this.labelControl_HuntAuto_MapIndice = new global::DevExpress.XtraEditors.LabelControl();
 			this.labelControl_HuntAuto_MapStart = new global::DevExpress.XtraEditors.LabelControl();
 			this.checkEdit_HuntAuto_AutoTravel = new global::DevExpress.XtraEditors.CheckEdit();
@@ -233,6 +241,7 @@
 			((global::System.ComponentModel.ISupportInitialize)this.xtraTabControl_Hunt_Config_HuntAuto).BeginInit();
 			this.xtraTabControl_Hunt_Config_HuntAuto.SuspendLayout();
 			this.xtraTabPage1.SuspendLayout();
+			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_Detection.Properties).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Debug.Properties).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.checkEdit_Hunt_Config_Debug.Properties).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.checkEdit_Hunt_Config_Offline.Properties).BeginInit();
@@ -246,7 +255,8 @@
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Position_Y.Properties).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Position_X.Properties).BeginInit();
 			this.xtraTabPage3.SuspendLayout();
-			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_Detection.Properties).BeginInit();
+			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_OCRCombat.Properties).BeginInit();
+			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_OCRCocheCheck.Properties).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_OCRFleche.Properties).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_HIndice.Properties).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_LIndice.Properties).BeginInit();
@@ -255,6 +265,9 @@
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_LStart.Properties).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_OCRStart.Properties).BeginInit();
 			this.xtraTabPage4.SuspendLayout();
+			((global::System.ComponentModel.ISupportInitialize)this.groupControl5).BeginInit();
+			this.groupControl5.SuspendLayout();
+			((global::System.ComponentModel.ISupportInitialize)this.pictureBox_Hunt_Config_Hunt_Template_Combat).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.groupControl4).BeginInit();
 			this.groupControl4.SuspendLayout();
 			((global::System.ComponentModel.ISupportInitialize)this.pictureBox_Hunt_Config_Hunt_Template_Level).BeginInit();
@@ -269,6 +282,7 @@
 			((global::System.ComponentModel.ISupportInitialize)this.pictureBox_Hunt_Config_Hunt_Template_Arrow_0).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.groupControl1).BeginInit();
 			this.groupControl1.SuspendLayout();
+			((global::System.ComponentModel.ISupportInitialize)this.pictureBox_Hunt_Config_Hunt_Template_CocheChecked).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.pictureBox_Hunt_Config_Hunt_Template_Coche).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.panelControl_Hunt_Hunt).BeginInit();
 			this.panelControl_Hunt_Hunt.SuspendLayout();
@@ -282,6 +296,7 @@
 			((global::System.ComponentModel.ISupportInitialize)this.toastNotificationsManager).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.panelControl_Hunt_HuntAuto).BeginInit();
 			this.panelControl_Hunt_HuntAuto.SuspendLayout();
+			((global::System.ComponentModel.ISupportInitialize)this.checkEdit_Hunt_Auto_ModeReduit.Properties).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.checkEdit_HuntAuto_AutoTravel.Properties).BeginInit();
 			((global::System.ComponentModel.ISupportInitialize)this.panelControl_Home).BeginInit();
 			this.panelControl_Home.SuspendLayout();
@@ -772,13 +787,19 @@
 			this.xtraTabControl_Hunt_Config_HuntAuto.Size = new global::System.Drawing.Size(290, 289);
 			this.xtraTabControl_Hunt_Config_HuntAuto.TabIndex = 0;
 			this.xtraTabControl_Hunt_Config_HuntAuto.TabPages.AddRange(new global::DevExpress.XtraTab.XtraTabPage[] { this.xtraTabPage1, this.xtraTabPage2, this.xtraTabPage3, this.xtraTabPage4 });
+			this.xtraTabPage1.Controls.Add(this.textEdit_Hunt_Config_Hunt_Indice_Detection);
 			this.xtraTabPage1.Controls.Add(this.textEdit_Hunt_Config_Debug);
 			this.xtraTabPage1.Controls.Add(this.checkEdit_Hunt_Config_Debug);
+			this.xtraTabPage1.Controls.Add(this.labelControl_Hunt_Config_Hunt_Indice_Detection);
 			this.xtraTabPage1.Controls.Add(this.checkEdit_Hunt_Config_Offline);
 			this.xtraTabPage1.Controls.Add(this.checkEdit_Hunt_Config_UseGoogleVision);
 			this.xtraTabPage1.Name = "xtraTabPage1";
 			this.xtraTabPage1.Size = new global::System.Drawing.Size(288, 264);
 			this.xtraTabPage1.Text = "Général";
+			this.textEdit_Hunt_Config_Hunt_Indice_Detection.Location = new global::System.Drawing.Point(123, 55);
+			this.textEdit_Hunt_Config_Hunt_Indice_Detection.Name = "textEdit_Hunt_Config_Hunt_Indice_Detection";
+			this.textEdit_Hunt_Config_Hunt_Indice_Detection.Size = new global::System.Drawing.Size(84, 20);
+			this.textEdit_Hunt_Config_Hunt_Indice_Detection.TabIndex = 18;
 			this.textEdit_Hunt_Config_Debug.Location = new global::System.Drawing.Point(94, 239);
 			this.textEdit_Hunt_Config_Debug.Name = "textEdit_Hunt_Config_Debug";
 			this.textEdit_Hunt_Config_Debug.Properties.PasswordChar = '●';
@@ -792,6 +813,12 @@
 			this.checkEdit_Hunt_Config_Debug.Size = new global::System.Drawing.Size(85, 19);
 			this.checkEdit_Hunt_Config_Debug.TabIndex = 2;
 			this.checkEdit_Hunt_Config_Debug.CheckedChanged += new global::System.EventHandler(this.checkEdit_Hunt_Config_Debug_CheckedChanged);
+			this.labelControl_Hunt_Config_Hunt_Indice_Detection.Location = new global::System.Drawing.Point(3, 56);
+			this.labelControl_Hunt_Config_Hunt_Indice_Detection.Name = "labelControl_Hunt_Config_Hunt_Indice_Detection";
+			this.labelControl_Hunt_Config_Hunt_Indice_Detection.Size = new global::System.Drawing.Size(114, 13);
+			this.labelControl_Hunt_Config_Hunt_Indice_Detection.TabIndex = 17;
+			this.labelControl_Hunt_Config_Hunt_Indice_Detection.Text = "Seuil de détection (%) :";
+			this.labelControl_Hunt_Config_Hunt_Indice_Detection.ToolTip = "Correspond au seuil de correction automatique des indices";
 			this.checkEdit_Hunt_Config_Offline.Location = new global::System.Drawing.Point(3, 28);
 			this.checkEdit_Hunt_Config_Offline.Name = "checkEdit_Hunt_Config_Offline";
 			this.checkEdit_Hunt_Config_Offline.Properties.Caption = "Mode \" Hors Ligne \"";
@@ -898,9 +925,11 @@
 			this.labelControl_Hunt_Config_Hunt_Position_X.TabIndex = 0;
 			this.labelControl_Hunt_Config_Hunt_Position_X.Text = "Point X de capture d'écran :";
 			this.labelControl_Hunt_Config_Hunt_Position_X.ToolTip = "Correspond au point X de l'écran ou la capture d'écran commence";
-			this.xtraTabPage3.Controls.Add(this.textEdit_Hunt_Config_Hunt_Indice_Detection);
-			this.xtraTabPage3.Controls.Add(this.labelControl_Hunt_Config_Hunt_Indice_Detection);
+			this.xtraTabPage3.Controls.Add(this.textEdit_Hunt_Config_Hunt_Indice_OCRCombat);
+			this.xtraTabPage3.Controls.Add(this.labelControl_Hunt_Config_Hunt_Indice_OCRCombat);
 			this.xtraTabPage3.Controls.Add(this.simpleButton_Hunt_Config_Hunt_Indice_Save);
+			this.xtraTabPage3.Controls.Add(this.textEdit_Hunt_Config_Hunt_Indice_OCRCocheCheck);
+			this.xtraTabPage3.Controls.Add(this.labelControl_Hunt_Config_Hunt_Indice_OCRCocheChecked);
 			this.xtraTabPage3.Controls.Add(this.textEdit_Hunt_Config_Hunt_Indice_OCRFleche);
 			this.xtraTabPage3.Controls.Add(this.labelControl_Hunt_Config_Hunt_Indice_OCRFleche);
 			this.xtraTabPage3.Controls.Add(this.textEdit_Hunt_Config_Hunt_Indice_HIndice);
@@ -918,92 +947,103 @@
 			this.xtraTabPage3.Name = "xtraTabPage3";
 			this.xtraTabPage3.Size = new global::System.Drawing.Size(288, 264);
 			this.xtraTabPage3.Text = "Indice";
-			this.textEdit_Hunt_Config_Hunt_Indice_Detection.Location = new global::System.Drawing.Point(180, 199);
-			this.textEdit_Hunt_Config_Hunt_Indice_Detection.Name = "textEdit_Hunt_Config_Hunt_Indice_Detection";
-			this.textEdit_Hunt_Config_Hunt_Indice_Detection.Size = new global::System.Drawing.Size(84, 20);
-			this.textEdit_Hunt_Config_Hunt_Indice_Detection.TabIndex = 18;
-			this.labelControl_Hunt_Config_Hunt_Indice_Detection.Location = new global::System.Drawing.Point(24, 202);
-			this.labelControl_Hunt_Config_Hunt_Indice_Detection.Name = "labelControl_Hunt_Config_Hunt_Indice_Detection";
-			this.labelControl_Hunt_Config_Hunt_Indice_Detection.Size = new global::System.Drawing.Size(114, 13);
-			this.labelControl_Hunt_Config_Hunt_Indice_Detection.TabIndex = 17;
-			this.labelControl_Hunt_Config_Hunt_Indice_Detection.Text = "Seuil de détection (%) :";
-			this.labelControl_Hunt_Config_Hunt_Indice_Detection.ToolTip = "Correspond au seuil de correction automatique des indices";
-			this.simpleButton_Hunt_Config_Hunt_Indice_Save.Location = new global::System.Drawing.Point(180, 225);
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRCombat.Location = new global::System.Drawing.Point(180, 214);
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRCombat.Name = "textEdit_Hunt_Config_Hunt_Indice_OCRCombat";
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRCombat.Size = new global::System.Drawing.Size(84, 20);
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRCombat.TabIndex = 20;
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCombat.Location = new global::System.Drawing.Point(24, 217);
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCombat.Name = "labelControl_Hunt_Config_Hunt_Indice_OCRCombat";
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCombat.Size = new global::System.Drawing.Size(92, 13);
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCombat.TabIndex = 19;
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCombat.Text = "Seuil OCR combat :";
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCombat.ToolTip = "Correspond au seuil OCR du bouton de combat\r\n";
+			this.simpleButton_Hunt_Config_Hunt_Indice_Save.Location = new global::System.Drawing.Point(180, 238);
 			this.simpleButton_Hunt_Config_Hunt_Indice_Save.Name = "simpleButton_Hunt_Config_Hunt_Indice_Save";
 			this.simpleButton_Hunt_Config_Hunt_Indice_Save.Size = new global::System.Drawing.Size(84, 23);
 			this.simpleButton_Hunt_Config_Hunt_Indice_Save.TabIndex = 16;
 			this.simpleButton_Hunt_Config_Hunt_Indice_Save.Text = "Sauvegarder";
 			this.simpleButton_Hunt_Config_Hunt_Indice_Save.Click += new global::System.EventHandler(this.simpleButton_Hunt_Config_Hunt_Indice_Save_Click);
-			this.textEdit_Hunt_Config_Hunt_Indice_OCRFleche.Location = new global::System.Drawing.Point(180, 173);
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRCocheCheck.Location = new global::System.Drawing.Point(180, 188);
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRCocheCheck.Name = "textEdit_Hunt_Config_Hunt_Indice_OCRCocheCheck";
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRCocheCheck.Size = new global::System.Drawing.Size(84, 20);
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRCocheCheck.TabIndex = 18;
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCocheChecked.Location = new global::System.Drawing.Point(24, 191);
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCocheChecked.Name = "labelControl_Hunt_Config_Hunt_Indice_OCRCocheChecked";
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCocheChecked.Size = new global::System.Drawing.Size(122, 13);
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCocheChecked.TabIndex = 17;
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCocheChecked.Text = "Seuil OCR coche validée :";
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCocheChecked.ToolTip = "Correspond au seuil OCR de la coche des indices validés";
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRFleche.Location = new global::System.Drawing.Point(180, 162);
 			this.textEdit_Hunt_Config_Hunt_Indice_OCRFleche.Name = "textEdit_Hunt_Config_Hunt_Indice_OCRFleche";
 			this.textEdit_Hunt_Config_Hunt_Indice_OCRFleche.Size = new global::System.Drawing.Size(84, 20);
 			this.textEdit_Hunt_Config_Hunt_Indice_OCRFleche.TabIndex = 15;
-			this.labelControl_Hunt_Config_Hunt_Indice_OCRFleche.Location = new global::System.Drawing.Point(24, 176);
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRFleche.Location = new global::System.Drawing.Point(24, 165);
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRFleche.Name = "labelControl_Hunt_Config_Hunt_Indice_OCRFleche";
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRFleche.Size = new global::System.Drawing.Size(112, 13);
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRFleche.TabIndex = 14;
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRFleche.Text = "Seuil OCR de la flèche :";
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRFleche.ToolTip = "Correspond au seuil OCR de la flèche pour détecter la direction\r\n";
-			this.textEdit_Hunt_Config_Hunt_Indice_HIndice.Location = new global::System.Drawing.Point(180, 147);
+			this.textEdit_Hunt_Config_Hunt_Indice_HIndice.Location = new global::System.Drawing.Point(180, 136);
 			this.textEdit_Hunt_Config_Hunt_Indice_HIndice.Name = "textEdit_Hunt_Config_Hunt_Indice_HIndice";
 			this.textEdit_Hunt_Config_Hunt_Indice_HIndice.Size = new global::System.Drawing.Size(84, 20);
 			this.textEdit_Hunt_Config_Hunt_Indice_HIndice.TabIndex = 13;
-			this.labelControl_Hunt_Config_Hunt_Indice_HIndice.Location = new global::System.Drawing.Point(24, 150);
+			this.labelControl_Hunt_Config_Hunt_Indice_HIndice.Location = new global::System.Drawing.Point(24, 139);
 			this.labelControl_Hunt_Config_Hunt_Indice_HIndice.Name = "labelControl_Hunt_Config_Hunt_Indice_HIndice";
 			this.labelControl_Hunt_Config_Hunt_Indice_HIndice.Size = new global::System.Drawing.Size(146, 13);
 			this.labelControl_Hunt_Config_Hunt_Indice_HIndice.TabIndex = 12;
 			this.labelControl_Hunt_Config_Hunt_Indice_HIndice.Text = "Hauteur de la taille de l'indice :";
 			this.labelControl_Hunt_Config_Hunt_Indice_HIndice.ToolTip = "Correspond à la hauteur de la capture d'écran de l'indice en cours\r\n";
-			this.textEdit_Hunt_Config_Hunt_Indice_LIndice.Location = new global::System.Drawing.Point(180, 121);
+			this.textEdit_Hunt_Config_Hunt_Indice_LIndice.Location = new global::System.Drawing.Point(180, 110);
 			this.textEdit_Hunt_Config_Hunt_Indice_LIndice.Name = "textEdit_Hunt_Config_Hunt_Indice_LIndice";
 			this.textEdit_Hunt_Config_Hunt_Indice_LIndice.Size = new global::System.Drawing.Size(84, 20);
 			this.textEdit_Hunt_Config_Hunt_Indice_LIndice.TabIndex = 11;
-			this.labelControl_Hunt_Config_Hunt_Indice_LCoche.Location = new global::System.Drawing.Point(24, 124);
+			this.labelControl_Hunt_Config_Hunt_Indice_LCoche.Location = new global::System.Drawing.Point(24, 113);
 			this.labelControl_Hunt_Config_Hunt_Indice_LCoche.Name = "labelControl_Hunt_Config_Hunt_Indice_LCoche";
 			this.labelControl_Hunt_Config_Hunt_Indice_LCoche.Size = new global::System.Drawing.Size(133, 13);
 			this.labelControl_Hunt_Config_Hunt_Indice_LCoche.TabIndex = 10;
 			this.labelControl_Hunt_Config_Hunt_Indice_LCoche.Text = "Largeur de taille de l'indice :";
 			this.labelControl_Hunt_Config_Hunt_Indice_LCoche.ToolTip = "Correspond à la largeur de la capture d'écran de l'indice en cours";
-			this.textEdit_Hunt_Config_Hunt_Indice_OCRCoche.Location = new global::System.Drawing.Point(180, 95);
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRCoche.Location = new global::System.Drawing.Point(180, 84);
 			this.textEdit_Hunt_Config_Hunt_Indice_OCRCoche.Name = "textEdit_Hunt_Config_Hunt_Indice_OCRCoche";
 			this.textEdit_Hunt_Config_Hunt_Indice_OCRCoche.Size = new global::System.Drawing.Size(84, 20);
 			this.textEdit_Hunt_Config_Hunt_Indice_OCRCoche.TabIndex = 9;
-			this.labelControl_Hunt_Config_Hunt_Indice_OCRCoche.Location = new global::System.Drawing.Point(24, 98);
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRCoche.Location = new global::System.Drawing.Point(24, 87);
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRCoche.Name = "labelControl_Hunt_Config_Hunt_Indice_OCRCoche";
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRCoche.Size = new global::System.Drawing.Size(111, 13);
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRCoche.TabIndex = 8;
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRCoche.Text = "Seuil OCR de la coche :";
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRCoche.ToolTip = "Correspond au seuil OCR de la coche pour détecter l'indice en cours";
-			this.textEdit_Hunt_Config_Hunt_Indice_HStart.Location = new global::System.Drawing.Point(180, 69);
+			this.textEdit_Hunt_Config_Hunt_Indice_HStart.Location = new global::System.Drawing.Point(180, 58);
 			this.textEdit_Hunt_Config_Hunt_Indice_HStart.Name = "textEdit_Hunt_Config_Hunt_Indice_HStart";
 			this.textEdit_Hunt_Config_Hunt_Indice_HStart.Size = new global::System.Drawing.Size(84, 20);
 			this.textEdit_Hunt_Config_Hunt_Indice_HStart.TabIndex = 7;
-			this.labelControl_Hunt_Config_Hunt_Indice_HStart.Location = new global::System.Drawing.Point(24, 72);
+			this.labelControl_Hunt_Config_Hunt_Indice_HStart.Location = new global::System.Drawing.Point(24, 61);
 			this.labelControl_Hunt_Config_Hunt_Indice_HStart.Name = "labelControl_Hunt_Config_Hunt_Indice_HStart";
 			this.labelControl_Hunt_Config_Hunt_Indice_HStart.Size = new global::System.Drawing.Size(136, 13);
 			this.labelControl_Hunt_Config_Hunt_Indice_HStart.TabIndex = 6;
 			this.labelControl_Hunt_Config_Hunt_Indice_HStart.Text = "Hauteur de taille du départ :";
 			this.labelControl_Hunt_Config_Hunt_Indice_HStart.ToolTip = "Correspond à la hauteur de la capture d'écran de la zone de départ";
-			this.textEdit_Hunt_Config_Hunt_Indice_LStart.Location = new global::System.Drawing.Point(180, 43);
+			this.textEdit_Hunt_Config_Hunt_Indice_LStart.Location = new global::System.Drawing.Point(180, 32);
 			this.textEdit_Hunt_Config_Hunt_Indice_LStart.Name = "textEdit_Hunt_Config_Hunt_Indice_LStart";
 			this.textEdit_Hunt_Config_Hunt_Indice_LStart.Size = new global::System.Drawing.Size(84, 20);
 			this.textEdit_Hunt_Config_Hunt_Indice_LStart.TabIndex = 5;
-			this.labelControl_Hunt_Config_Hunt_Indice_LStart.Location = new global::System.Drawing.Point(24, 46);
+			this.labelControl_Hunt_Config_Hunt_Indice_LStart.Location = new global::System.Drawing.Point(24, 35);
 			this.labelControl_Hunt_Config_Hunt_Indice_LStart.Name = "labelControl_Hunt_Config_Hunt_Indice_LStart";
 			this.labelControl_Hunt_Config_Hunt_Indice_LStart.Size = new global::System.Drawing.Size(134, 13);
 			this.labelControl_Hunt_Config_Hunt_Indice_LStart.TabIndex = 4;
 			this.labelControl_Hunt_Config_Hunt_Indice_LStart.Text = "Largeur de taille du départ :";
 			this.labelControl_Hunt_Config_Hunt_Indice_LStart.ToolTip = "Correspond à la largeur de la capture d'écran de la zone de départ";
-			this.textEdit_Hunt_Config_Hunt_Indice_OCRStart.Location = new global::System.Drawing.Point(180, 17);
+			this.textEdit_Hunt_Config_Hunt_Indice_OCRStart.Location = new global::System.Drawing.Point(180, 6);
 			this.textEdit_Hunt_Config_Hunt_Indice_OCRStart.Name = "textEdit_Hunt_Config_Hunt_Indice_OCRStart";
 			this.textEdit_Hunt_Config_Hunt_Indice_OCRStart.Size = new global::System.Drawing.Size(84, 20);
 			this.textEdit_Hunt_Config_Hunt_Indice_OCRStart.TabIndex = 3;
-			this.labelControl_Hunt_Config_Hunt_Indice_OCRStart.Location = new global::System.Drawing.Point(24, 20);
+			this.labelControl_Hunt_Config_Hunt_Indice_OCRStart.Location = new global::System.Drawing.Point(24, 9);
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRStart.Name = "labelControl_Hunt_Config_Hunt_Indice_OCRStart";
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRStart.Size = new global::System.Drawing.Size(104, 13);
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRStart.TabIndex = 2;
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRStart.Text = "Seuil OCR du départ :";
 			this.labelControl_Hunt_Config_Hunt_Indice_OCRStart.ToolTip = "Correspond au seuil OCR de la zone de départ";
+			this.xtraTabPage4.Controls.Add(this.groupControl5);
 			this.xtraTabPage4.Controls.Add(this.groupControl4);
 			this.xtraTabPage4.Controls.Add(this.groupControl3);
 			this.xtraTabPage4.Controls.Add(this.groupControl2);
@@ -1011,29 +1051,45 @@
 			this.xtraTabPage4.Name = "xtraTabPage4";
 			this.xtraTabPage4.Size = new global::System.Drawing.Size(288, 264);
 			this.xtraTabPage4.Text = "Template d'image";
+			this.groupControl5.Controls.Add(this.pictureBox_Hunt_Config_Hunt_Template_Combat);
+			this.groupControl5.Location = new global::System.Drawing.Point(131, 145);
+			this.groupControl5.Name = "groupControl5";
+			this.groupControl5.Size = new global::System.Drawing.Size(154, 65);
+			this.groupControl5.TabIndex = 20;
+			this.groupControl5.Text = "Combat";
+			this.pictureBox_Hunt_Config_Hunt_Template_Combat.Cursor = global::System.Windows.Forms.Cursors.Hand;
+			this.pictureBox_Hunt_Config_Hunt_Template_Combat.Location = new global::System.Drawing.Point(42, 25);
+			this.pictureBox_Hunt_Config_Hunt_Template_Combat.Name = "pictureBox_Hunt_Config_Hunt_Template_Combat";
+			this.pictureBox_Hunt_Config_Hunt_Template_Combat.Size = new global::System.Drawing.Size(70, 30);
+			this.pictureBox_Hunt_Config_Hunt_Template_Combat.SizeMode = global::System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+			this.pictureBox_Hunt_Config_Hunt_Template_Combat.TabIndex = 11;
+			this.pictureBox_Hunt_Config_Hunt_Template_Combat.TabStop = false;
+			this.pictureBox_Hunt_Config_Hunt_Template_Combat.Click += new global::System.EventHandler(this.pictureBox_Hunt_Config_Hunt_Template_Combat_Click);
 			this.groupControl4.Controls.Add(this.pictureBox_Hunt_Config_Hunt_Template_Level);
-			this.groupControl4.Location = new global::System.Drawing.Point(131, 84);
+			this.groupControl4.Location = new global::System.Drawing.Point(131, 74);
 			this.groupControl4.Name = "groupControl4";
-			this.groupControl4.Size = new global::System.Drawing.Size(154, 75);
+			this.groupControl4.Size = new global::System.Drawing.Size(154, 65);
 			this.groupControl4.TabIndex = 19;
 			this.groupControl4.Text = "Niveau";
 			this.pictureBox_Hunt_Config_Hunt_Template_Level.Cursor = global::System.Windows.Forms.Cursors.Hand;
 			this.pictureBox_Hunt_Config_Hunt_Template_Level.Location = new global::System.Drawing.Point(42, 25);
 			this.pictureBox_Hunt_Config_Hunt_Template_Level.Name = "pictureBox_Hunt_Config_Hunt_Template_Level";
 			this.pictureBox_Hunt_Config_Hunt_Template_Level.Size = new global::System.Drawing.Size(70, 30);
+			this.pictureBox_Hunt_Config_Hunt_Template_Level.SizeMode = global::System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox_Hunt_Config_Hunt_Template_Level.TabIndex = 11;
 			this.pictureBox_Hunt_Config_Hunt_Template_Level.TabStop = false;
 			this.pictureBox_Hunt_Config_Hunt_Template_Level.Click += new global::System.EventHandler(this.pictureBox_Hunt_Config_Hunt_Template_Level_Click);
 			this.groupControl3.Controls.Add(this.pictureBox_Hunt_Config_Hunt_Template_Start);
 			this.groupControl3.Location = new global::System.Drawing.Point(131, 3);
 			this.groupControl3.Name = "groupControl3";
-			this.groupControl3.Size = new global::System.Drawing.Size(154, 75);
+			this.groupControl3.Size = new global::System.Drawing.Size(154, 65);
 			this.groupControl3.TabIndex = 18;
 			this.groupControl3.Text = "Départ";
 			this.pictureBox_Hunt_Config_Hunt_Template_Start.Cursor = global::System.Windows.Forms.Cursors.Hand;
 			this.pictureBox_Hunt_Config_Hunt_Template_Start.Location = new global::System.Drawing.Point(42, 25);
 			this.pictureBox_Hunt_Config_Hunt_Template_Start.Name = "pictureBox_Hunt_Config_Hunt_Template_Start";
 			this.pictureBox_Hunt_Config_Hunt_Template_Start.Size = new global::System.Drawing.Size(70, 30);
+			this.pictureBox_Hunt_Config_Hunt_Template_Start.SizeMode = global::System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pictureBox_Hunt_Config_Hunt_Template_Start.TabIndex = 4;
 			this.pictureBox_Hunt_Config_Hunt_Template_Start.TabStop = false;
 			this.pictureBox_Hunt_Config_Hunt_Template_Start.Click += new global::System.EventHandler(this.pictureBox_Hunt_Config_Hunt_Template_Start_Click);
@@ -1041,9 +1097,9 @@
 			this.groupControl2.Controls.Add(this.pictureBox_Hunt_Config_Hunt_Template_Arrow_4);
 			this.groupControl2.Controls.Add(this.pictureBox_Hunt_Config_Hunt_Template_Arrow_2);
 			this.groupControl2.Controls.Add(this.pictureBox_Hunt_Config_Hunt_Template_Arrow_0);
-			this.groupControl2.Location = new global::System.Drawing.Point(3, 84);
+			this.groupControl2.Location = new global::System.Drawing.Point(3, 74);
 			this.groupControl2.Name = "groupControl2";
-			this.groupControl2.Size = new global::System.Drawing.Size(122, 143);
+			this.groupControl2.Size = new global::System.Drawing.Size(122, 137);
 			this.groupControl2.TabIndex = 18;
 			this.groupControl2.Text = "Flèches";
 			this.groupControl2.Paint += new global::System.Windows.Forms.PaintEventHandler(this.groupControl2_Paint);
@@ -1075,14 +1131,22 @@
 			this.pictureBox_Hunt_Config_Hunt_Template_Arrow_0.TabIndex = 7;
 			this.pictureBox_Hunt_Config_Hunt_Template_Arrow_0.TabStop = false;
 			this.pictureBox_Hunt_Config_Hunt_Template_Arrow_0.Click += new global::System.EventHandler(this.pictureBox_Hunt_Config_Hunt_Template_Arrow_0_Click);
+			this.groupControl1.Controls.Add(this.pictureBox_Hunt_Config_Hunt_Template_CocheChecked);
 			this.groupControl1.Controls.Add(this.pictureBox_Hunt_Config_Hunt_Template_Coche);
 			this.groupControl1.Location = new global::System.Drawing.Point(3, 3);
 			this.groupControl1.Name = "groupControl1";
-			this.groupControl1.Size = new global::System.Drawing.Size(122, 75);
+			this.groupControl1.Size = new global::System.Drawing.Size(122, 65);
 			this.groupControl1.TabIndex = 17;
-			this.groupControl1.Text = "Coche Blanche";
+			this.groupControl1.Text = "Coches";
+			this.pictureBox_Hunt_Config_Hunt_Template_CocheChecked.Cursor = global::System.Windows.Forms.Cursors.Hand;
+			this.pictureBox_Hunt_Config_Hunt_Template_CocheChecked.Location = new global::System.Drawing.Point(64, 25);
+			this.pictureBox_Hunt_Config_Hunt_Template_CocheChecked.Name = "pictureBox_Hunt_Config_Hunt_Template_CocheChecked";
+			this.pictureBox_Hunt_Config_Hunt_Template_CocheChecked.Size = new global::System.Drawing.Size(30, 30);
+			this.pictureBox_Hunt_Config_Hunt_Template_CocheChecked.TabIndex = 3;
+			this.pictureBox_Hunt_Config_Hunt_Template_CocheChecked.TabStop = false;
+			this.pictureBox_Hunt_Config_Hunt_Template_CocheChecked.Click += new global::System.EventHandler(this.pictureBox_Hunt_Config_Hunt_Template_CocheChecked_Click);
 			this.pictureBox_Hunt_Config_Hunt_Template_Coche.Cursor = global::System.Windows.Forms.Cursors.Hand;
-			this.pictureBox_Hunt_Config_Hunt_Template_Coche.Location = new global::System.Drawing.Point(46, 25);
+			this.pictureBox_Hunt_Config_Hunt_Template_Coche.Location = new global::System.Drawing.Point(28, 25);
 			this.pictureBox_Hunt_Config_Hunt_Template_Coche.Name = "pictureBox_Hunt_Config_Hunt_Template_Coche";
 			this.pictureBox_Hunt_Config_Hunt_Template_Coche.Size = new global::System.Drawing.Size(30, 30);
 			this.pictureBox_Hunt_Config_Hunt_Template_Coche.TabIndex = 2;
@@ -1208,6 +1272,7 @@
 			this.labelControl_Hunt_Pos.TabIndex = 0;
 			this.labelControl_Hunt_Pos.Text = "Position";
 			this.toastNotificationsManager.ApplicationId = "61b7e00e-4fdb-4329-8ce0-f06beaed2abe";
+			this.panelControl_Hunt_HuntAuto.Controls.Add(this.checkEdit_Hunt_Auto_ModeReduit);
 			this.panelControl_Hunt_HuntAuto.Controls.Add(this.labelControl_HuntAuto_MapIndice);
 			this.panelControl_Hunt_HuntAuto.Controls.Add(this.labelControl_HuntAuto_MapStart);
 			this.panelControl_Hunt_HuntAuto.Controls.Add(this.checkEdit_HuntAuto_AutoTravel);
@@ -1221,6 +1286,12 @@
 			this.panelControl_Hunt_HuntAuto.Size = new global::System.Drawing.Size(300, 300);
 			this.panelControl_Hunt_HuntAuto.TabIndex = 18;
 			this.panelControl_Hunt_HuntAuto.Visible = false;
+			this.checkEdit_Hunt_Auto_ModeReduit.Location = new global::System.Drawing.Point(5, 251);
+			this.checkEdit_Hunt_Auto_ModeReduit.Name = "checkEdit_Hunt_Auto_ModeReduit";
+			this.checkEdit_Hunt_Auto_ModeReduit.Properties.Caption = "Mode réduit";
+			this.checkEdit_Hunt_Auto_ModeReduit.Size = new global::System.Drawing.Size(80, 19);
+			this.checkEdit_Hunt_Auto_ModeReduit.TabIndex = 23;
+			this.checkEdit_Hunt_Auto_ModeReduit.CheckedChanged += new global::System.EventHandler(this.checkEdit_Hunt_Auto_ModeReduit_CheckedChanged);
 			this.labelControl_HuntAuto_MapIndice.Location = new global::System.Drawing.Point(46, 224);
 			this.labelControl_HuntAuto_MapIndice.Name = "labelControl_HuntAuto_MapIndice";
 			this.labelControl_HuntAuto_MapIndice.Size = new global::System.Drawing.Size(76, 13);
@@ -1235,7 +1306,7 @@
 			this.checkEdit_HuntAuto_AutoTravel.Location = new global::System.Drawing.Point(5, 276);
 			this.checkEdit_HuntAuto_AutoTravel.Name = "checkEdit_HuntAuto_AutoTravel";
 			this.checkEdit_HuntAuto_AutoTravel.Properties.Caption = "Copier la commande d'autopilote ";
-			this.checkEdit_HuntAuto_AutoTravel.Size = new global::System.Drawing.Size(189, 19);
+			this.checkEdit_HuntAuto_AutoTravel.Size = new global::System.Drawing.Size(181, 19);
 			this.checkEdit_HuntAuto_AutoTravel.TabIndex = 17;
 			this.labelControl_HuntAuto_Direction.Location = new global::System.Drawing.Point(46, 186);
 			this.labelControl_HuntAuto_Direction.Name = "labelControl_HuntAuto_Direction";
@@ -1298,14 +1369,14 @@
 			this.labelControl1.Text = "Dofus Hunt";
 			base.AutoScaleDimensions = new global::System.Drawing.SizeF(6f, 13f);
 			base.AutoScaleMode = global::System.Windows.Forms.AutoScaleMode.Font;
-			base.ClientSize = new global::System.Drawing.Size(490, 311);
-			base.Controls.Add(this.panelControl_Home);
+			base.ClientSize = new global::System.Drawing.Size(489, 321);
+			base.Controls.Add(this.panelControl_Hunt_ConfigHuntAuto);
 			base.Controls.Add(this.panelControl_Hunt_HuntAuto);
+			base.Controls.Add(this.panelControl_Home);
 			base.Controls.Add(this.panelControl_Hunt_Debug);
 			base.Controls.Add(this.panelControl_Hunt_Hunt);
 			base.Controls.Add(this.panelControl_Hunt_Notifications);
 			base.Controls.Add(this.panelControl_Hunt_Config_Logiciel);
-			base.Controls.Add(this.panelControl_Hunt_ConfigHuntAuto);
 			base.Controls.Add(this.accordionControl1);
 			base.Controls.Add(this.panelControl_Hunt_Indice);
 			base.Controls.Add(this.panelControl_Hunt_Init);
@@ -1371,6 +1442,8 @@
 			((global::System.ComponentModel.ISupportInitialize)this.xtraTabControl_Hunt_Config_HuntAuto).EndInit();
 			this.xtraTabControl_Hunt_Config_HuntAuto.ResumeLayout(false);
 			this.xtraTabPage1.ResumeLayout(false);
+			this.xtraTabPage1.PerformLayout();
+			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_Detection.Properties).EndInit();
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Debug.Properties).EndInit();
 			((global::System.ComponentModel.ISupportInitialize)this.checkEdit_Hunt_Config_Debug.Properties).EndInit();
 			((global::System.ComponentModel.ISupportInitialize)this.checkEdit_Hunt_Config_Offline.Properties).EndInit();
@@ -1386,7 +1459,8 @@
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Position_X.Properties).EndInit();
 			this.xtraTabPage3.ResumeLayout(false);
 			this.xtraTabPage3.PerformLayout();
-			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_Detection.Properties).EndInit();
+			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_OCRCombat.Properties).EndInit();
+			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_OCRCocheCheck.Properties).EndInit();
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_OCRFleche.Properties).EndInit();
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_HIndice.Properties).EndInit();
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_LIndice.Properties).EndInit();
@@ -1395,6 +1469,9 @@
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_LStart.Properties).EndInit();
 			((global::System.ComponentModel.ISupportInitialize)this.textEdit_Hunt_Config_Hunt_Indice_OCRStart.Properties).EndInit();
 			this.xtraTabPage4.ResumeLayout(false);
+			((global::System.ComponentModel.ISupportInitialize)this.groupControl5).EndInit();
+			this.groupControl5.ResumeLayout(false);
+			((global::System.ComponentModel.ISupportInitialize)this.pictureBox_Hunt_Config_Hunt_Template_Combat).EndInit();
 			((global::System.ComponentModel.ISupportInitialize)this.groupControl4).EndInit();
 			this.groupControl4.ResumeLayout(false);
 			((global::System.ComponentModel.ISupportInitialize)this.pictureBox_Hunt_Config_Hunt_Template_Level).EndInit();
@@ -1409,6 +1486,7 @@
 			((global::System.ComponentModel.ISupportInitialize)this.pictureBox_Hunt_Config_Hunt_Template_Arrow_0).EndInit();
 			((global::System.ComponentModel.ISupportInitialize)this.groupControl1).EndInit();
 			this.groupControl1.ResumeLayout(false);
+			((global::System.ComponentModel.ISupportInitialize)this.pictureBox_Hunt_Config_Hunt_Template_CocheChecked).EndInit();
 			((global::System.ComponentModel.ISupportInitialize)this.pictureBox_Hunt_Config_Hunt_Template_Coche).EndInit();
 			((global::System.ComponentModel.ISupportInitialize)this.panelControl_Hunt_Hunt).EndInit();
 			this.panelControl_Hunt_Hunt.ResumeLayout(false);
@@ -1424,6 +1502,7 @@
 			((global::System.ComponentModel.ISupportInitialize)this.panelControl_Hunt_HuntAuto).EndInit();
 			this.panelControl_Hunt_HuntAuto.ResumeLayout(false);
 			this.panelControl_Hunt_HuntAuto.PerformLayout();
+			((global::System.ComponentModel.ISupportInitialize)this.checkEdit_Hunt_Auto_ModeReduit.Properties).EndInit();
 			((global::System.ComponentModel.ISupportInitialize)this.checkEdit_HuntAuto_AutoTravel.Properties).EndInit();
 			((global::System.ComponentModel.ISupportInitialize)this.panelControl_Home).EndInit();
 			this.panelControl_Home.ResumeLayout(false);
@@ -1433,496 +1512,520 @@
 			base.ResumeLayout(false);
 		}
 
-		// Token: 0x04000036 RID: 54
+		// Token: 0x0400003B RID: 59
 		private global::System.ComponentModel.IContainer components;
 
-		// Token: 0x04000037 RID: 55
+		// Token: 0x0400003C RID: 60
 		private global::DevExpress.XtraEditors.PanelControl panelControl_Hunt_Init;
 
-		// Token: 0x04000038 RID: 56
+		// Token: 0x0400003D RID: 61
 		private global::System.Windows.Forms.PictureBox pictureBox_Hunt_Init_Logo;
 
-		// Token: 0x04000039 RID: 57
+		// Token: 0x0400003E RID: 62
 		private global::DevExpress.XtraWaitForm.ProgressPanel progressPanel1;
 
-		// Token: 0x0400003A RID: 58
+		// Token: 0x0400003F RID: 63
 		private global::DevExpress.XtraEditors.PanelControl panelControl_Hunt_Config_Logiciel;
 
-		// Token: 0x0400003B RID: 59
+		// Token: 0x04000040 RID: 64
 		private global::DevExpress.XtraEditors.CheckEdit checkEdit_Hunt_Config_Logiciel_LogAvance;
 
-		// Token: 0x0400003C RID: 60
+		// Token: 0x04000041 RID: 65
 		private global::DevExpress.XtraEditors.CheckEdit checkEdit_Hunt_Config_Logiciel_Theme;
 
-		// Token: 0x0400003D RID: 61
+		// Token: 0x04000042 RID: 66
 		private global::DevExpress.XtraEditors.CheckEdit checkEdit_Hunt_Config_Logiciel_Ecran;
 
-		// Token: 0x0400003E RID: 62
+		// Token: 0x04000043 RID: 67
 		private global::DevExpress.XtraEditors.TrackBarControl trackBarControl_Hunt_Config_Logiciel_Opacity;
 
-		// Token: 0x0400003F RID: 63
+		// Token: 0x04000044 RID: 68
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Logiciel_Opacité;
 
-		// Token: 0x04000040 RID: 64
+		// Token: 0x04000045 RID: 69
 		private global::DevExpress.XtraEditors.CheckEdit checkEdit_Hunt_Config_Logiciel_Notifications;
 
-		// Token: 0x04000041 RID: 65
+		// Token: 0x04000046 RID: 70
 		private global::DevExpress.XtraEditors.CheckEdit checkEdit_Hunt_Config_Logiciel_DeleteLog;
 
-		// Token: 0x04000042 RID: 66
+		// Token: 0x04000047 RID: 71
 		private global::DevExpress.XtraEditors.CheckEdit checkEdit_Hunt_Config_Logiciel_DeleteFile;
 
-		// Token: 0x04000043 RID: 67
+		// Token: 0x04000048 RID: 72
 		private global::DevExpress.XtraEditors.PanelControl panelControl_Hunt_Notifications;
 
-		// Token: 0x04000044 RID: 68
+		// Token: 0x04000049 RID: 73
 		private global::DevExpress.XtraTab.XtraTabControl xtraTabControl_Hunt_Config_Notifications;
 
-		// Token: 0x04000045 RID: 69
+		// Token: 0x0400004A RID: 74
 		private global::DevExpress.XtraTab.XtraTabPage xtraTabPage_Notifications_App;
 
-		// Token: 0x04000046 RID: 70
+		// Token: 0x0400004B RID: 75
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Notify_App_Update;
 
-		// Token: 0x04000047 RID: 71
+		// Token: 0x0400004C RID: 76
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Notify_App_Uodate;
 
-		// Token: 0x04000048 RID: 72
+		// Token: 0x0400004D RID: 77
 		private global::DevExpress.XtraTab.XtraTabPage xtraTabPage_Notifications_Hunt;
 
-		// Token: 0x04000049 RID: 73
+		// Token: 0x0400004E RID: 78
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Notify_App_PbData;
 
-		// Token: 0x0400004A RID: 74
+		// Token: 0x0400004F RID: 79
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Notify_App_PbData;
 
-		// Token: 0x0400004B RID: 75
+		// Token: 0x04000050 RID: 80
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Notify_App_PbCo;
 
-		// Token: 0x0400004C RID: 76
+		// Token: 0x04000051 RID: 81
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Notify_App_PbCo;
 
-		// Token: 0x0400004D RID: 77
+		// Token: 0x04000052 RID: 82
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Notify_Reinit;
 
-		// Token: 0x0400004E RID: 78
+		// Token: 0x04000053 RID: 83
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Notify_Save;
 
-		// Token: 0x0400004F RID: 79
+		// Token: 0x04000054 RID: 84
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Notify_App_Restart;
 
-		// Token: 0x04000050 RID: 80
+		// Token: 0x04000055 RID: 85
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Notify_App_Restart;
 
-		// Token: 0x04000051 RID: 81
+		// Token: 0x04000056 RID: 86
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Position_hauteurTexte;
 
-		// Token: 0x04000052 RID: 82
+		// Token: 0x04000057 RID: 87
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Pos;
 
-		// Token: 0x04000053 RID: 83
+		// Token: 0x04000058 RID: 88
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Notify_Hunt_NoData;
 
-		// Token: 0x04000054 RID: 84
+		// Token: 0x04000059 RID: 89
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Notify_Hunt_NoData;
 
-		// Token: 0x04000055 RID: 85
+		// Token: 0x0400005A RID: 90
 		private global::DevExpress.XtraTab.XtraTabPage xtraTabPage_Notifications_Indice;
 
-		// Token: 0x04000056 RID: 86
+		// Token: 0x0400005B RID: 91
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Indices_IndiceOK;
 
-		// Token: 0x04000057 RID: 87
+		// Token: 0x0400005C RID: 92
 		private global::DevExpress.XtraEditors.CheckEdit checkEdit_Hunt_Config_Logiciel_UpdateDHU;
 
-		// Token: 0x04000058 RID: 88
+		// Token: 0x0400005D RID: 93
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Indices_IndiceOK;
 
-		// Token: 0x04000059 RID: 89
+		// Token: 0x0400005E RID: 94
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Indices_IndiceKO;
 
-		// Token: 0x0400005A RID: 90
+		// Token: 0x0400005F RID: 95
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Indices_IndiceKO;
 
-		// Token: 0x0400005B RID: 91
+		// Token: 0x04000060 RID: 96
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Indices_CorrectIndice;
 
-		// Token: 0x0400005C RID: 92
+		// Token: 0x04000061 RID: 97
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Indices_CorrectIndice;
 
-		// Token: 0x0400005D RID: 93
+		// Token: 0x04000062 RID: 98
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Indices_Phorreur;
 
-		// Token: 0x0400005E RID: 94
+		// Token: 0x04000063 RID: 99
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Indices_Phorreur;
 
-		// Token: 0x0400005F RID: 95
+		// Token: 0x04000064 RID: 100
 		private global::DevExpress.XtraEditors.PanelControl panelControl_Hunt_Indice;
 
-		// Token: 0x04000060 RID: 96
+		// Token: 0x04000065 RID: 101
 		private global::DevExpress.XtraBars.Navigation.AccordionControl accordionControl1;
 
-		// Token: 0x04000061 RID: 97
+		// Token: 0x04000066 RID: 102
 		private global::DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement_Menu_Hunt;
 
-		// Token: 0x04000062 RID: 98
+		// Token: 0x04000067 RID: 103
 		private global::DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement_SubMenu_HuntAuto;
 
-		// Token: 0x04000063 RID: 99
+		// Token: 0x04000068 RID: 104
 		private global::DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement_SubMenu_Hunt;
 
-		// Token: 0x04000064 RID: 100
+		// Token: 0x04000069 RID: 105
 		private global::DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement_Menu_Config;
 
-		// Token: 0x04000065 RID: 101
+		// Token: 0x0400006A RID: 106
 		private global::DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement_SubMenu_Config_Logiciel;
 
-		// Token: 0x04000066 RID: 102
+		// Token: 0x0400006B RID: 107
 		private global::DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement_SubMenu_Config_HuntAuto;
 
-		// Token: 0x04000067 RID: 103
+		// Token: 0x0400006C RID: 108
 		private global::DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement_SubMenu_Config_Indice;
 
-		// Token: 0x04000068 RID: 104
+		// Token: 0x0400006D RID: 109
 		private global::DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement_SubMenu_Config_Update;
 
-		// Token: 0x04000069 RID: 105
+		// Token: 0x0400006E RID: 110
 		private global::DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement_SubMenu_Config_Debug;
 
-		// Token: 0x0400006A RID: 106
+		// Token: 0x0400006F RID: 111
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Version;
 
-		// Token: 0x0400006B RID: 107
+		// Token: 0x04000070 RID: 112
 		private global::DevExpress.XtraBars.Navigation.AccordionControlElement accordionControlElement_SubMenu_Config_Notif;
 
-		// Token: 0x0400006C RID: 108
+		// Token: 0x04000071 RID: 113
 		private global::System.Windows.Forms.DataGridView dataGridView_Hunt_Indice_List;
 
-		// Token: 0x0400006D RID: 109
+		// Token: 0x04000072 RID: 114
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Hunt_Indice_Add;
 
-		// Token: 0x0400006E RID: 110
+		// Token: 0x04000073 RID: 115
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Indice_Correct;
 
-		// Token: 0x0400006F RID: 111
+		// Token: 0x04000074 RID: 116
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Indice_Correct;
 
-		// Token: 0x04000070 RID: 112
+		// Token: 0x04000075 RID: 117
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Indice_Incorrect;
 
-		// Token: 0x04000071 RID: 113
+		// Token: 0x04000076 RID: 118
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Indice_Incorrect;
 
-		// Token: 0x04000072 RID: 114
+		// Token: 0x04000077 RID: 119
 		private global::System.Windows.Forms.DataGridViewTextBoxColumn Column_Incorrect;
 
-		// Token: 0x04000073 RID: 115
+		// Token: 0x04000078 RID: 120
 		private global::System.Windows.Forms.DataGridViewTextBoxColumn Column_Correct;
 
-		// Token: 0x04000074 RID: 116
+		// Token: 0x04000079 RID: 121
 		private global::DevExpress.XtraEditors.PanelControl panelControl_Hunt_Debug;
 
-		// Token: 0x04000075 RID: 117
+		// Token: 0x0400007A RID: 122
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Hunt_Debug_Token;
 
-		// Token: 0x04000076 RID: 118
+		// Token: 0x0400007B RID: 123
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Debug_Token;
 
-		// Token: 0x04000077 RID: 119
+		// Token: 0x0400007C RID: 124
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Debug_Token;
 
-		// Token: 0x04000078 RID: 120
+		// Token: 0x0400007D RID: 125
 		private global::DevExpress.XtraEditors.SeparatorControl separatorControl1;
 
-		// Token: 0x04000079 RID: 121
+		// Token: 0x0400007E RID: 126
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Debug;
 
-		// Token: 0x0400007A RID: 122
+		// Token: 0x0400007F RID: 127
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Hunt_Debug_Capture;
 
-		// Token: 0x0400007B RID: 123
+		// Token: 0x04000080 RID: 128
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Debug_Dir;
 
-		// Token: 0x0400007C RID: 124
+		// Token: 0x04000081 RID: 129
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Debug_Dir;
 
-		// Token: 0x0400007D RID: 125
+		// Token: 0x04000082 RID: 130
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Debug_Y;
 
-		// Token: 0x0400007E RID: 126
+		// Token: 0x04000083 RID: 131
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Debug_Y;
 
-		// Token: 0x0400007F RID: 127
+		// Token: 0x04000084 RID: 132
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Debug_X;
 
-		// Token: 0x04000080 RID: 128
+		// Token: 0x04000085 RID: 133
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Debug_X;
 
-		// Token: 0x04000081 RID: 129
+		// Token: 0x04000086 RID: 134
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Hunt_Debug_GetPositionIndice;
 
-		// Token: 0x04000082 RID: 130
+		// Token: 0x04000087 RID: 135
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Debug_Indice;
 
-		// Token: 0x04000083 RID: 131
+		// Token: 0x04000088 RID: 136
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Debug_Indice;
 
-		// Token: 0x04000084 RID: 132
+		// Token: 0x04000089 RID: 137
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Hunt_Debug_GetPosition;
 
-		// Token: 0x04000085 RID: 133
+		// Token: 0x0400008A RID: 138
 		private global::DevExpress.XtraEditors.PanelControl panelControl_Hunt_ConfigHuntAuto;
 
-		// Token: 0x04000086 RID: 134
+		// Token: 0x0400008B RID: 139
 		private global::DevExpress.XtraTab.XtraTabControl xtraTabControl_Hunt_Config_HuntAuto;
 
-		// Token: 0x04000087 RID: 135
+		// Token: 0x0400008C RID: 140
 		private global::DevExpress.XtraTab.XtraTabPage xtraTabPage1;
 
-		// Token: 0x04000088 RID: 136
+		// Token: 0x0400008D RID: 141
 		private global::DevExpress.XtraEditors.CheckEdit checkEdit_Hunt_Config_Offline;
 
-		// Token: 0x04000089 RID: 137
+		// Token: 0x0400008E RID: 142
 		private global::DevExpress.XtraEditors.CheckEdit checkEdit_Hunt_Config_UseGoogleVision;
 
-		// Token: 0x0400008A RID: 138
+		// Token: 0x0400008F RID: 143
 		private global::DevExpress.XtraTab.XtraTabPage xtraTabPage2;
 
-		// Token: 0x0400008B RID: 139
+		// Token: 0x04000090 RID: 144
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Debug;
 
-		// Token: 0x0400008C RID: 140
+		// Token: 0x04000091 RID: 145
 		private global::DevExpress.XtraEditors.CheckEdit checkEdit_Hunt_Config_Debug;
 
-		// Token: 0x0400008D RID: 141
+		// Token: 0x04000092 RID: 146
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Position_threshold;
 
-		// Token: 0x0400008E RID: 142
+		// Token: 0x04000093 RID: 147
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Position_threshold;
 
-		// Token: 0x0400008F RID: 143
+		// Token: 0x04000094 RID: 148
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Position_height;
 
-		// Token: 0x04000090 RID: 144
+		// Token: 0x04000095 RID: 149
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Position_height;
 
-		// Token: 0x04000091 RID: 145
+		// Token: 0x04000096 RID: 150
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Position_width;
 
-		// Token: 0x04000092 RID: 146
+		// Token: 0x04000097 RID: 151
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Position_width;
 
-		// Token: 0x04000093 RID: 147
+		// Token: 0x04000098 RID: 152
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Position_Y;
 
-		// Token: 0x04000094 RID: 148
+		// Token: 0x04000099 RID: 153
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Position_Y;
 
-		// Token: 0x04000095 RID: 149
+		// Token: 0x0400009A RID: 154
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Position_X;
 
-		// Token: 0x04000096 RID: 150
+		// Token: 0x0400009B RID: 155
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Position_X;
 
-		// Token: 0x04000097 RID: 151
+		// Token: 0x0400009C RID: 156
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Hunt_Config_Hunt_Position_save;
 
-		// Token: 0x04000098 RID: 152
+		// Token: 0x0400009D RID: 157
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Position_hauteurTexte;
 
-		// Token: 0x04000099 RID: 153
+		// Token: 0x0400009E RID: 158
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Position_largeurTexte;
 
-		// Token: 0x0400009A RID: 154
+		// Token: 0x0400009F RID: 159
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Position_largeurTexte;
 
-		// Token: 0x0400009B RID: 155
+		// Token: 0x040000A0 RID: 160
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Hunt_Debug_GetIndice;
 
-		// Token: 0x0400009C RID: 156
+		// Token: 0x040000A1 RID: 161
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Hunt_Debug_GetArrow;
 
-		// Token: 0x0400009D RID: 157
+		// Token: 0x040000A2 RID: 162
 		private global::DevExpress.XtraTab.XtraTabPage xtraTabPage3;
 
-		// Token: 0x0400009E RID: 158
+		// Token: 0x040000A3 RID: 163
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Hunt_Config_Hunt_Indice_Save;
 
-		// Token: 0x0400009F RID: 159
+		// Token: 0x040000A4 RID: 164
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Indice_OCRFleche;
 
-		// Token: 0x040000A0 RID: 160
+		// Token: 0x040000A5 RID: 165
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Indice_OCRFleche;
 
-		// Token: 0x040000A1 RID: 161
+		// Token: 0x040000A6 RID: 166
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Indice_HIndice;
 
-		// Token: 0x040000A2 RID: 162
+		// Token: 0x040000A7 RID: 167
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Indice_HIndice;
 
-		// Token: 0x040000A3 RID: 163
+		// Token: 0x040000A8 RID: 168
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Indice_LIndice;
 
-		// Token: 0x040000A4 RID: 164
+		// Token: 0x040000A9 RID: 169
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Indice_LCoche;
 
-		// Token: 0x040000A5 RID: 165
+		// Token: 0x040000AA RID: 170
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Indice_OCRCoche;
 
-		// Token: 0x040000A6 RID: 166
+		// Token: 0x040000AB RID: 171
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Indice_OCRCoche;
 
-		// Token: 0x040000A7 RID: 167
+		// Token: 0x040000AC RID: 172
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Indice_HStart;
 
-		// Token: 0x040000A8 RID: 168
+		// Token: 0x040000AD RID: 173
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Indice_HStart;
 
-		// Token: 0x040000A9 RID: 169
+		// Token: 0x040000AE RID: 174
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Indice_LStart;
 
-		// Token: 0x040000AA RID: 170
+		// Token: 0x040000AF RID: 175
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Indice_LStart;
 
-		// Token: 0x040000AB RID: 171
+		// Token: 0x040000B0 RID: 176
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Indice_OCRStart;
 
-		// Token: 0x040000AC RID: 172
+		// Token: 0x040000B1 RID: 177
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Indice_OCRStart;
 
-		// Token: 0x040000AD RID: 173
+		// Token: 0x040000B2 RID: 178
 		private global::DevExpress.XtraTab.XtraTabPage xtraTabPage4;
 
-		// Token: 0x040000AE RID: 174
+		// Token: 0x040000B3 RID: 179
 		private global::System.Windows.Forms.PictureBox pictureBox_Hunt_Config_Hunt_Template_Coche;
 
-		// Token: 0x040000AF RID: 175
+		// Token: 0x040000B4 RID: 180
 		private global::System.Windows.Forms.PictureBox pictureBox_Hunt_Config_Hunt_Template_Level;
 
-		// Token: 0x040000B0 RID: 176
+		// Token: 0x040000B5 RID: 181
 		private global::System.Windows.Forms.PictureBox pictureBox_Hunt_Config_Hunt_Template_Arrow_4;
 
-		// Token: 0x040000B1 RID: 177
+		// Token: 0x040000B6 RID: 182
 		private global::System.Windows.Forms.PictureBox pictureBox_Hunt_Config_Hunt_Template_Arrow_2;
 
-		// Token: 0x040000B2 RID: 178
+		// Token: 0x040000B7 RID: 183
 		private global::System.Windows.Forms.PictureBox pictureBox_Hunt_Config_Hunt_Template_Arrow_0;
 
-		// Token: 0x040000B3 RID: 179
+		// Token: 0x040000B8 RID: 184
 		private global::System.Windows.Forms.PictureBox pictureBox_Hunt_Config_Hunt_Template_Arrow_6;
 
-		// Token: 0x040000B4 RID: 180
+		// Token: 0x040000B9 RID: 185
 		private global::System.Windows.Forms.PictureBox pictureBox_Hunt_Config_Hunt_Template_Start;
 
-		// Token: 0x040000B5 RID: 181
+		// Token: 0x040000BA RID: 186
 		private global::DevExpress.XtraEditors.GroupControl groupControl2;
 
-		// Token: 0x040000B6 RID: 182
+		// Token: 0x040000BB RID: 187
 		private global::DevExpress.XtraEditors.GroupControl groupControl1;
 
-		// Token: 0x040000B7 RID: 183
+		// Token: 0x040000BC RID: 188
 		private global::DevExpress.XtraEditors.GroupControl groupControl4;
 
-		// Token: 0x040000B8 RID: 184
+		// Token: 0x040000BD RID: 189
 		private global::DevExpress.XtraEditors.GroupControl groupControl3;
 
-		// Token: 0x040000B9 RID: 185
+		// Token: 0x040000BE RID: 190
 		private global::DevExpress.XtraEditors.PanelControl panelControl_Hunt_Hunt;
 
-		// Token: 0x040000BA RID: 186
+		// Token: 0x040000BF RID: 191
 		private global::DevExpress.XtraEditors.SeparatorControl separatorControl2;
 
-		// Token: 0x040000BB RID: 187
+		// Token: 0x040000C0 RID: 192
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Y;
 
-		// Token: 0x040000BC RID: 188
+		// Token: 0x040000C1 RID: 193
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Y;
 
-		// Token: 0x040000BD RID: 189
+		// Token: 0x040000C2 RID: 194
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_X;
 
-		// Token: 0x040000BE RID: 190
+		// Token: 0x040000C3 RID: 195
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_X;
 
-		// Token: 0x040000BF RID: 191
+		// Token: 0x040000C4 RID: 196
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Hunt_2;
 
-		// Token: 0x040000C0 RID: 192
+		// Token: 0x040000C5 RID: 197
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Hunt_4;
 
-		// Token: 0x040000C1 RID: 193
+		// Token: 0x040000C6 RID: 198
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Hunt_0;
 
-		// Token: 0x040000C2 RID: 194
+		// Token: 0x040000C7 RID: 199
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_Hunt_6;
 
-		// Token: 0x040000C3 RID: 195
+		// Token: 0x040000C8 RID: 200
 		private global::DevExpress.XtraEditors.SeparatorControl separatorControl3;
 
-		// Token: 0x040000C4 RID: 196
+		// Token: 0x040000C9 RID: 201
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Dir;
 
-		// Token: 0x040000C5 RID: 197
+		// Token: 0x040000CA RID: 202
 		private global::DevExpress.XtraEditors.CheckEdit checkEdit_Hunt_AutoTravel;
 
-		// Token: 0x040000C6 RID: 198
+		// Token: 0x040000CB RID: 203
 		private global::DevExpress.XtraEditors.ComboBoxEdit comboBoxEdit_Hunt_Indice;
 
-		// Token: 0x040000C7 RID: 199
+		// Token: 0x040000CC RID: 204
 		private global::DevExpress.XtraEditors.SeparatorControl separatorControl4;
 
-		// Token: 0x040000C8 RID: 200
+		// Token: 0x040000CD RID: 205
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Indice;
 
-		// Token: 0x040000C9 RID: 201
+		// Token: 0x040000CE RID: 206
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Map;
 
-		// Token: 0x040000CA RID: 202
+		// Token: 0x040000CF RID: 207
 		private global::DevExpress.XtraBars.ToastNotifications.ToastNotificationsManager toastNotificationsManager;
 
-		// Token: 0x040000CB RID: 203
+		// Token: 0x040000D0 RID: 208
 		private global::DevExpress.XtraEditors.PanelControl panelControl_Hunt_HuntAuto;
 
-		// Token: 0x040000CC RID: 204
+		// Token: 0x040000D1 RID: 209
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_HuntAutoStart;
 
-		// Token: 0x040000CD RID: 205
+		// Token: 0x040000D2 RID: 210
 		private global::DevExpress.XtraEditors.SimpleButton simpleButton_HuntAutoStop;
 
-		// Token: 0x040000CE RID: 206
+		// Token: 0x040000D3 RID: 211
 		private global::DevExpress.XtraEditors.LabelControl labelControl_HuntAuto_MapIndice;
 
-		// Token: 0x040000CF RID: 207
+		// Token: 0x040000D4 RID: 212
 		private global::DevExpress.XtraEditors.LabelControl labelControl_HuntAuto_Direction;
 
-		// Token: 0x040000D0 RID: 208
+		// Token: 0x040000D5 RID: 213
 		private global::DevExpress.XtraEditors.LabelControl labelControl_HuntAuto_IndiceCor;
 
-		// Token: 0x040000D1 RID: 209
+		// Token: 0x040000D6 RID: 214
 		private global::DevExpress.XtraEditors.LabelControl labelControl_HuntAuto_Indice;
 
-		// Token: 0x040000D2 RID: 210
+		// Token: 0x040000D7 RID: 215
 		private global::DevExpress.XtraEditors.LabelControl labelControl_HuntAuto_MapStart;
 
-		// Token: 0x040000D3 RID: 211
+		// Token: 0x040000D8 RID: 216
 		private global::DevExpress.XtraEditors.CheckEdit checkEdit_HuntAuto_AutoTravel;
 
-		// Token: 0x040000D4 RID: 212
+		// Token: 0x040000D9 RID: 217
 		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Indice_Detection;
 
-		// Token: 0x040000D5 RID: 213
+		// Token: 0x040000DA RID: 218
 		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Indice_Detection;
 
-		// Token: 0x040000D6 RID: 214
+		// Token: 0x040000DB RID: 219
 		private global::DevExpress.XtraEditors.PanelControl panelControl_Home;
 
-		// Token: 0x040000D7 RID: 215
+		// Token: 0x040000DC RID: 220
 		private global::System.Windows.Forms.PictureBox pictureBox_Discord;
 
-		// Token: 0x040000D8 RID: 216
+		// Token: 0x040000DD RID: 221
 		private global::DevExpress.XtraEditors.SeparatorControl separatorControl5;
 
-		// Token: 0x040000D9 RID: 217
+		// Token: 0x040000DE RID: 222
 		private global::DevExpress.XtraEditors.LabelControl labelControl1;
+
+		// Token: 0x040000DF RID: 223
+		private global::DevExpress.XtraEditors.CheckEdit checkEdit_Hunt_Auto_ModeReduit;
+
+		// Token: 0x040000E0 RID: 224
+		private global::DevExpress.XtraEditors.GroupControl groupControl5;
+
+		// Token: 0x040000E1 RID: 225
+		private global::System.Windows.Forms.PictureBox pictureBox_Hunt_Config_Hunt_Template_Combat;
+
+		// Token: 0x040000E2 RID: 226
+		private global::System.Windows.Forms.PictureBox pictureBox_Hunt_Config_Hunt_Template_CocheChecked;
+
+		// Token: 0x040000E3 RID: 227
+		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Indice_OCRCombat;
+
+		// Token: 0x040000E4 RID: 228
+		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Indice_OCRCombat;
+
+		// Token: 0x040000E5 RID: 229
+		private global::DevExpress.XtraEditors.TextEdit textEdit_Hunt_Config_Hunt_Indice_OCRCocheCheck;
+
+		// Token: 0x040000E6 RID: 230
+		private global::DevExpress.XtraEditors.LabelControl labelControl_Hunt_Config_Hunt_Indice_OCRCocheChecked;
 	}
 }

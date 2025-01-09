@@ -9,19 +9,19 @@ using System.Runtime.CompilerServices;
 
 namespace Dofus_Hunt.Properties
 {
-	// Token: 0x02000006 RID: 6
+	// Token: 0x02000019 RID: 25
 	[GeneratedCode("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
 	[DebuggerNonUserCode]
 	[CompilerGenerated]
 	internal class Resources
 	{
-		// Token: 0x06000055 RID: 85 RVA: 0x0000C246 File Offset: 0x0000A446
+		// Token: 0x06000099 RID: 153 RVA: 0x000021AC File Offset: 0x000003AC
 		internal Resources()
 		{
 		}
 
 		// Token: 0x17000001 RID: 1
-		// (get) Token: 0x06000056 RID: 86 RVA: 0x0000C24E File Offset: 0x0000A44E
+		// (get) Token: 0x0600009A RID: 154 RVA: 0x000024ED File Offset: 0x000006ED
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		internal static ResourceManager ResourceManager
 		{
@@ -36,8 +36,8 @@ namespace Dofus_Hunt.Properties
 		}
 
 		// Token: 0x17000002 RID: 2
-		// (get) Token: 0x06000057 RID: 87 RVA: 0x0000C27A File Offset: 0x0000A47A
-		// (set) Token: 0x06000058 RID: 88 RVA: 0x0000C281 File Offset: 0x0000A481
+		// (get) Token: 0x0600009B RID: 155 RVA: 0x00002519 File Offset: 0x00000719
+		// (set) Token: 0x0600009C RID: 156 RVA: 0x00002520 File Offset: 0x00000720
 		[EditorBrowsable(EditorBrowsableState.Advanced)]
 		internal static CultureInfo Culture
 		{
@@ -52,7 +52,7 @@ namespace Dofus_Hunt.Properties
 		}
 
 		// Token: 0x17000003 RID: 3
-		// (get) Token: 0x06000059 RID: 89 RVA: 0x0000C289 File Offset: 0x0000A489
+		// (get) Token: 0x0600009D RID: 157 RVA: 0x00002528 File Offset: 0x00000728
 		internal static Bitmap discord_brands_solid__1_
 		{
 			get
@@ -62,7 +62,7 @@ namespace Dofus_Hunt.Properties
 		}
 
 		// Token: 0x17000004 RID: 4
-		// (get) Token: 0x0600005A RID: 90 RVA: 0x0000C2A4 File Offset: 0x0000A4A4
+		// (get) Token: 0x0600009E RID: 158 RVA: 0x00002543 File Offset: 0x00000743
 		internal static Bitmap logo
 		{
 			get
@@ -72,7 +72,7 @@ namespace Dofus_Hunt.Properties
 		}
 
 		// Token: 0x17000005 RID: 5
-		// (get) Token: 0x0600005B RID: 91 RVA: 0x0000C2BF File Offset: 0x0000A4BF
+		// (get) Token: 0x0600009F RID: 159 RVA: 0x0000255E File Offset: 0x0000075E
 		internal static Bitmap logo_64x64
 		{
 			get
@@ -81,10 +81,10 @@ namespace Dofus_Hunt.Properties
 			}
 		}
 
-		// Token: 0x040000E8 RID: 232
+		// Token: 0x04000149 RID: 329
 		private static ResourceManager resourceMan;
 
-		// Token: 0x040000E9 RID: 233
+		// Token: 0x0400014A RID: 330
 		private static CultureInfo resourceCulture;
 	}
 }

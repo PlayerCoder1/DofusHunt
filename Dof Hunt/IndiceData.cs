@@ -9,18 +9,18 @@ namespace Dof_Hunt
 	public class IndiceData
 	{
 		// Token: 0x17000001 RID: 1
-		// (get) Token: 0x06000014 RID: 20 RVA: 0x00002F90 File Offset: 0x00001190
-		// (set) Token: 0x06000015 RID: 21 RVA: 0x00002F98 File Offset: 0x00001198
+		// (get) Token: 0x06000014 RID: 20 RVA: 0x00002FB4 File Offset: 0x000011B4
+		// (set) Token: 0x06000015 RID: 21 RVA: 0x00002FBC File Offset: 0x000011BC
 		public int posX { get; set; }
 
 		// Token: 0x17000002 RID: 2
-		// (get) Token: 0x06000016 RID: 22 RVA: 0x00002FA1 File Offset: 0x000011A1
-		// (set) Token: 0x06000017 RID: 23 RVA: 0x00002FA9 File Offset: 0x000011A9
+		// (get) Token: 0x06000016 RID: 22 RVA: 0x00002FC5 File Offset: 0x000011C5
+		// (set) Token: 0x06000017 RID: 23 RVA: 0x00002FCD File Offset: 0x000011CD
 		public int posY { get; set; }
 
 		// Token: 0x17000003 RID: 3
-		// (get) Token: 0x06000018 RID: 24 RVA: 0x00002FB2 File Offset: 0x000011B2
-		// (set) Token: 0x06000019 RID: 25 RVA: 0x00002FBA File Offset: 0x000011BA
+		// (get) Token: 0x06000018 RID: 24 RVA: 0x00002FD6 File Offset: 0x000011D6
+		// (set) Token: 0x06000019 RID: 25 RVA: 0x00002FDE File Offset: 0x000011DE
 		public string indice { get; set; }
 	}
 }

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1B4472C4-F2DF-4E24-A70F-A7A8C0C1028C}</ProjectGuid>
+    <ProjectGuid>{39FB0089-F121-4301-ACAF-E21DC5E193D7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Dofus Hunt</RootNamespace>
     <AssemblyName>Dofus Hunt</AssemblyName>
@@ -36,25 +36,25 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Data.v24.1">
-      <HintPath>..\..\..\v1.2.2\DevExpress.Data.v24.1.dll</HintPath>
+      <HintPath>..\..\..\v1.2.3\DevExpress.Data.v24.1.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Utils.v24.1">
-      <HintPath>..\..\..\v1.2.2\DevExpress.Utils.v24.1.dll</HintPath>
+      <HintPath>..\..\..\v1.2.3\DevExpress.Utils.v24.1.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraBars.v24.1">
-      <HintPath>..\..\..\v1.2.2\DevExpress.XtraBars.v24.1.dll</HintPath>
+      <HintPath>..\..\..\v1.2.3\DevExpress.XtraBars.v24.1.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.XtraEditors.v24.1">
-      <HintPath>..\..\..\v1.2.2\DevExpress.XtraEditors.v24.1.dll</HintPath>
+      <HintPath>..\..\..\v1.2.3\DevExpress.XtraEditors.v24.1.dll</HintPath>
     </Reference>
     <Reference Include="Dof\u0020Hunt">
-      <HintPath>..\..\..\v1.2.2\Dof Hunt.dll</HintPath>
+      <HintPath>..\..\..\v1.2.3\Dof Hunt.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Win32.Primitives">
       <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\Microsoft.Win32.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\v1.2.2\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\v1.2.3\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections">
       <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Collections.dll</HintPath>
@@ -78,7 +78,7 @@
       <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Diagnostics.Process.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing.Common">
-      <HintPath>..\..\..\v1.2.2\System.Drawing.Common.dll</HintPath>
+      <HintPath>..\..\..\v1.2.3\System.Drawing.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing.Primitives">
       <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.11\System.Drawing.Primitives.dll</HintPath>

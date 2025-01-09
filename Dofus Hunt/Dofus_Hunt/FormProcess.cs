@@ -13,29 +13,29 @@ using Dof_Hunt;
 
 namespace Dofus_Hunt
 {
-	// Token: 0x02000004 RID: 4
+	// Token: 0x02000016 RID: 22
 	public partial class FormProcess : XtraForm
 	{
-		// Token: 0x06000046 RID: 70 RVA: 0x0000B85D File Offset: 0x00009A5D
+		// Token: 0x06000087 RID: 135 RVA: 0x000023F8 File Offset: 0x000005F8
 		public FormProcess()
 		{
 			this.InitializeComponent();
 			this._Dofus_Hunt = new Dofus_Hunt();
 		}
 
-		// Token: 0x06000047 RID: 71 RVA: 0x0000B898 File Offset: 0x00009A98
+		// Token: 0x06000088 RID: 136 RVA: 0x00002433 File Offset: 0x00000633
 		private void simpleButton_Process_CodeLicence_Click(object sender, EventArgs e)
 		{
 			Clipboard.SetText(this.DofusHuntLicence.GetPcIdentifier());
 		}
 
-		// Token: 0x06000048 RID: 72
+		// Token: 0x06000089 RID: 137 RVA: 0x00002445 File Offset: 0x00000645
 		private void simpleButton_Process_SetLicence_Click(object sender, EventArgs e)
 		{
 			this.LicenceIsOk();
 		}
 
-		// Token: 0x06000049 RID: 73 RVA: 0x0000B9BC File Offset: 0x00009BBC
+		// Token: 0x0600008A RID: 138 RVA: 0x0000F45C File Offset: 0x0000D65C
 		private void ListRunningPrograms(ListBoxControl listBoxControl)
 		{
 			foreach (Process process in from p in Process.GetProcesses()
@@ -47,7 +47,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600004A RID: 74 RVA: 0x0000BA38 File Offset: 0x00009C38
+		// Token: 0x0600008B RID: 139 RVA: 0x0000244D File Offset: 0x0000064D
 		private void SelectProcess()
 		{
 			if (this.listBoxControl_Process_Process.SelectedItem != null)
@@ -57,7 +57,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600004B RID: 75 RVA: 0x0000BA68 File Offset: 0x00009C68
+		// Token: 0x0600008C RID: 140 RVA: 0x0000F4D8 File Offset: 0x0000D6D8
 		private void ActuProcess()
 		{
 			string selectedItem = this.listBoxControl_Process_Process.SelectedItem as string;
@@ -69,7 +69,7 @@ namespace Dofus_Hunt
 			}
 		}
 
-		// Token: 0x0600004C RID: 76 RVA: 0x0000BAC4 File Offset: 0x00009CC4
+		// Token: 0x0600008D RID: 141 RVA: 0x0000F534 File Offset: 0x0000D734
 		private void LicenceIsOk()
 		{
 			this.panelControl_Process_Licence.Visible = false;
@@ -79,7 +79,7 @@ namespace Dofus_Hunt
 			this.ListRunningPrograms(this.listBoxControl_Process_Process);
 		}
 
-		// Token: 0x0600004D RID: 77 RVA: 0x0000BB10 File Offset: 0x00009D10
+		// Token: 0x0600008E RID: 142 RVA: 0x0000F580 File Offset: 0x0000D780
 		private void FormProcess_Load(object sender, EventArgs e)
 		{
 			if (this._Dofus_Hunt.SkinIsDark() == "False")
@@ -99,37 +99,37 @@ namespace Dofus_Hunt
 			this.LicenceIsOk();
 		}
 
-		// Token: 0x0600004E RID: 78 RVA: 0x0000BB80 File Offset: 0x00009D80
+		// Token: 0x0600008F RID: 143 RVA: 0x0000247C File Offset: 0x0000067C
 		private void simpleButton_Process_Actu_Click(object sender, EventArgs e)
 		{
 			this.ActuProcess();
 		}
 
-		// Token: 0x0600004F RID: 79 RVA: 0x0000BB88 File Offset: 0x00009D88
+		// Token: 0x06000090 RID: 144 RVA: 0x0000247C File Offset: 0x0000067C
 		private void timer_Process_Process_Tick(object sender, EventArgs e)
 		{
 			this.ActuProcess();
 		}
 
-		// Token: 0x06000050 RID: 80 RVA: 0x0000BB90 File Offset: 0x00009D90
+		// Token: 0x06000091 RID: 145 RVA: 0x00002484 File Offset: 0x00000684
 		private void simpleButton_Process_Select_Click(object sender, EventArgs e)
 		{
 			this.SelectProcess();
 		}
 
-		// Token: 0x06000051 RID: 81 RVA: 0x0000BB98 File Offset: 0x00009D98
+		// Token: 0x06000092 RID: 146 RVA: 0x00002484 File Offset: 0x00000684
 		private void listBoxControl_Process_Process_DoubleClick(object sender, EventArgs e)
 		{
 			this.SelectProcess();
 		}
 
-		// Token: 0x040000DA RID: 218
+		// Token: 0x04000139 RID: 313
 		private Licence DofusHuntLicence = new Licence();
 
-		// Token: 0x040000DB RID: 219
+		// Token: 0x0400013A RID: 314
 		private Dofus_Hunt _Dofus_Hunt;
 
-		// Token: 0x040000DC RID: 220
+		// Token: 0x0400013B RID: 315
 		private readonly string _keyPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Dofus Hunt");
 	}
 }
